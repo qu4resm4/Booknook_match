@@ -37,6 +37,14 @@ const routes: Routes = [
   {
     path: 'idiomas',
     loadChildren: () => import('./acesso/cadastro/idiomas/idiomas.module').then( m => m.IdiomasPageModule)
+  },
+  {
+    path: 'pesquisar',
+    loadChildren: () => import('./livros/pesquisar/pesquisar.module').then( m => m.PesquisarPageModule)
+  },
+  {
+    path: 'infolivro',
+    loadChildren: () => import('./livros/infolivro/infolivro.module').then( m => m.InfolivroPageModule)
   }
 ];
 @NgModule({
