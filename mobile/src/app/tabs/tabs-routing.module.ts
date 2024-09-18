@@ -19,6 +19,11 @@ const routes: Routes = [
         path: 'chat',
         loadChildren: () => import('../chat/conversas/conversas.module').then(m => m.ConversasPageModule)
       },
+      { path: 'login', loadChildren: () => import('../acesso/login/login.module').then( m => m.LoginPageModule)
+
+      },
+      
+      
       {
         path: '',
         redirectTo: '/tabs/match',

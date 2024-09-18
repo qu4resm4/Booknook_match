@@ -45,7 +45,12 @@ const routes: Routes = [
   {
     path: 'infolivro',
     loadChildren: () => import('./livros/infolivro/infolivro.module').then( m => m.InfolivroPageModule)
-  }
+  },
+  {
+    path: 'cadastro-usuario',
+    loadChildren: () => import('./acesso/cadastro/cadastro-usuario/cadastro-usuario.module').then( m => m.CadastroUsuarioPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
