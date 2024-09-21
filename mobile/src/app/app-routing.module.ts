@@ -43,7 +43,7 @@ const routes: Routes = [
     loadChildren: () => import('./livros/pesquisar/pesquisar.module').then( m => m.PesquisarPageModule)
   },
   {
-    path: 'infolivro',
+    path: 'infolivro/:id',
     loadChildren: () => import('./livros/infolivro/infolivro.module').then( m => m.InfolivroPageModule)
   }
 ];

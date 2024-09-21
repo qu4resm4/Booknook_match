@@ -7,12 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class LivrosService {
 
-  private url = 'assets/json/test.json';
+  private API_URL = 'https://www.googleapis.com/books/v1/volumes';
+  private key = 'AIzaSyAIcILxTfOFUOuTlpq1quE8-FKVwkcZW2A';
 
   constructor(private http: HttpClient) { }
 
   // Método para buscar os dados
-  getLivros(): Observable<any> {
-    return this.http.get(this.url);
+  getLivros(query: string): Observable<any> {
+    const url = `${this.API_URL}?q="${query}"&key=${this.key}`;
+    return this.http.get(url);
+  }
+
+  getLivrosbyId(id: any): Observable<any> {
+    const url = `${this.API_URL}/${id}`;
+    return this.http.get(url);
   }
 }

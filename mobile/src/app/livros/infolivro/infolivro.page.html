@@ -1,13 +1,18 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>infolivro</ion-title>
+    <ion-title>{{ livro?.volumeInfo.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">infolivro</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ livro?.volumeInfo.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ livro?.volumeInfo.description }}
+      <p>Autor: {{ livro?.volumeInfo.author }}</p>
+      <!-- Exiba outros detalhes conforme necessário -->
+    </ion-card-content>
+  </ion-card>
 </ion-content>
