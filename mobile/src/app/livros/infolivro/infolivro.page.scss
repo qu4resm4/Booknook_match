@@ -1,0 +1,40 @@
+.book-details-container {
+    padding: 16px;
+  }
+  
+  ion-img {
+    width: 150px;
+    height: auto;
+    margin: 0 auto 16px;
+    display: block;
+  }
+  
+  .book-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 16px 0 8px;
+    text-align: center;
+  }
+  
+  .book-subtitle {
+    font-size: 18px;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .book-authors, .book-categories {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .book-description {
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  ion-fab-button {
+    --background: #3880ff; /* Cor do botão de adicionar */
+  }
+  

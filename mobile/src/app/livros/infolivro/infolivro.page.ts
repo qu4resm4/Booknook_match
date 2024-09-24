@@ -10,20 +10,27 @@ import { LivrosService } from '../../services/livros/livros.service';
 })
 export class InfolivroPage implements OnInit {
   livro: any;
+  showDescription: boolean = false;
 
   constructor(private route: ActivatedRoute, private livrosService: LivrosService) {}
 
+  toggleDescription() {
+    this.showDescription = !this.showDescription;
+  }
+  
   ngOnInit() {
     //metodos para recuperar o id por parametro de rota
     const id = this.route.snapshot.paramMap.get('id');
 
     //chamando serviço
-    this.livrosService.getLivrosbyId(id).subscribe(data => {
-      console.log(data);  // Verifique os dados retornados
-      this.livro = data;
-    }, error => {
-      console.error('Erro ao buscar os dados do livro:', error);
-    });
+    this.livrosService.getLivrosbyId(id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.livro = data;
+    }, 
+      error: (e) => {
+        console.error('Erro ao buscar os dados do livro:', e);
+    }});
   }
 
 }

@@ -13,9 +13,9 @@ export class PesquisarPage implements OnInit {
   livros: any[] = [];
 
   constructor(
+    private router: Router,
     private loadingController: LoadingController,
-    private livrosService: LivrosService,
-    private router: Router
+    private livrosService: LivrosService
   ) {}
 
   async getLivros(){
@@ -30,6 +30,8 @@ export class PesquisarPage implements OnInit {
 
     //verificando se a pesquisa está vazio
     if(this.query.trim() === '') {
+      //desativando o loader
+      loading.dismiss();
       return;
     }
 
@@ -51,9 +53,8 @@ export class PesquisarPage implements OnInit {
     );
   }
 
-  redirecionandoInfoLivro(id: string) {
-    console.log("apertado")
-    this.router.navigate(['/infolivro', id]);
+  async redirecionandoInfoLivro(id: string) {
+    await this.router.navigate(['/infolivro/', id]);
   }
 
   ngOnInit() {

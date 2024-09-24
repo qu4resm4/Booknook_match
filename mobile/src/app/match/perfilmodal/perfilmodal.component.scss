@@ -1,0 +1,43 @@
+ion-card {
+  border-radius: 16px; /* Bordas arredondadas */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o card */
+  margin: 16px;
+  position: relative; /* Para o botão ser posicionado relativo ao card */
+}
+
+ion-card-content {
+  padding: 16px;
+}
+
+.description-container {
+  margin: 16% 0 8% 0;
+}
+
+.description-text {
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: justify;
+  color: #444;
+}
+
+.info-section {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.info-icon {
+  font-size: 18px;
+  margin-right: 8px;
+  color: #666;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Estilos para o botão de denúncia */
+ion-fab-button {
+  --size: 36px; /* Tamanho menor para o botão */
+}

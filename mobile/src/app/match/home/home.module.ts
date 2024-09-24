@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+import { PerfilmodalComponent } from './../perfilmodal/perfilmodal.component'
+
 import { HomePage } from './home.page';
 
 @NgModule({
@@ -15,6 +17,9 @@ import { HomePage } from './home.page';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage]
+  declarations: [
+    HomePage,
+    PerfilmodalComponent
+  ]
 })
 export class HomePageModule {}
