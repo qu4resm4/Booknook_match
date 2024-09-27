@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PerfisService } from '../../services/perfis/perfis.service';
 
 @Component({
   selector: 'app-home',
@@ -6,10 +7,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  perfis: any[] = [];
 
-  constructor() { }
+  constructor(
+    private PerfisService: PerfisService
+  ) { }
+
+  getPerfis(){
+    //chamando API
+    this.PerfisService.getPerfis().subscribe({
+      next: (data: any) => {
+        //carregando os dados
+        this.perfis = data;
+        console.log("sucesso JSON");
+        console.log(this.perfis);
+      },
+      error: (e) => {
+        console.error('Erro ao carregar dados', e);
+      }
+    }
+    );
+  }
 
   ngOnInit() {
+    this.getPerfis()
   }
 
 }

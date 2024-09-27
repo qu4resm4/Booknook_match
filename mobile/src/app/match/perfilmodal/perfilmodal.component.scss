@@ -1,8 +1,12 @@
 ion-card {
-  border-radius: 16px; /* Bordas arredondadas */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o card */
+  height: 50vh;
+  border-radius: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin: 16px;
-  position: relative; /* Para o botão ser posicionado relativo ao card */
+  position: relative;
+
+  transition: transform 0.5s ease-out;
+  will-change: transform;
 }
 
 ion-card-content {
@@ -10,7 +14,10 @@ ion-card-content {
 }
 
 .description-container {
-  margin: 16% 0 8% 0;
+  margin: 16vh 0 8vh 0;
+
+  margin-top: 10px;
+  text-align: justify;
 }
 
 .description-text {
@@ -18,6 +25,7 @@ ion-card-content {
   line-height: 1.5;
   text-align: justify;
   color: #444;
+  margin: 15px;
 }
 
 .info-section {
@@ -37,7 +45,35 @@ ion-card-content {
   color: #666;
 }
 
-/* Estilos para o botão de denúncia */
-ion-fab-button {
-  --size: 36px; /* Tamanho menor para o botão */
+.like-animation {
+  border: 2px solid green;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.5);
+}
+
+.dislike-animation {
+  border: 2px solid red;
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5);
+}
+
+/* Estilizar o feedback visual de "like" e "dislike" */
+.like-animation::before, .dislike-animation::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
+
+.like-animation::before {
+  content: 'Like';
+  color: green;
+}
+
+.dislike-animation::before {
+  content: 'Dislike';
+  color: red;
 }
