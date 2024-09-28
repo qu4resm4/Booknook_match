@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, Input } from '@angular/core';
-import { Gesture, GestureController, IonCard } from '@ionic/angular';
+import { Gesture, GestureController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfilmodal',

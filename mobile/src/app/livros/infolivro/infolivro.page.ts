@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
 
 
@@ -9,21 +9,25 @@ import { LivrosService } from '../../services/livros/livros.service';
   styleUrls: ['./infolivro.page.scss'],
 })
 export class InfolivroPage implements OnInit {
+  id: string = '';
   livro: any;
   showDescription: boolean = false;
 
-  constructor(private route: ActivatedRoute, private livrosService: LivrosService) {}
+  constructor(
+    private livrosService: LivrosService,
+    private loadingController: LoadingController
+  ) {}
 
   toggleDescription() {
     this.showDescription = !this.showDescription;
   }
-  
-  ngOnInit() {
-    //metodos para recuperar o id por parametro de rota
-    const id = this.route.snapshot.paramMap.get('id');
+
+  aoIniciar(){
+    //metodos para recuperar o id pelo serviço
+    this.id = this.livrosService.getData();
 
     //chamando serviço
-    this.livrosService.getLivrosbyId(id).subscribe({
+    this.livrosService.getLivrosbyId(this.id).subscribe({
       next: (data: any) => {
         console.log(data);
         this.livro = data;
@@ -31,6 +35,10 @@ export class InfolivroPage implements OnInit {
       error: (e) => {
         console.error('Erro ao buscar os dados do livro:', e);
     }});
+  }
+  
+  ngOnInit() {
+    this.aoIniciar();
   }
 
 }
