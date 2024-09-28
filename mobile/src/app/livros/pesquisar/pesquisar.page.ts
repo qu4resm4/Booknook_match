@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { LivrosService } from '../../services/livros/livros.service';
 
 @Component({
@@ -9,40 +9,54 @@ import { LivrosService } from '../../services/livros/livros.service';
   styleUrls: ['./pesquisar.page.scss'],
 })
 export class PesquisarPage implements OnInit {
-  data: any;
+  query: string = '';
+  livros: any[] = [];
 
   constructor(
+    private router: Router,
     private loadingController: LoadingController,
     private livrosService: LivrosService
   ) {}
 
-  async loadData() {
+  async getLivros(){
+    //configurações do componente loader
     const loading = await this.loadingController.create({
-      duration: 5000,
       spinner: 'circular',
       cssClass: 'custom',
     });
-
-    // Exibir o loading
+  
+    //exibindo loader
     await loading.present();
 
-    //algum livro será carregado sem necessidade de preencher o input? --> refatorar chamada do serviço
+    //verificando se a pesquisa está vazio
+    if(this.query.trim() === '') {
+      //desativando o loader
+      loading.dismiss();
+      return;
+    }
 
-    // Chamada do serviço
-    this.livrosService.getLivros().subscribe(
-      (response) => {
-        this.data = response;
+    //fazendo a pesquisa na API
+    this.livrosService.getLivros(this.query).subscribe({
+      next: (data: any) => {
+        //carregando os dados
+        this.livros = data.items;
+        //desativando o loader
         loading.dismiss();
-        // Desativa o loading após o carregamento dos dados
       },
-      (error) => {
-        console.error('Erro ao carregar dados', error);
-        //<----- ADICIONAR acionamento de modal com mensagem de erro de conexão
+      error: (e) => {
+        console.error('Erro ao carregar dados', e);
+        loading.dismiss();
+        //exibe o modal de erro
+        /*this.modalErro();*/
       }
+    }
     );
   }
 
+  async redirecionandoInfoLivro(id: string) {
+    await this.router.navigate(['/infolivro/', id]);
+  }
+
   ngOnInit() {
-    this.loadData();
   } 
 }

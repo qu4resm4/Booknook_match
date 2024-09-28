@@ -1,0 +1,36 @@
+<ion-card #swipeCard>
+  <ion-card-content>
+    <!-- Botão de Denunciar -->
+    <ion-fab vertical="top" horizontal="start" slot="fixed">
+      <ion-fab-button size="small" color="danger">
+        <ion-icon name="alert-circle"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-card-content>
+  <ion-card-content>
+    <!-- Descrição do usuário -->
+    <div class="description-container">
+      <ion-text>
+        <p class="description-text">
+          {{perfis.descricao}}
+        </p>
+      </ion-text>
+    </div>
+
+    <!-- Idiomas -->
+    <div class="info-section">
+      <ion-icon name="language" class="info-icon"></ion-icon>
+      <ion-label class="info-label">
+        <strong>Idiomas:</strong>{{perfis.idiomas}}
+      </ion-label>
+    </div>
+
+    <!-- Categorias -->
+    <div class="info-section">
+      <ion-icon name="book-outline" class="info-icon"></ion-icon>
+      <ion-label class="info-label">
+        <strong>Categorias:</strong>{{perfis.categorias}}
+      </ion-label>
+    </div>
+  </ion-card-content>
+</ion-card>

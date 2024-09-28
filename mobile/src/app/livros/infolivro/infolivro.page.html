@@ -1,13 +1,50 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>infolivro</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="book-details-container">
+    <!-- Imagem do livro -->
+    <ion-img [src]="livro.volumeInfo.imageLinks?.smallThumbnail" alt="{{ livro.volumeInfo.title }}"></ion-img>
+    
+    <!-- Título e subtítulo -->
+    <h1 class="book-title">{{ livro.volumeInfo.title }}</h1>
+    <h2 class="book-subtitle" *ngIf="livro.volumeInfo.subtitle">{{ livro.volumeInfo.subtitle }}</h2>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">infolivro</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <!-- Autores -->
+    <p class="book-authors">
+      <strong>Autores:</strong> {{ livro.volumeInfo.authors?.join(', ') }}
+    </p>
+
+    <!-- Editora e data de publicação -->
+    <p>
+      <strong>Editora:</strong> {{ livro.volumeInfo.publisher }}
+    </p>
+    <p>
+      <strong>Data de Publicação:</strong> {{ livro.volumeInfo.publishedDate }}
+    </p>
+
+    <!-- Categorias -->
+    <p class="book-categories">
+      <strong>Categorias:</strong> {{ livro.volumeInfo.categories?.join(', ') }}
+    </p>
+
+    <!-- Descrição com dropdown -->
+    <ion-item lines="none">
+      <ion-label>
+        <strong>Descrição</strong>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="toggleDescription()">
+          <ion-icon [name]="showDescription ? 'chevron-up' : 'chevron-down'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <div *ngIf="showDescription" class="book-description">
+      <p>{{ livro.volumeInfo.description }}</p>
+    </div>
+  </div>
+
+  <!-- Botão fixo de adicionar -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

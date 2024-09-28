@@ -20,3 +20,13 @@ ion-searchbar.custom {
   
     --border-radius: 8px;
 }
+
+.title {
+    display: -webkit-box; /* Necessário para criar a caixa flexível */
+    -webkit-box-orient: vertical; /* Define orientação vertical */
+    -webkit-line-clamp: 2; /* Limita a 2 linhas */
+    overflow: hidden; /* Esconde o excesso de texto */
+    text-overflow: ellipsis; /* Adiciona reticências no final */
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
+    margin-left: 10%;
+  }
