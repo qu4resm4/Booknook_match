@@ -7,7 +7,7 @@ key = ''.join(random.choice(random_str) for i in range(12))
 DEBUG = True
 SENHA = '' # ponha a senha da conexão, deixe vazio se não precisar de senha
 
-SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost:3306/booknook'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost:3307/booknook'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
