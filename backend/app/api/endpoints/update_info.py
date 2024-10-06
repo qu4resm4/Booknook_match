@@ -1,6 +1,6 @@
 from app import app
-from app.views import helper
-from app.views import update_info_user
+from app.controllers import helper
+from app.controllers import update_info_user
 
 
 @app.route("/update_user/<id>", methods=['PUT'])
