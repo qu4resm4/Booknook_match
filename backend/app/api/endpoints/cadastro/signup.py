@@ -1,5 +1,5 @@
 from app import app
-from app.views import register
+from app.controllers import register
 
 @app.route("/cadastro", methods=['POST'])
 def cadastro_index():

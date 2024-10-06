@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { LoadingController, NavController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
 
 @Component({
@@ -13,7 +12,7 @@ export class PesquisarPage implements OnInit {
   livros: any[] = [];
 
   constructor(
-    private router: Router,
+    private navCtrl: NavController,
     private loadingController: LoadingController,
     private livrosService: LivrosService
   ) {}
@@ -27,7 +26,6 @@ export class PesquisarPage implements OnInit {
   
     //exibindo loader
     await loading.present();
-
     //verificando se a pesquisa está vazio
     if(this.query.trim() === '') {
       //desativando o loader
@@ -53,8 +51,10 @@ export class PesquisarPage implements OnInit {
     );
   }
 
-  async redirecionandoInfoLivro(id: string) {
-    await this.router.navigate(['/infolivro/', id]);
+  redirecionandoInfoLivro(id: string) {
+    console.log("estou sendo clicado livro")
+    this.livrosService.setData(id);
+    this.navCtrl.navigateForward('infolivro');
   }
 
   ngOnInit() {

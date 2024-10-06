@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AdicionarLivroPageRoutingModule } from './adicionar-livro-routing.module';
+import { FiltroPageRoutingModule } from './filtro-routing.module';
 
-import { AdicionarLivroPage } from './adicionar-livro.page';
+import { FiltroPage } from './filtro.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdicionarLivroPageRoutingModule
+    FiltroPageRoutingModule
   ],
-  declarations: [AdicionarLivroPage]
+  declarations: [FiltroPage]
 })
-export class AdicionarLivroPageModule {}
+export class FiltroPageModule {}

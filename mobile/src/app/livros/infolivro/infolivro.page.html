@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="livro">
   <div class="book-details-container">
     <!-- Imagem do livro -->
     <ion-img [src]="livro.volumeInfo.imageLinks?.smallThumbnail" alt="{{ livro.volumeInfo.title }}"></ion-img>

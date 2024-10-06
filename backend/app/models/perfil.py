@@ -1,8 +1,6 @@
-import datetime
 from app import db, ma
 
 
-"""definição da classe/tabela dos usuários e seus campos"""
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -10,7 +8,7 @@ class Users(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__ (self, username, password, name, email):
+    def __init__ (self, username, password, email):
         self.username = username
         self.password = password
         self.email = email

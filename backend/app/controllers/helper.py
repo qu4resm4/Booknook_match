@@ -1,6 +1,6 @@
 from app import app
 import datetime
-from app.views.user_by_username import user_by_username
+from app.controllers.user_by_username import user_by_username
 import jwt
 from werkzeug.security import check_password_hash
 from flask import request, jsonify

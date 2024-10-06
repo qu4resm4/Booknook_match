@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PerfisService } from '../../services/perfis/perfis.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ export class HomePage implements OnInit {
   perfis: any[] = [];
 
   constructor(
+    private router: Router,
     private PerfisService: PerfisService
   ) { }
 
@@ -27,6 +29,14 @@ export class HomePage implements OnInit {
       }
     }
     );
+  }
+
+  async redirecionandoFiltro() {
+    await this.router.navigate(['/filtro']);
+  }
+
+  async redirecionandoPerfil() {
+    await this.router.navigate(['/perfil-usuario']);
   }
 
   ngOnInit() {
