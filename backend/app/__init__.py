@@ -9,7 +9,7 @@ ma = Marshmallow(app)
 
 from app.models import users
 from app.api.endpoints import index
-from app.api.endpoints import signup
+from app.api.endpoints.cadastro import signup
 from app.api.endpoints import update_info
-from app.api.endpoints import get_users
-from app.api.endpoints import login
+from app.api.endpoints.match import get_users
+from app.api.endpoints.autenticacao import login
