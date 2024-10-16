@@ -7,10 +7,9 @@ from app.models.users import Users, user_schema, users_schema
 def post_user():
     username = request.json['username']
     password = request.json['password']
-    name = request.json['name']
     email = request.json['email']
     pass_hash = generate_password_hash(password)
-    user = Users(username, pass_hash, name, email)
+    user = Users(username, pass_hash, email)
 
 
     try:

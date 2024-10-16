@@ -10,7 +10,7 @@ class Users(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.datetime.now())
 
-    def __init__ (self, username, password, name, email):
+    def __init__ (self, username, password, email):
         self.username = username
         self.password = password
         self.email = email
@@ -19,7 +19,7 @@ class Users(db.Model):
 """Definindo o Schema do Marshmallow para facilitar a utilização de JSON"""
 class UsersSchema(ma.Schema):
     class Meta:
-        fields = ('id','username','name', 'email', 'password', 'created_on')
+        fields = ('id','username', 'email', 'password', 'created_on')
 
 
 user_schema = UsersSchema()
