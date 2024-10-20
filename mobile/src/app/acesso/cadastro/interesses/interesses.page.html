@@ -1,84 +1,30 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Interesses de Leitura</ion-title>
+    <ion-title>Selecione Interesses</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-searchbar placeholder="Buscar interesses"></ion-searchbar>
+<ion-content class="ion-padding">
+  <!-- Search bar for filtering preferences -->
+  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar interesses" debounce="500" ></ion-searchbar>
+  
+  <!-- List of selected preferences -->
+  <div *ngIf="selectedPreferences.length > 0">
+    <h4>Minhas preferências</h4>
+    <div class="selected-chips">
+      <ion-chip *ngFor="let pref of selectedPreferences">
+        <ion-label>{{ pref.preferencia }}</ion-label>
+        <ion-icon name="close-circle" (click)="removePreference(pref)"></ion-icon>
+      </ion-chip>
+    </div>
+  </div>
 
-  <ion-chip>
-    <ion-label>Ficção</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>História</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Drama</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Comédia</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Terror</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
-
-  <ion-chip>
-    <ion-label>Ficção-cientifica</ion-label>
-    <ion-icon name="close-circle"></ion-icon>
-  </ion-chip>
+  <h4>Preferências</h4>
+  <div class="preference-list" *ngFor="let category of preferences">    
+    <!-- Iterar sobre o array de 'preferencias' dentro de cada categoria -->
+    <ion-chip *ngFor="let pref of category.preferencias" (click)="selectPreference(pref)">
+      <ion-label>{{ pref.preferencia }}</ion-label>
+    </ion-chip>
+  </div>
 </ion-content>
+

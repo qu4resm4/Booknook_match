@@ -1,7 +1,8 @@
 from app import db, ma
 
 class IdioUser(db.Model):
-    id_user = db.Column(db.Integer, foreign_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     id_idioma = db.Column(db.Integer, db.ForeignKey('idiomas.id'), nullable=False)
     
     def __init__ (self, id_user, id_idioma):
@@ -15,4 +16,4 @@ class IdioUserSchema(ma.Schema):
 
 
 idioiser_schema = IdioUserSchema()
-idioiser_schema = IdioUserSchema(many=True)
+idiosiser_schema = IdioUserSchema(many=True)

@@ -20,10 +20,17 @@ cors = CORS(app, resources={
     }
 })
 """
-
+# models
 from app.models import users
+from app.models import resenha
+from app.models import interesses
+from app.models import interesses_user
+from app.models import idiomas
+from app.models import idiomas_user
+
+# endpoints
 from app.api.endpoints import index
 from app.api.endpoints.cadastro import signup
-from app.api.endpoints import update_info
+from app.api.endpoints.cadastro import update_info
 from app.api.endpoints.match import get_users
 from app.api.endpoints.autenticacao import login

@@ -8,13 +8,14 @@ class Users(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    created_on = db.Column(db.DateTime, default=datetime.datetime.now())
+    created_on = db.Column(db.DateTime, default=datetime.datetime.now)
+    email_confirmed = db.Column(db.Boolean, default=False)
+    confirmation_code = db.Column(db.String(50), nullable=True)
 
     def __init__ (self, username, password, email):
         self.username = username
         self.password = password
         self.email = email
-
 
 """Definindo o Schema do Marshmallow para facilitar a utilização de JSON"""
 class UsersSchema(ma.Schema):

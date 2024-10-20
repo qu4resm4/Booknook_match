@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import helper
+from app.controllers.autenticacao import helper
 
 
 @app.route("/login", methods=['POST'])

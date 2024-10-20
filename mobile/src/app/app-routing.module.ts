@@ -15,20 +15,12 @@ const routes: Routes = [
     loadChildren: () => import('./livros/estante/estante.module').then( m => m.EstantePageModule)
   },
   {
-    path: 'conversas',
-    loadChildren: () => import('./chat/conversas/conversas.module').then( m => m.ConversasPageModule)
-  },
-  {
     path: 'bemvindo',
     loadChildren: () => import('./acesso/mascara/bemvindo/bemvindo.module').then( m => m.BemvindoPageModule)
   },
   {
     path: 'login',
     loadChildren: () => import('./acesso/login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'infos',
-    loadChildren: () => import('./acesso/cadastro/infos/infos.module').then( m => m.InfosPageModule)
   },
   {
     path: 'interesses',
@@ -55,10 +47,6 @@ const routes: Routes = [
     loadChildren: () => import('./match/filtro/filtro.module').then( m => m.FiltroPageModule)
   },
   {
-    path: 'perfil-usuario',
-    loadChildren: () => import('./match/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule)
-  },
-  {
     path: 'inst-escolha',
     loadChildren: () => import('./acesso/cadastro/primeiro-livro/inst-escolha/inst-escolha.module').then( m => m.InstEscolhaPageModule)
   },
@@ -69,6 +57,14 @@ const routes: Routes = [
   {
     path: 'bio',
     loadChildren: () => import('./livros/criar-perfil-livro/bio/bio.module').then( m => m.BioPageModule)
+  },
+  {
+    path: 'list-chats',
+    loadChildren: () => import('./chat/list-chats/list-chats.module').then( m => m.ListChatsPageModule)
+  },
+  {
+    path: 'chat/:id',
+    loadChildren: () => import('./chat/chat/chat.module').then( m => m.ChatPageModule)
   },
 
 
