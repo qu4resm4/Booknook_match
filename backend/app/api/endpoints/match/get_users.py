@@ -1,6 +1,6 @@
 from app import app
-from app.controllers import helper
-from app.controllers import get_user_list
+from app.controllers.autenticacao import helper
+from app.controllers.match import get_user_list
 
 @app.route("/usuarios", methods=['GET'])
 @helper.token_required

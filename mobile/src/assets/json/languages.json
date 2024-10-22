@@ -1,0 +1,25 @@
+{
+    "idiomas": [
+      { "id": 1, "idioma": "Mandarim" },
+      { "id": 2, "idioma": "Espanhol" },
+      { "id": 3, "idioma": "Inglês" },
+      { "id": 4, "idioma": "Hindi" },
+      { "id": 5, "idioma": "Árabe" },
+      { "id": 6, "idioma": "Bengali" },
+      { "id": 7, "idioma": "Português" },
+      { "id": 8, "idioma": "Russo" },
+      { "id": 9, "idioma": "Japonês" },
+      { "id": 10, "idioma": "Francês" },
+      { "id": 11, "idioma": "Alemão" },
+      { "id": 12, "idioma": "Turco" },
+      { "id": 13, "idioma": "Vietnamita" },
+      { "id": 14, "idioma": "Coreano" },
+      { "id": 15, "idioma": "Italiano" },
+      { "id": 16, "idioma": "Tailandês" },
+      { "id": 17, "idioma": "Persa" },
+      { "id": 18, "idioma": "Holandês" },
+      { "id": 19, "idioma": "Sueco" },
+      { "id": 20, "idioma": "Finlandês" }
+    ]
+  }
+  

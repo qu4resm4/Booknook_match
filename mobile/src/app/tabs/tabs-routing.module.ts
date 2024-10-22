@@ -17,7 +17,7 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        loadChildren: () => import('../chat/conversas/conversas.module').then(m => m.ConversasPageModule)
+        loadChildren: () => import('../chat/chat/chat.module').then(m => m.ChatPageModule)
       },
       { path: 'login', loadChildren: () => import('../acesso/login/login.module').then( m => m.LoginPageModule)
 
