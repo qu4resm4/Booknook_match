@@ -26,7 +26,7 @@
         <ion-button expand="block" color="primary" (click)="submit()">Entrar</ion-button>
       </ion-col>
       <ion-col size="12" class="register-link">
-        <a href="/cadastro-usuario">Não tem uma conta? Cadastre-se</a>
+        <ion-text>Não possui uma conta? <ion-router-link [routerLink]="['/cadastro-usuario']">Cadastre-se</ion-router-link></ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
