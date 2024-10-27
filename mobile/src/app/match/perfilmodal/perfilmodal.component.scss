@@ -1,6 +1,6 @@
 ion-card {
-  height: 50vh;
-  border-radius: 16px;
+  height: 80vh;
+  border-radius: 14px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   margin: 16px;
   position: relative;
@@ -9,15 +9,22 @@ ion-card {
   will-change: transform;
 }
 
+h1 {
+  margin: 20px 15px 10px;
+  font-weight: bold;
+}
+
 ion-card-content {
   padding: 16px;
 }
 
 .description-container {
-  margin: 16vh 0 8vh 0;
+  margin: 20px 15px;
 
-  margin-top: 10px;
+  max-height: 52.5vh;
   text-align: justify;
+
+  overflow-y: auto;
 }
 
 .description-text {
@@ -25,24 +32,24 @@ ion-card-content {
   line-height: 1.5;
   text-align: justify;
   color: #444;
-  margin: 15px;
+  margin: 0 15px;
 }
 
 .info-section {
   display: flex;
   align-items: center;
-  margin-top: 8px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px; /* Ajuste o espaço entre os elementos conforme necessário */
+  margin: 0 15px;
+}
+
+.info-section strong {
+  margin-right: 5px;
 }
 
 .info-icon {
-  font-size: 18px;
-  margin-right: 8px;
-  color: #666;
-}
-
-.info-label {
-  font-size: 14px;
-  color: #666;
+  margin-right: 5px;
 }
 
 .like-animation {
@@ -76,4 +83,17 @@ ion-card-content {
 .dislike-animation::before {
   content: 'Dislike';
   color: red;
+}
+
+.resenha-item {
+  margin-bottom: 15px;
+}
+
+.resenha-item h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.info-section strong {
+  font-size: 16px;
 }

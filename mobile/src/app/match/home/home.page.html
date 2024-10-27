@@ -4,6 +4,6 @@
     <ion-icon class="icon-perfil" size="large" name="person-circle-outline" (click)="redirecionandoPerfil()"></ion-icon>
   </div>
   <div class="modal-center">
-    <app-perfilmodal *ngFor="let p of perfis" [perfis]="p" [style.position]="'absolute'"></app-perfilmodal>
+    <app-perfilmodal *ngFor="let p of perfis" [perfil]="p" [style.position]="'absolute'"></app-perfilmodal>
   </div>
 </ion-content>

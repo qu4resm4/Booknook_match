@@ -7,7 +7,7 @@ import { Gesture, GestureController } from '@ionic/angular';
   styleUrls: ['./perfilmodal.component.scss'],
 })
 export class PerfilmodalComponent{
-  @Input() perfis: any;
+  @Input() perfil: any;
   @ViewChild('swipeCard', { read: ElementRef, static: true }) swipeCard!: ElementRef;
 
   constructor(private gestureCtrl: GestureController) {}

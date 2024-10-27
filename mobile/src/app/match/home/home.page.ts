@@ -40,7 +40,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.getPerfis()
+    this.getPerfis();
   }
 
 }

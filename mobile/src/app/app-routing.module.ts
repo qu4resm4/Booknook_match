@@ -56,7 +56,7 @@ const routes: Routes = [
   },
   {
     path: 'bio',
-    loadChildren: () => import('./livros/criar-perfil-livro/bio/bio.module').then( m => m.BioPageModule)
+    loadChildren: () => import('./livros/bio/bio.module').then( m => m.BioPageModule)
   },
   {
     path: 'list-chats',
@@ -66,6 +66,11 @@ const routes: Routes = [
     path: 'chat/:id',
     loadChildren: () => import('./chat/chat/chat.module').then( m => m.ChatPageModule)
   },
+  {
+    path: 'perfil-usuario',
+    loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule)
+  },
+
 
 
 ];

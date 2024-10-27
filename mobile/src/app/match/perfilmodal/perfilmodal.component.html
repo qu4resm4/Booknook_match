@@ -1,36 +1,31 @@
 <ion-card #swipeCard>
   <ion-card-content>
-    <!-- Botão de Denunciar -->
-    <ion-fab vertical="top" horizontal="start" slot="fixed">
-      <ion-fab-button size="small" color="danger">
-        <ion-icon name="alert-circle"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </ion-card-content>
-  <ion-card-content>
-    <!-- Descrição do usuário -->
+    <!-- Resenhas do usuário -->
+    <h1>
+      {{perfil.username}}
+    </h1>
     <div class="description-container">
       <ion-text>
-        <p class="description-text">
-          {{perfis.descricao}}
-        </p>
+        <div *ngFor="let resenha of perfil.resenhas; let i = index" class="resenha-item">
+          <h3>{{ resenha.titulo_resenha }}</h3>
+          {{ resenha.resenha }}
+          <br />
+          <strong>Categorias:</strong>
+          <span *ngFor="let categoria of resenha.categorias_livro; let j = index">
+            {{ categoria }}<span *ngIf="j < resenha.categorias_livro.length - 1">, </span>
+          </span>
+        </div>
       </ion-text>
     </div>
-
-    <!-- Idiomas -->
-    <div class="info-section">
-      <ion-icon name="language" class="info-icon"></ion-icon>
-      <ion-label class="info-label">
-        <strong>Idiomas:</strong>{{perfis.idiomas}}
-      </ion-label>
-    </div>
-
-    <!-- Categorias -->
+    
+    <!-- Interesses do usuário -->
     <div class="info-section">
       <ion-icon name="book-outline" class="info-icon"></ion-icon>
-      <ion-label class="info-label">
-        <strong>Categorias:</strong>{{perfis.categorias}}
-      </ion-label>
+      <strong>Interesses:</strong>
+      <span *ngFor="let interesse of perfil.interesses_usuario; let i = index">
+          {{ interesse }}
+          <span *ngIf="i < perfil.interesses_usuario.length - 1">, </span>
+      </span>
     </div>
   </ion-card-content>
 </ion-card>
