@@ -43,8 +43,16 @@
 
   <!-- Botão fixo de adicionar -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
+    
+    <div *ngIf="btnAdd == 'lib'">
+      <ion-fab-button (click)="adicionarEstante(livro.id, livro.volumeInfo.title, livro.volumeInfo.imageLinks?.thumbnail)">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </div>
+    <div *ngIf="btnAdd == 'bio'">
+      <ion-fab-button (click)="adicionarResenha()">
+        <ion-icon name="pencil-outline"></ion-icon>
+      </ion-fab-button>
+    </div>
   </ion-fab>
 </ion-content>

@@ -8,13 +8,38 @@ import { LivrosService } from '../../services/livros/livros.service';
   styleUrls: ['./estante.page.scss'],
 })
 export class EstantePage implements OnInit {
-  livros: any = [];
-  tipoVisualizacao: any;
+  colecaoSelecionada: string = 'todos';
+  livros: any[] = []; // Array com todos os livros do usuário
+  livrosFiltrados: any[] = [];
 
   constructor(
     private navCtrl: NavController,
     private livrosService: LivrosService
-  ) { }
+  ) {
+    this.carregarLivros();
+  }
+
+  ngOnInit() {
+    this.livrosService.setAdd("bio");
+  }
+
+  carregarLivros() {
+    
+  }
+
+  filtrarColecao() {
+    if (this.colecaoSelecionada === 'todos') {
+      this.livrosFiltrados = this.livros;
+    } else {
+      this.livrosFiltrados = this.livros.filter(livro =>
+        livro.colecao === this.colecaoSelecionada
+      );
+    }
+  }
+
+  abrirModalAdicionarLivro() {
+    // Função para abrir modal de adição de livros
+  }
 
   redirecionandoInfoLivro(id: string) {
     console.log("estou sendo clicado livro")
@@ -23,14 +48,7 @@ export class EstantePage implements OnInit {
   }
 
   redirecionarBuscarLivro(){
-
+    this.livrosService.setAdd("lib");
+    this.navCtrl.navigateForward('pesquisar');
   }
-
-  alterarVisualizacao(){
-
-  }
-
-  ngOnInit() {
-  }
-
 }

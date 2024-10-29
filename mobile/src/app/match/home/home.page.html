@@ -1,8 +1,10 @@
 <ion-content [fullscreen]="true">
-  <div class="ion-margin icons">
-    <ion-icon class="icon-filtro" size="large" name="funnel-outline" (click)="redirecionandoFiltro()"></ion-icon>
-    <ion-icon class="icon-perfil" size="large" name="person-circle-outline" (click)="redirecionandoPerfil()"></ion-icon>
-  </div>
+  <ion-header>
+    <ion-toolbar>
+      <ion-icon class="ion-margin" size="large" name="funnel-outline" (click)="redirecionandoFiltro()" slot="start"></ion-icon>
+      <ion-icon class="ion-margin" size="large" name="person-outline" (click)="redirecionandoPerfil()" slot="end"></ion-icon>
+    </ion-toolbar>
+  </ion-header>
   <div class="modal-center">
     <app-perfilmodal *ngFor="let p of perfis" [perfil]="p" [style.position]="'absolute'"></app-perfilmodal>
   </div>
