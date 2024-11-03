@@ -19,6 +19,12 @@ export class AuthService {
     this.loggedIn.next(!!this.token); // Atualiza o estado de login
     */
   }
+  getIdUser() {
+  }
+
+  setIdUser(){
+
+  }
 
   login(username: string, password: string) {
     console.log(`${username}:${password}`);
