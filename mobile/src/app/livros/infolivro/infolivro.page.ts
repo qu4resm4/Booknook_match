@@ -36,7 +36,12 @@ export class InfolivroPage implements OnInit {
   }
   
   async adicionarResenha() {
+    this.navCtrl.navigateForward('bio');
+  }
 
+  redirecionandoVoltar() {
+    this.livrosService.setData('');
+    this.navCtrl.navigateForward('tabs/estante');
   }
 
   toggleDescription() {

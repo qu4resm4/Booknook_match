@@ -73,12 +73,25 @@ export class StorageBooksService {
     if (!livroExistente) {
       storage.push(livro); // Adiciona o livro apenas se ele não estiver no array
     }
-    //e alterar ele só que só em todos (string) com o novo livro inserido
+    //atribui o novo array
     this._storage?.set(await this.getUserLoggedIn() + estante, storage);
   }
 
-  excluirDeTodos(){
+  async excluirDaEstante(id_livro: string, estante: string){
     //lógica de excluir
+    let storage: Livro[] = await this._storage?.get(await this.getUserLoggedIn() + estante) || [];
+
+    // Verifica se o livro já existe no array
+    let index = storage.findIndex((item) => item.id === id_livro);
+    console.log("INDEX SERÀ EXCLUIDO: " + index)
+
+    if (index !== -1) {
+      storage.splice(index, 1); // altera o storage removendo o elemento pelo index
+      console.log("entrou no if")
+    }
+
+    //atribui o novo array
+    this._storage?.set(await this.getUserLoggedIn() + estante, storage);
   }
 
   async getTodos(estante: string) {

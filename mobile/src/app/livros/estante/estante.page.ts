@@ -53,7 +53,8 @@ export class EstantePage implements OnInit {
     console.log("Favotiro sendo clicado")
   }
 
-  async excluirLivro(livro: object) {
-    
+  async excluirLivro(livro: any, estante: string) {
+    await this.storage.excluirDaEstante(livro, estante);
+    this.carregarLivros(this.colecaoSelecionada);
   }
 }
