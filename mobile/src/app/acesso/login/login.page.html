@@ -1,33 +1,25 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title size="large">Login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-grid class="login-container">
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Usuário</ion-label>
-          <ion-input type="email" [(ngModel)]="user" required></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Senha</ion-label>
-          <ion-input type="password" [(ngModel)]="password" required></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Usuário</ion-label>
+    <ion-input type="text" [(ngModel)]="user"></ion-input> 
+  </ion-item>
 
-    <ion-row>
-      <ion-col size="12">
-        <ion-button expand="block" color="primary" (click)="submit()">Entrar</ion-button>
-      </ion-col>
-      <ion-col size="12" class="register-link">
-        <a href="/cadastro-usuario">Não tem uma conta? Cadastre-se</a>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-item>
+    <ion-label position="floating">Senha</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="login()">Login</ion-button>
+  
+  <div class="forgot-password-link">
+    <ion-text>
+      <ion-router-link [routerLink]="['/esqueceu-senha']">Esqueceu a senha?</ion-router-link>
+    </ion-text>
+  </div>
 </ion-content>

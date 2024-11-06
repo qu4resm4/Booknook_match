@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PerfisService } from '../../services/perfis/perfis.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  userId: string= ''
   perfis: any[] = [];
 
   constructor(
     private router: Router,
-    private PerfisService: PerfisService
+    private PerfisService: PerfisService,
+    private authService: AuthService
   ) { }
 
   getPerfis(){
