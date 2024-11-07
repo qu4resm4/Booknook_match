@@ -4,13 +4,13 @@ import { getAnalytics } from "firebase/analytics";
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyARQ0VD9TA1KvR0FmHiUVNU3V5SAgn-mKU",
-    authDomain: "task-list-ionic.firebaseapp.com",
-    projectId: "task-list-ionic",
-    storageBucket: "task-list-ionic.appspot.com",
-    messagingSenderId: "353852127130",
-    appId: "1:353852127130:web:b8c5466d829a4611b8ec23",
-    measurementId: "G-XV35B7WKZM"
+    apiKey: "AIzaSyDJuUQBwGidl1kFNMiDguNO6SH44ibbok4",
+    authDomain: "booknook-3a6ff.firebaseapp.com",
+    projectId: "booknook-3a6ff",
+    storageBucket: "booknook-3a6ff.firebasestorage.app",
+    messagingSenderId: "638720428691",
+    appId: "1:638720428691:web:1dea6520f8d939e0a11b66",
+    measurementId: "G-N3JJJ5J4BE"
   },
   API_ENDPOINT: 'http://127.0.0.1:5000'
 };
