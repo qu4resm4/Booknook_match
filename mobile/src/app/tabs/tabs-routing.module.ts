@@ -19,11 +19,10 @@ const routes: Routes = [
         path: 'chat',
         loadChildren: () => import('../chat/list-chats/list-chats.module').then(m => m.ListChatsPageModule)
       },
-      { path: 'login', loadChildren: () => import('../acesso/login/login.module').then( m => m.LoginPageModule)
-
+      {
+        path: 'login',
+        loadChildren: () => import('../acesso/login/login.module').then(m => m.LoginPageModule)
       },
-      
-      
       {
         path: '',
         redirectTo: '/tabs/match',
@@ -31,14 +30,10 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    redirectTo: '/tabs/match',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class TabsPageRoutingModule {}

@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth/auth.guard'; 
 
-
 const routes: Routes = [
+  
   {
     path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  
+  {
+    path: 'home',
+    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'login',
@@ -26,11 +29,6 @@ const routes: Routes = [
   {
     path: 'interesses',
     loadChildren: () => import('./acesso/cadastro/interesses/interesses.module').then( m => m.InteressesPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule),
     canActivate: [AuthGuard]
   },
   {
@@ -58,7 +56,6 @@ const routes: Routes = [
     loadChildren: () => import('./livros/infolivro/infolivro.module').then( m => m.InfolivroPageModule),
     canActivate: [AuthGuard]
   },
-  
   {
     path: 'filtro',
     loadChildren: () => import('./match/filtro/filtro.module').then( m => m.FiltroPageModule),
@@ -94,11 +91,8 @@ const routes: Routes = [
     loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule),
     canActivate: [AuthGuard]
   }
-
-
-
-
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
