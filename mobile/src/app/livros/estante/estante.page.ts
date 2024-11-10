@@ -31,6 +31,7 @@ export class EstantePage implements OnInit {
 
   async init() {
     this.livrosService.setAdd("bio");
+    this.carregarLivros(this.colecaoSelecionada);
   }
 
   async carregarLivros(estante: string) {
