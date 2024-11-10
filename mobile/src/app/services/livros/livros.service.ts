@@ -9,6 +9,8 @@ export class LivrosService {
   private id_route: string = '';
   private API_URL = 'https://www.googleapis.com/books/v1/volumes';
   private key = 'AIzaSyAIcILxTfOFUOuTlpq1quE8-FKVwkcZW2A';
+  private add = '';
+
 
   constructor(private http: HttpClient) { }
 
@@ -32,4 +34,12 @@ export class LivrosService {
     getData() {
       return this.id_route;
     }
+  
+  setAdd(option: string){
+    this.add = option;
+  }
+
+  getAdd(){
+    return this.add;
+  }
 }

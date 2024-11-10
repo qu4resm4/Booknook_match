@@ -1,13 +1,76 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>estante</ion-title>
+    <ion-title>Minha Estante</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">estante</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <!-- Segmento de Coleções -->
+  <ion-segment [(ngModel)]="colecaoSelecionada" (ionChange)="filtrarColecao()">
+    <ion-segment-button value="todos">
+      <!--Todos-->
+      <!--READ da estante no Storage-->
+      <ion-icon name="book-outline"></ion-icon>
+    </ion-segment-button>
+    
+    <ion-segment-button value="resenhados">
+    <!--Resenhados-->
+    <!--request GET dos livros resenhado, tem que retornar um array de jsons no formato id-tittle-thumb: será salvo no Firebase este json+resenha para cada resenha feita pelo usuario-->
+      <ion-icon name="newspaper-outline"></ion-icon>
+    </ion-segment-button>
+
+    <ion-segment-button value="favoritos">
+      <!--Favoritos-->
+      <!--READ da estante FAVORITO no Storage: criar botão de adicionar favorito no layout da visualização do livro no Todos ou Resenhados, e nessa visualização funcionar como botão de excluir dos favoritos -->
+      <ion-icon name="star-outline"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Grade de Livros -->
+  <!--
+  <ion-grid *ngIf="livros.length > 0">
+    <ion-row>
+      <ion-col size="6" *ngFor="let livro of livrosFiltrados">
+        <ion-card class="livro-card" (click)="redirecionandoInfoLivro(livro.id)">
+          <ion-img [src]="livro.volumeInfo.imageLinks?.thumbnail || 'assets/imgs/padrao.jpg'"></ion-img>
+          <ion-card-content>
+            <ion-label class="livro-titulo">{{ livro.volumeInfo.title }}</ion-label>
+            <ion-label class="livro-autor">{{ livro.volumeInfo.authors[0] }}</ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  -->
+
+  <!-- Grid de livros -->
+   <!-- estantes.estante01 pra acessar dentro do value o json de estantes e selecionar a estante-->
+<!--
+  <ion-grid *ngIf="livros">
+    <ion-row>
+      <ion-col size="6" *ngFor="let livro of livros">
+        <ion-card (click)="redirecionandoInfoLivro(livro.id)">
+          <ion-img [src]="livro.thumbnail ? livro.thumbnail : 'assets/imgs/padrao.jpg'"></ion-img>
+        </ion-card>
+        <ion-label class="title">
+          {{ livro.title }}
+        </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+-->
+
+
+  <!-- Mensagem para Estante Vazia -->
+  <ion-label *ngIf="livros.length === 0" class="sem-livros">
+    Sua estante está vazia. Adicione livros para começar!
+  </ion-label>
+
+  <!-- Botão fixo de adicionar -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="redirecionarBuscarLivro()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

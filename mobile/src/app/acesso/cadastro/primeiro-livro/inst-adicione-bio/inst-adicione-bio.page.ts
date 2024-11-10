@@ -11,7 +11,9 @@ export class InstAdicioneBioPage implements OnInit {
   constructor(private navCtrl: NavController) {}
 
   redirectToNextPage() {
+    
     this.navCtrl.navigateForward('bio');
+    
   }
 
   ngOnInit() {

@@ -1,0 +1,38 @@
+[
+    {
+      "id": "1",
+      "nomeLivro": "A Jornada do Herói",
+      "descricao": "Esse livro me faz refletir sobre o crescimento pessoal e como as adversidades nos moldam ao longo da vida. Cada página é um convite para olhar mais fundo para dentro de si. Esse livro me faz refletir sobre o crescimento pessoal e como as adversidades nos moldam ao longo da vida. Cada página é um convite para olhar mais fundo para dentro de si.",
+      "idiomas": ["Português", "Inglês"],
+      "categorias": ["Autoajuda", "Aventura", "Ficção"]
+    },
+    {
+      "id": "2",
+      "nomeLivro": "O Segredo das Estrelas",
+      "descricao": "Sempre que leio este livro, sinto uma conexão especial com o universo e as infinitas possibilidades que ele oferece. É uma leitura que me dá esperança e motivação para seguir meus sonhos.",
+      "idiomas": ["Espanhol", "Francês"],
+      "categorias": ["Ficção Científica", "Fantasia", "Aventura"]
+    },
+    {
+      "id": "3",
+      "nomeLivro": "Nosso Lar",
+      "descricao": "Este livro toca profundamente o lado espiritual e emocional. Ele me fez enxergar a vida de uma maneira completamente diferente, com mais empatia e compreensão pelo mundo ao meu redor.",
+      "idiomas": ["Português", "Italiano"],
+      "categorias": ["Espiritualidade", "Filosofia", "Biografia"]
+    },
+    {
+      "id": "4",
+      "nomeLivro": "O Enigma do Tempo",
+      "descricao": "A forma como o tempo é explorado neste livro é simplesmente fascinante. É como se cada capítulo me levasse a pensar sobre as escolhas que fazemos e como elas impactam o futuro.",
+      "idiomas": ["Inglês", "Alemão"],
+      "categorias": ["Ficção Científica", "Mistério", "Drama"]
+    },
+    {
+      "id": "5",
+      "nomeLivro": "A Saga do Guardião",
+      "descricao": "Me identifico muito com os personagens deste livro. As jornadas que eles enfrentam, as escolhas difíceis e o senso de dever realmente ressoam comigo.",
+      "idiomas": ["Português", "Espanhol"],
+      "categorias": ["Fantasia", "Aventura", "Épico"]
+    }
+  ]
+  

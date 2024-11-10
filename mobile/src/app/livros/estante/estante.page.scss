@@ -1,0 +1,25 @@
+.livro-card {
+  margin: 10px 0;
+  box-shadow: none;
+}
+
+.livro-titulo {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+  margin-top: 5px;
+}
+
+.livro-autor {
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+}
+
+.sem-livros {
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: #aaa;
+}

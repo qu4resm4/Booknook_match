@@ -1,0 +1,29 @@
+{
+    "id_usuario": "gPzT3m9vNjXl5K7aIbQ0vO1WFhY4",
+    "username": "PensadorEterno",
+    "resenhas": [
+      {
+        "id_livro": "yn1GAAAAQBAJ",
+        "titulo_resenha": "Complexidade das Relações",
+        "nome_livro": "Os Miseráveis",
+        "resenha": "O que mais me chamou atenção foi a maneira como o autor fala sobre a complexidade das relações humanas e o que nos define. A cada capítulo, fui surpreendido por reflexões profundas que ficam com a gente mesmo depois de fechar o livro.",
+        "categorias_livro": ["Biografia", "Autoajuda"]
+      },
+      {
+        "id_livro": "ZlhpDwAAQBAJ",
+        "titulo_resenha": "A Jornada Interior",
+        "nome_livro": "O Alquimista",
+        "resenha": "Foi uma leitura leve, mas que ao mesmo tempo carrega mensagens fortes sobre nossa jornada pessoal. Senti que o livro é como um amigo oferecendo conselhos.",
+        "categorias_livro": ["Autoajuda", "História"]
+      },
+      {
+        "id_livro": "GcEyDQAAQBAJ",
+        "titulo_resenha": "Reflexões Existenciais",
+        "nome_livro": "Poemas de Fernando Pessoa",
+        "resenha": "A profundidade deste livro é algo raro. O autor apresenta questões existenciais de forma poética e encantadora, e foi uma leitura extremamente enriquecedora.",
+        "categorias_livro": ["Poesia", "Distopia"]
+      }
+    ],
+    "biografia": "Sou um buscador de histórias que transcendem o tempo. Desde cedo, fui atraído pela complexidade da natureza humana e como as palavras moldam percepções. Acredito que cada livro é uma janela para um novo mundo, revelando reflexões sobre minha jornada. Meus interesses vão da ficção científica a romances que exploram a delicadeza das relações. Convido você a se juntar a mim nessa aventura literária e descobrir o que a leitura pode fazer por nós.",
+    "interesses_usuario": ["Jane Austen", "Biografia", "'20", "Contos"]
+  }
