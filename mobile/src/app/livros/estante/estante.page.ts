@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
+import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
 @Component({
   selector: 'app-estante',
@@ -8,37 +9,33 @@ import { LivrosService } from '../../services/livros/livros.service';
   styleUrls: ['./estante.page.scss'],
 })
 export class EstantePage implements OnInit {
-  colecaoSelecionada: string = 'todos';
+  colecaoSelecionada: string = '-TODOS';
   livros: any[] = []; // Array com todos os livros do usuário
   livrosFiltrados: any[] = [];
 
   constructor(
     private navCtrl: NavController,
-    private livrosService: LivrosService
+    private livrosService: LivrosService,
+    private storage: StorageBooksService
   ) {
-    this.carregarLivros();
   }
 
   ngOnInit() {
+    this.init()
+  }
+
+  // Executado toda vez que a página for exibida
+  ionViewWillEnter() {
+    this.carregarLivros(this.colecaoSelecionada);
+  }
+
+  async init() {
     this.livrosService.setAdd("bio");
+    this.carregarLivros(this.colecaoSelecionada);
   }
 
-  carregarLivros() {
-    
-  }
-
-  filtrarColecao() {
-    if (this.colecaoSelecionada === 'todos') {
-      this.livrosFiltrados = this.livros;
-    } else {
-      this.livrosFiltrados = this.livros.filter(livro =>
-        livro.colecao === this.colecaoSelecionada
-      );
-    }
-  }
-
-  abrirModalAdicionarLivro() {
-    // Função para abrir modal de adição de livros
+  async carregarLivros(estante: string) {
+    this.livros = await this.storage.getTodos(estante);
   }
 
   redirecionandoInfoLivro(id: string) {
@@ -50,5 +47,15 @@ export class EstantePage implements OnInit {
   redirecionarBuscarLivro(){
     this.livrosService.setAdd("lib");
     this.navCtrl.navigateForward('pesquisar');
+  }
+
+  async favoritarLivro(livro: any) {
+    await this.storage.adicionarNaEstante(livro, '-FAVORITOS')
+    console.log("Favotiro sendo clicado")
+  }
+
+  async excluirLivro(livro: any, estante: string) {
+    await this.storage.excluirDaEstante(livro, estante);
+    this.carregarLivros(this.colecaoSelecionada);
   }
 }

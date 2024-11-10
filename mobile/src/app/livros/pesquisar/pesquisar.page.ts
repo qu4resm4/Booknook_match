@@ -7,9 +7,12 @@ import { LivrosService } from '../../services/livros/livros.service';
   templateUrl: './pesquisar.page.html',
   styleUrls: ['./pesquisar.page.scss'],
 })
+
 export class PesquisarPage implements OnInit {
   query: string = '';
   livros: any[] = [];
+  totalImages: number = 0;
+  imagesLoaded: number = 0;
 
   constructor(
     private navCtrl: NavController,
@@ -17,39 +20,40 @@ export class PesquisarPage implements OnInit {
     private livrosService: LivrosService
   ) {}
 
-  async getLivros(){
-    //configurações do componente loader
+  async getLivros() {
     const loading = await this.loadingController.create({
       spinner: 'circular',
       cssClass: 'custom',
     });
-  
-    //exibindo loader
+
     await loading.present();
-    //verificando se a pesquisa está vazio
+
     if(this.query.trim() === '') {
-      //desativando o loader
       loading.dismiss();
       return;
     }
 
-    //fazendo a pesquisa na API
     this.livrosService.getLivros(this.query).subscribe({
       next: (data: any) => {
-        //carregando os dados
         this.livros = data.items;
-        //desativando o loader
-        loading.dismiss();
+        this.totalImages = this.livros.length; // Atualiza o número total de imagens esperadas
+        this.imagesLoaded = 0; // Reinicia o contador de imagens carregadas
       },
       error: (e) => {
         console.error('Erro ao carregar dados', e);
         loading.dismiss();
-        //exibe o modal de erro
-        /*this.modalErro();*/
       }
-    }
-    );
+    });
   }
+
+  onImageLoad() {
+    this.imagesLoaded++;
+    if (this.imagesLoaded === this.totalImages) {
+      // Desativa o loader somente quando todas as imagens tiverem sido carregadas
+      this.loadingController.dismiss();
+    }
+  }
+
 
   redirecionandoInfoLivro(id: string) {
     console.log("estou sendo clicado livro")
@@ -58,5 +62,5 @@ export class PesquisarPage implements OnInit {
   }
 
   ngOnInit() {
-  } 
+  }
 }

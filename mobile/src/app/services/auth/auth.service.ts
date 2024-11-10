@@ -19,6 +19,12 @@ export class AuthService {
     this.storage.create(); // Inicializa o storage
     this.checkLoginStatus();
   }
+  getIdUser() {
+  }
+
+  setIdUser(){
+
+  }
 
   // Verifica se o usuário está logado ao abrir o app
   private async checkLoginStatus() {

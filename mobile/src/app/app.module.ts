@@ -4,6 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
