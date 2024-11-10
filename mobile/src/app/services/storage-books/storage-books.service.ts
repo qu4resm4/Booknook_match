@@ -13,7 +13,7 @@ interface Livro {
 })
 export class StorageBooksService {
   private _storage: Storage | null = null;
-  private userID: string = 'o39zVf8XADhr14jIJL26pKUTJZg2';
+  private userID: any;
 
   constructor(
     private storage: Storage,
@@ -23,19 +23,14 @@ export class StorageBooksService {
   }
 
   async init() {
-    const storage = await this.storage.create();
-    this._storage = storage;
-    await this.setUserLoggedIn(this.userID);
-    await this.setStorage(this.userID);
-  }
-
-  async setUserLoggedIn(user: String){
-    this._storage?.set("Usuario-da-sessao", user);
-  }
-
-  async getUserLoggedIn() {
-    let user = await this._storage?.get("Usuario-da-sessao");
-    return user;
+    if (!this._storage) {
+      this._storage = await this.storage.create();
+    }
+    this.userID = await this.auth.getUserId();
+    console.log('Init: ',this.userID);
+    if (this.userID) {
+      await this.setStorage(this.userID); 
+    }
   }
 
   async setStorage(user: string) {
@@ -44,7 +39,7 @@ export class StorageBooksService {
     let keys = await this._storage?.keys() || [];
     let existeEstante = false;
     let storage: object[] = [];
-    console.log("storage")
+    console.log("storage setada")
     console.log(keys); 
     //foreach no array e verificar se tem algum com a substring que é o id do usuario
     keys.forEach(key => {
@@ -66,7 +61,7 @@ export class StorageBooksService {
 
   async adicionarNaEstante(livro: Livro, estante: string){
     //lógica de pegar o Storage Json
-    let storage: object[] = await this._storage?.get(await this.getUserLoggedIn() + estante) || [];
+    let storage: object[] = await this._storage?.get(this.userID + estante) || [];
     // Verifica se o livro já existe no array
     const livroExistente = storage.find((item: any) => item.id === livro.id);
 
@@ -74,12 +69,12 @@ export class StorageBooksService {
       storage.push(livro); // Adiciona o livro apenas se ele não estiver no array
     }
     //atribui o novo array
-    this._storage?.set(await this.getUserLoggedIn() + estante, storage);
+    this._storage?.set(this.userID + estante, storage);
   }
 
   async excluirDaEstante(id_livro: string, estante: string){
     //lógica de excluir
-    let storage: Livro[] = await this._storage?.get(await this.getUserLoggedIn() + estante) || [];
+    let storage: Livro[] = await this._storage?.get(this.userID + estante) || [];
 
     // Verifica se o livro já existe no array
     let index = storage.findIndex((item) => item.id === id_livro);
@@ -91,22 +86,12 @@ export class StorageBooksService {
     }
 
     //atribui o novo array
-    this._storage?.set(await this.getUserLoggedIn() + estante, storage);
+    this._storage?.set(this.userID + estante, storage);
   }
 
   async getTodos(estante: string) {
-    let storage: object[] = await this._storage?.get(await this.getUserLoggedIn() + estante) || [];
+    let storage: object[] = await this._storage?.get(this.userID + estante) || [];
     return storage;
-  }
-
-  adicionarFavoritos(){
-    //lógica de pegar o Storage Json
-    //e alterar ele só que só no favorito (string) com o novo livro inserido
-    //this.setStorage(iduser, newStorageJSON)
-  }
-
-  excluirDeFavoritos(){
-    //lógica de excluir
   }
   
   // SALVAR O ID DO USUARIO LOGADO NO STORAGE (key: userID, value: id do usuario).

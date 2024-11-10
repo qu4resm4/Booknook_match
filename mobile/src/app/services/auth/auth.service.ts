@@ -13,17 +13,10 @@ export class AuthService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private router: Router,
     private storage: Storage
   ) {
     this.storage.create(); // Inicializa o storage
     this.checkLoginStatus();
-  }
-  getIdUser() {
-  }
-
-  setIdUser(){
-
   }
 
   // Verifica se o usuário está logado ao abrir o app
@@ -69,7 +62,7 @@ export class AuthService {
     await this.storage.remove('token');
     await this.storage.remove('uid');
     this.loggedIn.next(false);
-    this.router.navigate(['/login']);
+    /*this.router.navigate(['/login']);*/
   }
 
   async resetPassword(email: string) {

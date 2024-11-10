@@ -32,9 +32,9 @@ export class LoginPage {
 
       // Exibe a mensagem de sucesso e redireciona
       this.showToast('Login bem-sucedido');
-      await this.router.navigate(['tabs/home']);
     } catch (error) {
       await loading.dismiss();
+      console.log("ERRO AO LOGAR: ", error)
       this.showToast('E-mail ou senha incorretos.');
     }
   }
