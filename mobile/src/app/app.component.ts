@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 export class AppComponent {
   constructor(private authService: AuthService, private router: Router) {
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
+      console.log("isLogged no app componente: ", isLoggedIn)
       if (isLoggedIn) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['']);
       } else {
         this.router.navigate(['/login']);
       }

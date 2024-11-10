@@ -8,8 +8,7 @@ const routes: Routes = [
     path: '',/*
     redirectTo: '/login',
     pathMatch: 'full',*/
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   { 
     path: 'login',
@@ -29,13 +28,11 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'estante',
-    loadChildren: () => import('./livros/estante/estante.module').then( m => m.EstantePageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./livros/estante/estante.module').then( m => m.EstantePageModule)
   },
   {
     path: 'bemvindo',
