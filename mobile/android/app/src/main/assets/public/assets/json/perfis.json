@@ -1,38 +1,115 @@
 [
     {
-      "id": "1",
-      "nomeLivro": "A Jornada do Herói",
-      "descricao": "Esse livro me faz refletir sobre o crescimento pessoal e como as adversidades nos moldam ao longo da vida. Cada página é um convite para olhar mais fundo para dentro de si.",
-      "idiomas": ["Português", "Inglês"],
-      "categorias": ["Autoajuda", "Aventura", "Ficção"]
+      "id_usuario": "o39zVf8XADhr14jIJL26pKUTJZg2",
+      "username": "MestreDasPalavras",
+      "resenhas": [
+        {
+          "id_livro": "9xzQzAQAQBAJ",
+          "titulo_resenha": "Reflexões sobre Humanidade",
+          "nome_livro": "1984",
+          "resenha": "Esse livro me impactou profundamente, não só pela escrita envolvente, mas porque ele aborda questões sobre a humanidade e nossos valores de uma forma que raramente se vê. As personagens foram construídas de forma tão realista que parecia que eu as conhecia.",
+          "categorias_livro": ["Ficção Científica", "Distopia"]
+        },
+        {
+          "id_livro": "hU9DAQAAQBAJ",
+          "titulo_resenha": "Amizade e Laços Familiares",
+          "nome_livro": "Orgulho e Preconceito",
+          "resenha": "Achei fascinante a forma como o autor explora os dilemas da amizade e da família, trazendo reflexões sobre nossos próprios laços. A narrativa é cativante e prende do início ao fim.",
+          "categorias_livro": ["Romance", "Contos"]
+        }
+      ],
+      "interesses_usuario": ["J.K. Rowling", "Fantasia", "2010", "Longa"]
     },
     {
-      "id": "2",
-      "nomeLivro": "O Segredo das Estrelas",
-      "descricao": "Sempre que leio este livro, sinto uma conexão especial com o universo e as infinitas possibilidades que ele oferece. É uma leitura que me dá esperança e motivação para seguir meus sonhos.",
-      "idiomas": ["Espanhol", "Francês"],
-      "categorias": ["Ficção Científica", "Fantasia", "Aventura"]
+      "id_usuario": "oTp9F8nCv4RqtJZTxI2Uh4XGTYp2",
+      "username": "ExploradorLiterario",
+      "resenhas": [
+        {
+          "id_livro": "aOXyBAAAQBAJ",
+          "titulo_resenha": "Humanidade e Sensibilidade",
+          "nome_livro": "O Senhor dos Anéis",
+          "resenha": "Um dos aspectos que mais gostei foi como o autor trouxe à tona temas delicados de maneira tão humana. A escrita foi tão envolvente que mal conseguia parar de ler, e os detalhes criaram uma ambientação quase real.",
+          "categorias_livro": ["Aventura", "Fantasia"]
+        },
+        {
+          "id_livro": "D_U8BQAAQBAJ",
+          "titulo_resenha": "Profundidade dos Personagens",
+          "nome_livro": "Anna Karenina",
+          "resenha": "A profundidade dos personagens é algo que me cativou, pois pude ver partes de mim neles. O enredo é emocional e carrega um misto de tristeza e superação que com certeza marcou.",
+          "categorias_livro": ["Romance", "História"]
+        },
+        {
+          "id_livro": "sVcnDwAAQBAJ",
+          "titulo_resenha": "Memórias e Tempo",
+          "nome_livro": "Memórias Póstumas de Brás Cubas",
+          "resenha": "Senti uma ligação com este livro que é difícil de explicar. A maneira como aborda a passagem do tempo e o significado de nossas memórias foi especialmente tocante.",
+          "categorias_livro": ["Biografia", "Autoajuda"]
+        }
+      ],
+      "interesses_usuario": ["Neil Gaiman", "História", "'80", "Contos"]
     },
     {
-      "id": "3",
-      "nomeLivro": "Nosso Lar",
-      "descricao": "Este livro toca profundamente o lado espiritual e emocional. Ele me fez enxergar a vida de uma maneira completamente diferente, com mais empatia e compreensão pelo mundo ao meu redor.",
-      "idiomas": ["Português", "Italiano"],
-      "categorias": ["Espiritualidade", "Filosofia", "Biografia"]
+      "id_usuario": "h4F78OpQ6Jv2cDfELZn5IMoWy9G3",
+      "username": "SagaSussurrante",
+      "resenhas": [
+        {
+          "id_livro": "m4TOCwAAQBAJ",
+          "titulo_resenha": "O Peso da Realidade",
+          "nome_livro": "Admirável Mundo Novo",
+          "resenha": "Este livro aborda temas complexos de uma maneira acessível, o que fez com que eu refletisse sobre questões que raramente vejo discutidas. A narrativa é rica em detalhes e a construção do mundo é impressionante.",
+          "categorias_livro": ["Distopia", "Thriller"]
+        }
+      ],
+      "interesses_usuario": ["Agatha Christie", "Thriller", "'50", "Novelas"]
     },
     {
-      "id": "4",
-      "nomeLivro": "O Enigma do Tempo",
-      "descricao": "A forma como o tempo é explorado neste livro é simplesmente fascinante. É como se cada capítulo me levasse a pensar sobre as escolhas que fazemos e como elas impactam o futuro.",
-      "idiomas": ["Inglês", "Alemão"],
-      "categorias": ["Ficção Científica", "Mistério", "Drama"]
+      "id_usuario": "KL5dNf0pXmW7Z34tAhI1QOaYb8H2",
+      "username": "FantasiaEmVoo",
+      "resenhas": [
+        {
+          "id_livro": "gczlAAAAMAAJ",
+          "titulo_resenha": "Entre Sonhos e Coragem",
+          "nome_livro": "Harry Potter e a Pedra Filosofal",
+          "resenha": "Eu adorei como o autor consegue misturar fantasia e realidade de uma forma tão harmoniosa. As mensagens que passam sobre coragem e amizade são inspiradoras, e o final foi simplesmente épico!",
+          "categorias_livro": ["Fantasia", "Aventura"]
+        },
+        {
+          "id_livro": "FwD5DwAAQBAJ",
+          "titulo_resenha": "Reflexões da Vida",
+          "nome_livro": "O Pequeno Príncipe",
+          "resenha": "Esse livro me trouxe uma nova perspectiva sobre temas que achava simples. A complexidade dos personagens e do enredo realmente me fez questionar algumas crenças e ver o mundo com outros olhos.",
+          "categorias_livro": ["Poesia", "Romance"]
+        }
+      ],
+      "interesses_usuario": ["George R.R. Martin", "Aventura", "2015", "Saga"]
     },
     {
-      "id": "5",
-      "nomeLivro": "A Saga do Guardião",
-      "descricao": "Me identifico muito com os personagens deste livro. As jornadas que eles enfrentam, as escolhas difíceis e o senso de dever realmente ressoam comigo.",
-      "idiomas": ["Português", "Espanhol"],
-      "categorias": ["Fantasia", "Aventura", "Épico"]
+      "id_usuario": "gPzT3m9vNjXl5K7aIbQ0vO1WFhY4",
+      "username": "PensadorEterno",
+      "resenhas": [
+        {
+          "id_livro": "yn1GAAAAQBAJ",
+          "titulo_resenha": "Complexidade das Relações",
+          "nome_livro": "Os Miseráveis",
+          "resenha": "O que mais me chamou atenção foi a maneira como o autor fala sobre a complexidade das relações humanas e o que nos define. A cada capítulo, fui surpreendido por reflexões profundas que ficam com a gente mesmo depois de fechar o livro.",
+          "categorias_livro": ["Biografia", "Autoajuda"]
+        },
+        {
+          "id_livro": "ZlhpDwAAQBAJ",
+          "titulo_resenha": "A Jornada Interior",
+          "nome_livro": "O Alquimista",
+          "resenha": "Foi uma leitura leve, mas que ao mesmo tempo carrega mensagens fortes sobre nossa jornada pessoal. Senti que o livro é como um amigo oferecendo conselhos.",
+          "categorias_livro": ["Autoajuda", "História"]
+        },
+        {
+          "id_livro": "GcEyDQAAQBAJ",
+          "titulo_resenha": "Reflexões Existenciais",
+          "nome_livro": "Poemas de Fernando Pessoa",
+          "resenha": "A profundidade deste livro é algo raro. O autor apresenta questões existenciais de forma poética e encantadora, e foi uma leitura extremamente enriquecedora.",
+          "categorias_livro": ["Poesia", "Distopia"]
+        }
+      ],
+      "interesses_usuario": ["Jane Austen", "Biografia", "'20", "Contos"]
     }
   ]
   

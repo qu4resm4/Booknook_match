@@ -5,15 +5,12 @@ import { AuthGuard } from './services/auth/auth.guard';
 const routes: Routes = [
   
   {
-    path: '',
+    path: '',/*
+    redirectTo: '/login',
+    pathMatch: 'full',*/
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  
-  {
-    path: 'home',
-    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule)
-  },
-  {
+  { 
     path: 'login',
     loadChildren: () => import('./acesso/login/login.module').then( m => m.LoginPageModule)
   },
@@ -24,27 +21,22 @@ const routes: Routes = [
   {
     path: 'cadastro-usuario',
     loadChildren: () => import('./acesso/cadastro/cadastro-usuario/cadastro-usuario.module').then( m => m.CadastroUsuarioPageModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'interesses',
     loadChildren: () => import('./acesso/cadastro/interesses/interesses.module').then( m => m.InteressesPageModule),
-    canActivate: [AuthGuard]
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./match/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'estante',
-    loadChildren: () => import('./livros/estante/estante.module').then( m => m.EstantePageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./livros/estante/estante.module').then( m => m.EstantePageModule)
   },
   {
     path: 'bemvindo',
-    loadChildren: () => import('./acesso/mascara/bemvindo/bemvindo.module').then( m => m.BemvindoPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'idiomas',
-    loadChildren: () => import('./acesso/cadastro/idiomas/idiomas.module').then( m => m.IdiomasPageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./acesso/mascara/bemvindo/bemvindo.module').then( m => m.BemvindoPageModule)
   },
   {
     path: 'pesquisar',
@@ -74,7 +66,6 @@ const routes: Routes = [
   {
     path: 'bio',
     loadChildren: () => import('./livros/bio/bio.module').then( m => m.BioPageModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'list-chats',

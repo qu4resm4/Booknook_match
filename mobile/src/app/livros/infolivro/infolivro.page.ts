@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
+import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
 
 @Component({
@@ -15,24 +17,31 @@ export class InfolivroPage implements OnInit {
   btnAdd: string = '';
 
   constructor(
+    private navCtrl: NavController,
     private livrosService: LivrosService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private storage: StorageBooksService
   ) {}
 
   async adicionarEstante(id: string, title: string, thumb: string) {
     //formato do json do livro
-    /*{
-        "id": id,
-        "title": title,
-        "thumbnail": thumb
-      }
-		*/
-    // this.servico.set(iduser, json)
-    //
+    const livro = {
+      "id": id,
+      "title": title,
+      "thumbnail": thumb
+    };
+    console.log(livro);
+    await this.storage.adicionarNaEstante(livro, '-TODOS');
+    this.navCtrl.navigateForward('tabs/estante');
   }
   
   async adicionarResenha() {
+    this.navCtrl.navigateForward('bio');
+  }
 
+  redirecionandoVoltar() {
+    this.livrosService.setData('');
+    this.navCtrl.navigateForward('tabs/estante');
   }
 
   toggleDescription() {
