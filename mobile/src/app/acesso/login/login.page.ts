@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  email: string = '';
+  username: string = '';
   password: string = '';
 
   constructor(
@@ -26,16 +26,18 @@ export class LoginPage {
     await loading.present();
 
     try {
-      // Realiza o login através do AuthService e salva token e uid
-      await this.authService.login(this.email, this.password);
+      const success = await this.authService.loginWithUsername(this.username, this.password);
       await loading.dismiss();
 
-      // Exibe a mensagem de sucesso e redireciona
-      this.showToast('Login bem-sucedido');
+      if (success) {
+        this.showToast('Login bem-sucedido');
+        this.router.navigate(['/home']);
+      } else {
+        this.showToast('Nome de usuário ou senha incorretos.');
+      }
     } catch (error) {
       await loading.dismiss();
-      console.log("ERRO AO LOGAR: ", error)
-      this.showToast('E-mail ou senha incorretos.');
+      this.showToast('Erro ao tentar login. Tente novamente.');
     }
   }
 

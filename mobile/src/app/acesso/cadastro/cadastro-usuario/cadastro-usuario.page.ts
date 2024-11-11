@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-cadastro-usuario',
@@ -9,37 +10,31 @@ import { ToastController, LoadingController } from '@ionic/angular';
   styleUrls: ['./cadastro-usuario.page.scss'],
 })
 export class CadastroUsuarioPage {
-  user: string = ''; // Nome de usuário
+  username: string = '';
   email: string = '';
   password: string = '';
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private router: Router,
+    private authService: AuthService,
     private toastController: ToastController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private router: Router
   ) {}
 
   async register() {
     const loading = await this.loadingController.create({
-      message: 'Registrando...',
+      message: 'Cadastrando...',
     });
     await loading.present();
 
     try {
-      const userCredential = await this.afAuth.createUserWithEmailAndPassword(this.email, this.password);
+      await this.authService.register(this.username, this.email, this.password);
       await loading.dismiss();
-
-      this.showToast('Cadastro efetuado com sucesso!');
-
-      // Salvar o nome de usuário no local storage (ou na base de dados, dependendo do setup)
-      localStorage.setItem('username', this.user);
-
-      // Redireciona para login
-      this.router.navigate(['/login']);
+      this.showToast('Cadastro realizado com sucesso');
+      await this.router.navigate(['/login']);
     } catch (error) {
       await loading.dismiss();
-      this.showToast('Erro no cadastro. Verifique as informações inseridas.');
+      this.showToast('Erro ao cadastrar. Tente novamente.');
     }
   }
 
