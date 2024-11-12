@@ -1,8 +1,14 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject } from 'rxjs';
+
+interface UsernameDoc {
+  uid: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +39,7 @@ export class AuthService {
     const uid = userCredential.user?.uid;
 
     if (uid) {
-      await this.firestore.collection('usernames').doc(username).set({ uid });
+      await this.firestore.collection('usernames').doc(username).set({ uid, email });
       localStorage.setItem('userUID', uid);
     }
 
@@ -42,23 +48,23 @@ export class AuthService {
 
   async loginWithUsername(username: string, password: string): Promise<boolean> {
     try {
-      // Obter o documento do Firestore cm o UID associado ao nome de usuario
+      // Obter o documento do Firestore com o UID associado ao nome de usuário
       const usernameDoc = await this.firestore.collection('usernames').doc(username).get().toPromise();
       
-      const userData = usernameDoc?.data() as { uid: string } | undefined;
-      const uid = userData?.uid;
+      const userData = usernameDoc?.data() as UsernameDoc | undefined;
+      const email = userData?.email;
   
-      if (!uid) {
+      if (!email) {
         throw new Error('Nome de usuário não encontrado');
       }
   
-      // Tenta autenticar usando o UID como email (precisa do email associado ao UID)
-      const user = await this.afAuth.signInWithEmailAndPassword(username, password);
+      // Tenta autenticar usando o email
+      const user = await this.afAuth.signInWithEmailAndPassword(email, password);
       const token = await user.user?.getIdToken();
   
-      if (token && uid) {
+      if (token && userData.uid) {
         await this.storage.set('token', token);
-        await this.storage.set('uid', uid);
+        await this.storage.set('uid', userData.uid);
         this.loggedIn.next(true);
         return true;  // Login bem-sucedido
       } else {

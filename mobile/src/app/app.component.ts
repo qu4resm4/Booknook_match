@@ -12,7 +12,7 @@ export class AppComponent {
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
       console.log("isLogged no app componente: ", isLoggedIn)
       if (isLoggedIn) {
-        this.router.navigate(['']);
+        this.router.navigate(['/home']);
       } else {
         this.router.navigate(['/login']);
       }
