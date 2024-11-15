@@ -3,6 +3,8 @@ import { PreferencesService } from '../../../services/preferences/preferences.se
 import { AuthService } from '../../../services/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -19,6 +21,7 @@ export class InteressesPage implements OnInit {
   constructor(
     private prefService: PreferencesService,
     private auth: AuthService,
+    private router: Router,
     private firestore: AngularFirestore,
     private navCtrl: NavController
   ) {}
@@ -84,7 +87,8 @@ export class InteressesPage implements OnInit {
       alert('Preferências salvas com sucesso!');
       
       // redireciona para a pagina "pesquisar" após salvar
-      this.navCtrl.navigateForward('/livros/pesquisar/pesquisar.page.html')
+      this.router.navigate(['/pesquisar']);
+
     } catch (error) {
       console.error('Erro ao salvar preferências:', error);
       alert('Ocorreu um erro ao salvar as preferências.');
