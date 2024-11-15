@@ -84,6 +84,7 @@ export class AuthService {
   
         console.log('UID salvo no login:', userData.uid); // adiciona log
         this.loggedIn.next(true);
+        console.log("estado se está logado: ", this.loggedIn)
         return true;
       } else {
         return false;

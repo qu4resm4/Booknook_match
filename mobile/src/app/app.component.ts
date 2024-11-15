@@ -11,9 +11,7 @@ export class AppComponent {
   constructor(private authService: AuthService, private router: Router) {
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
       console.log("isLogged no app componente: ", isLoggedIn)
-      if (isLoggedIn) {
-        this.router.navigate(['/home']);
-      } else {
+      if (!isLoggedIn) {
         this.router.navigate(['/login']);
       }
     });

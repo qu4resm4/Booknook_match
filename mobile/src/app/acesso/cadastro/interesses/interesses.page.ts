@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { LivrosService } from 'src/app/services/livros/livros.service';
 
 
 
@@ -19,6 +20,7 @@ export class InteressesPage implements OnInit {
   searchTerm: string = ''; // termo de busca do input
 
   constructor(
+    private lib: LivrosService,
     private prefService: PreferencesService,
     private auth: AuthService,
     private router: Router,
@@ -86,6 +88,9 @@ export class InteressesPage implements OnInit {
       await this.firestore.collection('interests').doc(userId).set(preferencesData, { merge: true });
       alert('Preferências salvas com sucesso!');
       
+      // seta estado do botão na pagina de informação do livro para adicionar resenha
+      this.lib.setAdd('bio');
+
       // redireciona para a pagina "pesquisar" após salvar
       this.router.navigate(['/pesquisar']);
 
