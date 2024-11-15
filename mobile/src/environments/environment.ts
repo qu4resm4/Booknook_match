@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 export const environment = {
   production: false,
   firebaseConfig: {
@@ -15,5 +12,3 @@ export const environment = {
   API_ENDPOINT: 'http://127.0.0.1:5000'
 };
 
-const firebaseApp= initializeApp(environment.firebaseConfig);
-const analytics = getAnalytics(firebaseApp);

@@ -1,9 +1,9 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface UsernameDoc {
   uid: string;
@@ -17,6 +17,7 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
+    private router: Router,
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private storage: Storage
@@ -35,48 +36,66 @@ export class AuthService {
   }
   
   async register(username: string, email: string, password: string) {
-    const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
-    const uid = userCredential.user?.uid;
-
-    if (uid) {
-      await this.firestore.collection('usernames').doc(username).set({ uid, email });
-      localStorage.setItem('userUID', uid);
+    try {
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      const uid = userCredential.user?.uid;
+  
+      if (uid) {
+        await this.firestore.collection('usernames').doc(username).set({ uid, email });
+        localStorage.setItem('userUID', uid); // salva no local storage
+        await this.storage.set('uid', uid);   // salva no Ionic Storage
+  
+        console.log('UID salvo no registro:', uid); // adiciona log
+        this.router.navigate(['/tutorial']);
+      }
+    } catch (error) {
+      console.error('Erro no cadastro:', error);
+      throw error;
     }
-
-    return uid;
   }
-
+  
+  
   async loginWithUsername(username: string, password: string): Promise<boolean> {
     try {
-      // Obter o documento do Firestore com o UID associado ao nome de usuário
       const usernameDoc = await this.firestore.collection('usernames').doc(username).get().toPromise();
-      
-      const userData = usernameDoc?.data() as UsernameDoc | undefined;
-      const email = userData?.email;
+      let userData = usernameDoc?.data() as UsernameDoc | undefined;
   
-      if (!email) {
-        throw new Error('Nome de usuário não encontrado');
+      if (!userData) {
+        console.warn('Documento de nome de usuário não encontrado para:', username);
+        const emailUser = await this.afAuth.signInWithEmailAndPassword(username, password);
+        const email = emailUser.user?.email;
+        const uid = emailUser.user?.uid;
+  
+        if (uid && email) {
+          await this.firestore.collection('usernames').doc(username).set({ uid, email });
+          userData = { uid, email };
+        } else {
+          throw new Error('Não foi possível criar o documento do nome de usuário');
+        }
       }
   
-      // Tenta autenticar usando o email
+      const email = userData.email;
       const user = await this.afAuth.signInWithEmailAndPassword(email, password);
       const token = await user.user?.getIdToken();
   
       if (token && userData.uid) {
         await this.storage.set('token', token);
         await this.storage.set('uid', userData.uid);
+  
+        console.log('UID salvo no login:', userData.uid); // adiciona log
         this.loggedIn.next(true);
-        return true;  // Login bem-sucedido
+        return true;
       } else {
-        return false; // Falha no login
+        return false;
       }
     } catch (error) {
       console.error('Login falhou:', error);
-      return false; // Falha no login
+      return false;
     }
   }
   
-
+  
+  
   async logout() {
     await this.afAuth.signOut();
     await this.storage.remove('token');

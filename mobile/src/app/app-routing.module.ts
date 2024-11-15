@@ -23,6 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./acesso/cadastro/cadastro-usuario/cadastro-usuario.module').then( m => m.CadastroUsuarioPageModule),
   },
   {
+    path: 'tutorial',
+    loadChildren: () => import('./acesso/cadastro/tutorial/tutorial.module').then( m => m.TutorialPageModule)
+  },
+  {
     path: 'interesses',
     loadChildren: () => import('./acesso/cadastro/interesses/interesses.module').then( m => m.InteressesPageModule),
   },
@@ -81,7 +85,7 @@ const routes: Routes = [
     path: 'perfil-usuario',
     loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule),
     canActivate: [AuthGuard]
-  }
+  },
 ];
 
 @NgModule({

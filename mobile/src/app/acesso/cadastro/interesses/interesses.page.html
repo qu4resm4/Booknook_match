@@ -6,7 +6,12 @@
 
 <ion-content class="ion-padding">
   <!-- Search bar for filtering preferences -->
-  <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar interesses" debounce="500" ></ion-searchbar>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar interesses"
+    debounce="500"
+    (ionInput)="filterPreferences()">
+  </ion-searchbar>
   
   <!-- List of selected preferences -->
   <div *ngIf="selectedPreferences.length > 0">
@@ -20,11 +25,16 @@
   </div>
 
   <h4>Preferências</h4>
-  <div class="preference-list" *ngFor="let category of preferences">    
-    <!-- Iterar sobre o array de 'preferencias' dentro de cada categoria -->
-    <ion-chip *ngFor="let pref of category.preferencias" (click)="selectPreference(pref)">
-      <ion-label>{{ pref.preferencia }}</ion-label>
-    </ion-chip>
+  <div class="preference-list">
+    <!-- Iterar sobre categorias e suas preferências -->
+    <div *ngFor="let category of filteredPreferences">
+      <h5>{{ category.categoria }}</h5>
+      <ion-chip *ngFor="let pref of category.preferencias" (click)="selectPreference(pref)">
+        <ion-label>{{ pref.preferencia }}</ion-label>
+      </ion-chip>
+    </div>
   </div>
-</ion-content>
 
+  <!-- Botão para salvar as preferências -->
+  <ion-button expand="full" (click)="savePreferences()">Salvar Preferências</ion-button>
+</ion-content>

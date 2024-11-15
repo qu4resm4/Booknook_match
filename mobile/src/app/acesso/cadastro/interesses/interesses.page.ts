@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import{ PreferencesService } from '../../../services/preferences/preferences.service'
+import { PreferencesService } from '../../../services/preferences/preferences.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-interesses',
@@ -7,39 +11,83 @@ import{ PreferencesService } from '../../../services/preferences/preferences.ser
   styleUrls: ['./interesses.page.scss'],
 })
 export class InteressesPage implements OnInit {
-  preferences: any[] = [];
-  searchTerm = '';
-  selectedPreferences: any[] = []; //tem que fazer isso salvar os ids e alterar os ids no json. pq isso será enviado p registro
-  filteredPreferences = [...this.preferences];
+  preferences: any[] = []; // Tds as preferências carregadas
+  filteredPreferences: any[] = []; // preferencias filtradas baseado na pesquisa
+  selectedPreferences: any[] = []; // preferencias selecionadas pelo usuário
+  searchTerm: string = ''; // termo de busca do input
 
   constructor(
-    private pref: PreferencesService
-  ) { }
+    private prefService: PreferencesService,
+    private auth: AuthService,
+    private firestore: AngularFirestore,
+    private navCtrl: NavController
+  ) {}
 
-  async getPreferences() {
-    await this.pref.getPreferences().subscribe((data: any[]) => {
+  ngOnInit() {
+    this.loadPreferences();
+  }
+
+  // carrega as preferencias do arquivo preferences.json
+  async loadPreferences() {
+    this.prefService.getPreferences().subscribe((data: any[]) => {
       this.preferences = data;
+      this.filteredPreferences = [...this.preferences];
     });
   }
 
-  ngOnInit() {
-    this.getPreferences();
+  // filtra as preferencias cm base na busca
+  filterPreferences() {
+    if (this.searchTerm.trim() === '') {
+      this.filteredPreferences = [...this.preferences];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      this.filteredPreferences = this.preferences.map((category) => ({
+        categoria: category.categoria,
+        preferencias: category.preferencias.filter((pref: any) =>
+          pref.preferencia.toLowerCase().includes(searchTermLower)
+        ),
+      })).filter(category => category.preferencias.length > 0);
+    }
   }
 
-  // Função para adicionar uma preferência à lista selecionada
+  // adiciona uma preferencia na lista selecionada
   selectPreference(preference: any) {
-    if (!this.selectedPreferences.includes(preference)) {
+    const exists = this.selectedPreferences.find(pref => pref.id === preference.id);
+    if (!exists) {
       this.selectedPreferences.push(preference);
     }
-    console.log("select ",this.selectedPreferences);
-    console.log("filtra ", this.filteredPreferences)
   }
 
-  // Função para remover uma preferência da lista selecionada
+  // remove uma preferencia da lista selecionada
   removePreference(preference: any) {
     this.selectedPreferences = this.selectedPreferences.filter(
       pref => pref.id !== preference.id
     );
   }
 
+  // salva as preferencias selecionadas no Firestore
+  async savePreferences() {
+    try {
+      const userId = await this.auth.getUserId(); // recupera o UID
+      if (!userId) {
+        alert('Usuário não autenticado.');
+        return;
+      }
+  
+      const preferencesData = {
+        preferences: this.selectedPreferences,
+        updatedAt: new Date(),
+      };
+  
+      // salva as preferências no Firestore, no documento do usuário
+      await this.firestore.collection('interests').doc(userId).set(preferencesData, { merge: true });
+      alert('Preferências salvas com sucesso!');
+      
+      // redireciona para a pagina "pesquisar" após salvar
+      this.navCtrl.navigateForward('/livros/pesquisar/pesquisar.page.html')
+    } catch (error) {
+      console.error('Erro ao salvar preferências:', error);
+      alert('Ocorreu um erro ao salvar as preferências.');
+    }
+  }
 }

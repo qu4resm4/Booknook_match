@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
+
 @Component({
   selector: 'app-cadastro-usuario',
   templateUrl: './cadastro-usuario.page.html',
@@ -30,7 +31,8 @@ export class CadastroUsuarioPage {
       await this.authService.register(this.username, this.email, this.password);
       await loading.dismiss();
       this.showToast('Cadastro realizado com sucesso');
-      await this.router.navigate(['/login']);
+      await this.authService.loginWithUsername(this.email, this.password);
+      await this.router.navigate(['/tutorial']);
     } catch (error) {
       await loading.dismiss();
       this.showToast('Erro ao cadastrar. Tente novamente.');

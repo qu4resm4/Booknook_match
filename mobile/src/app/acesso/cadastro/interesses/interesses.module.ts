@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { InteressesPageRoutingModule } from './interesses-routing.module';
 
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 import { InteressesPage } from './interesses.page';
 
 @NgModule({
@@ -13,6 +15,7 @@ import { InteressesPage } from './interesses.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    AngularFirestoreModule,
     InteressesPageRoutingModule
   ],
   declarations: [InteressesPage]
