@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PreferencesService } from '../../../services/preferences/preferences.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LivrosService } from 'src/app/services/livros/livros.service';
-
-
 
 @Component({
   selector: 'app-interesses',
@@ -25,7 +23,8 @@ export class InteressesPage implements OnInit {
     private auth: AuthService,
     private router: Router,
     private firestore: AngularFirestore,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastController: ToastController 
   ) {}
 
   ngOnInit() {
@@ -70,12 +69,22 @@ export class InteressesPage implements OnInit {
     );
   }
 
+  // Exibe um toast com a mensagem fornecida
+  async presentToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000, // Duração do toast em milissegundos
+      position: 'bottom', // Posição do toast na tela
+    });
+    await toast.present();
+  }
+
   // salva as preferencias selecionadas no Firestore
   async savePreferences() {
     try {
       const userId = await this.auth.getUserId(); // recupera o UID
       if (!userId) {
-        alert('Usuário não autenticado.');
+        this.presentToast('Usuário não autenticado.');
         return;
       }
   
@@ -86,7 +95,7 @@ export class InteressesPage implements OnInit {
   
       // salva as preferências no Firestore, no documento do usuário
       await this.firestore.collection('interests').doc(userId).set(preferencesData, { merge: true });
-      alert('Preferências salvas com sucesso!');
+      this.presentToast('Preferências salvas com sucesso!');
       
       // seta estado do botão na pagina de informação do livro para adicionar resenha
       this.lib.setAdd('bio');
@@ -96,7 +105,7 @@ export class InteressesPage implements OnInit {
 
     } catch (error) {
       console.error('Erro ao salvar preferências:', error);
-      alert('Ocorreu um erro ao salvar as preferências.');
+      this.presentToast('Ocorreu um erro ao salvar as preferências.');
     }
   }
 }
