@@ -36,8 +36,13 @@ export class InfolivroPage implements OnInit {
   }
   
   async adicionarResenha() {
-    this.navCtrl.navigateForward('bio');
+    this.navCtrl.navigateForward('bio', {
+      queryParams: {
+        livro: JSON.stringify(this.livro) // Passa o objeto do livro como string JSON
+      }
+    });
   }
+  
 
   redirecionandoVoltar() {
     this.livrosService.setData('');

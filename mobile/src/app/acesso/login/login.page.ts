@@ -31,7 +31,7 @@ export class LoginPage {
 
       if (success) {
         this.showToast('Login bem-sucedido');
-        this.router.navigate(['/home']);
+        this.router.navigate(['tabs/match']);
       } else {
         this.showToast('Nome de usuário ou senha incorretos.');
       }

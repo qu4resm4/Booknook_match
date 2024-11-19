@@ -34,26 +34,36 @@ export class AuthService {
   isLoggedIn() {
     return this.loggedIn.asObservable();
   }
-  
-  async register(username: string, email: string, password: string) {
+
+  async register(username: string, email: string, password: string): Promise<boolean> {
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       const uid = userCredential.user?.uid;
   
       if (uid) {
+        // Salvar no documento 'usernames'
         await this.firestore.collection('usernames').doc(username).set({ uid, email });
-        localStorage.setItem('userUID', uid); // salva no local storage
-        await this.storage.set('uid', uid);   // salva no Ionic Storage
   
-        console.log('UID salvo no registro:', uid); // adiciona log
-        this.router.navigate(['/tutorial']);
+        // Salvar na coleção 'users'
+        await this.firestore.collection('users').doc(uid).set({
+          username,
+          email,
+          resenhas: [], // inicia com lista vazia de resenhas
+          interesses_usuario: [] // inicia sem interesses
+        });
+  
+        // Salvar UID no local storage e Ionic Storage
+        localStorage.setItem('userUID', uid);
+        await this.storage.set('uid', uid);
+  
+        console.log('UID salvo no registro:', uid);
+        return true; // Retorna true se o registro foi bem-sucedido
       }
     } catch (error) {
       console.error('Erro no cadastro:', error);
-      throw error;
     }
+    return false; // Retorna false em caso de falha
   }
-  
   
   async loginWithUsername(username: string, password: string): Promise<boolean> {
     try {
