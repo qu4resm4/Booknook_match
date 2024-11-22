@@ -3,6 +3,7 @@ import { PerfisService } from '../../services/perfis/perfis.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FirestoreService } from 'src/app/services/auth/firestore.service'; 
+import { Perfil } from 'src/app/models/perfil.model';
 
 @Component({
   selector: 'app-home',
@@ -38,8 +39,10 @@ export class HomePage implements OnInit {
   }
 
   loadMore() {
-    this.fire.getUsers(this.limit).subscribe(newUsers => {
+    this.fire.getUsers(this.limit).subscribe((newUsers: Perfil[]) => {
+      // Adiciona os novos usuários à lista existente
       this.perfis = [...this.perfis, ...newUsers];
+      console.log(this.perfis)
     });
   }
 

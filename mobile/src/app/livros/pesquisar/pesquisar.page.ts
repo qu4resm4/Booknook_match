@@ -32,7 +32,7 @@ export class PesquisarPage implements OnInit {
       return;
     }
 
-    this.livrosService.getLivros(this.query).subscribe({
+    await this.livrosService.getLivros(this.query).subscribe({
       next: (data: any) => {
         this.livros = data.items || [];
         this.totalImages = this.livros.length; // Atualiza o número total de imagens esperadas

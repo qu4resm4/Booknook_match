@@ -86,7 +86,7 @@ export class InteressesPage implements OnInit {
       }
   
       const preferencesData = {
-        interests: this.selectedPreferences,
+        interesses_usuario: this.selectedPreferences,
         updatedAt: new Date(),
       };
   

@@ -39,6 +39,7 @@ export class EstantePage implements OnInit {
   }
 
   redirecionandoInfoLivro(id: string) {
+    this.livrosService.setAdd("bio");
     console.log("estou sendo clicado livro")
     this.livrosService.setData(id);
     this.navCtrl.navigateForward('infolivro');
