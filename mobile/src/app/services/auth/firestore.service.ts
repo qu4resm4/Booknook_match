@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { Perfil } from 'src/app/models/perfil.model';
 
@@ -7,6 +7,8 @@ import { Perfil } from 'src/app/models/perfil.model';
   providedIn: 'root',
 })
 export class FirestoreService {
+  private lastDocument: QueryDocumentSnapshot<any> | null = null;
+
   constructor(private firestore: AngularFirestore) {}
 
   // Método para adicionar uma resenha na subcoleção 'resenhas' do usuário
@@ -48,5 +50,37 @@ export class FirestoreService {
   // Função que retorna um perfil específico do Firestore
   getPerfil(uid: string): Observable<Perfil | undefined> {
     return this.firestore.collection('users').doc<Perfil>(uid).valueChanges();
+  }
+
+  // Método para buscar usuários com paginação
+  getUsers(limit: number): Observable<Perfil[]> {
+    let query = this.firestore.collection('users', ref => {
+      let baseQuery = ref.orderBy('name').limit(limit); // Substitua 'name' pelo campo usado para ordenar
+      if (this.lastDocument) {
+        baseQuery = baseQuery.startAfter(this.lastDocument);
+      }
+      return baseQuery;
+    });
+
+    return new Observable(observer => {
+      query.get().subscribe(snapshot => {
+        if (!snapshot.empty) {
+          this.lastDocument = snapshot.docs[snapshot.docs.length - 1]; // Atualiza o último documento
+          observer.next(
+            snapshot.docs.map(doc => {
+              const data = doc.data() as Perfil; // Faz o casting para a interface Perfil
+              return { id_usuario: doc.id, ...data }; // Combina o ID com os dados
+            })
+          );
+        } else {
+          observer.next([]);
+        }
+      });
+    });
+  }
+
+  // Método para resetar a paginação
+  resetPagination() {
+    this.lastDocument = null;
   }
 }

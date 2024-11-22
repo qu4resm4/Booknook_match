@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PerfisService } from '../../services/perfis/perfis.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { FirestoreService } from 'src/app/services/auth/firestore.service'; 
 
 @Component({
   selector: 'app-home',
@@ -11,11 +12,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class HomePage implements OnInit {
   userId: string= ''
   perfis: any[] = [];
+  limit = 5; // Define o número de itens por página
 
   constructor(
     private router: Router,
     private PerfisService: PerfisService,
-    private authService: AuthService
+    private authService: AuthService,
+    private fire: FirestoreService
   ) { }
 
   getPerfis(){
@@ -34,6 +37,12 @@ export class HomePage implements OnInit {
     );
   }
 
+  loadMore() {
+    this.fire.getUsers(this.limit).subscribe(newUsers => {
+      this.perfis = [...this.perfis, ...newUsers];
+    });
+  }
+
   async redirecionandoFiltro() {
     await this.router.navigate(['/filtro']);
   }
@@ -43,7 +52,8 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.getPerfis();
+    this.loadMore();
+  /*this.getPerfis();*/
   }
 
 }
