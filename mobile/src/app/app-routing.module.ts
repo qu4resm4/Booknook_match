@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth/auth.guard'; 
 
-
 const routes: Routes = [
+  
   {
     path: '',/*
     redirectTo: '/login',
@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'cadastro-usuario',
     loadChildren: () => import('./acesso/cadastro/cadastro-usuario/cadastro-usuario.module').then( m => m.CadastroUsuarioPageModule),
+  },
+  {
+    path: 'tutorial',
+    loadChildren: () => import('./acesso/cadastro/tutorial/tutorial.module').then( m => m.TutorialPageModule)
   },
   {
     path: 'interesses',
@@ -48,7 +52,6 @@ const routes: Routes = [
     loadChildren: () => import('./livros/infolivro/infolivro.module').then( m => m.InfolivroPageModule),
     canActivate: [AuthGuard]
   },
-  
   {
     path: 'filtro',
     loadChildren: () => import('./match/filtro/filtro.module').then( m => m.FiltroPageModule),
@@ -82,12 +85,13 @@ const routes: Routes = [
     path: 'perfil-usuario',
     loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule),
     canActivate: [AuthGuard]
-  }
-
-
-
+  },  {
+    path: 'editar-perfil',
+    loadChildren: () => import('./chat/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
+  },
 
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

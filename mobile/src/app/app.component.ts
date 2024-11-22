@@ -11,9 +11,7 @@ export class AppComponent {
   constructor(private authService: AuthService, private router: Router) {
     this.authService.isLoggedIn().subscribe(isLoggedIn => {
       console.log("isLogged no app componente: ", isLoggedIn)
-      if (isLoggedIn) {
-        this.router.navigate(['']);
-      } else {
+      if (!isLoggedIn) {
         this.router.navigate(['/login']);
       }
     });
@@ -29,7 +27,11 @@ import { Component } from '@angular/core';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor(private router: Router) {}
+
+  ngOnInit() { 
+    this.router.navigateByUrl('/tabs/match');
+  }
 }
 */

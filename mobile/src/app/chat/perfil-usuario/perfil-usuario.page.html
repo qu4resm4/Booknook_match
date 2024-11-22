@@ -1,33 +1,44 @@
-<ion-header>
+<ion-header> 
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ perfil.username }}</ion-title>
+    <ion-title>{{ perfil.username || 'Perfil' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()"> 
+        <ion-text> Logout </ion-text>
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!-- Informações do usuário -->
-  <ion-card>
+  <ion-card *ngIf="perfil">
     <ion-card-header>
       <ion-card-title>{{ perfil.username }}</ion-card-title>
-      <ion-card-subtitle>ID: {{ perfil.id_usuario }}</ion-card-subtitle>
+      <ion-card-subtitle>ID: {{ perfil.id_usuario || 'Não disponível' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
         <ion-label>
           <h2>Biografia</h2>
-          <p>{{ perfil.biografia }}</p>
+          <p>{{ perfil.biografia || 'Sem biografia' }}</p>
         </ion-label>
       </ion-item>
       
       <ion-item>
         <ion-label>
           <h2>Interesses</h2>
-          <p *ngFor="let interesse of perfil.interesses_usuario; let i = index">
-            {{ interesse }}<span *ngIf="i < perfil.interesses_usuario.length - 1">, </span>
+          <p *ngIf="perfil.interesses_usuario?.length; else noInterests">
+            <span *ngFor="let interesse of perfil.interesses_usuario; let i = index">
+              {{ interesse }}<span *ngIf="i < perfil.interesses_usuario.length - 1">, </span>
+            </span>
           </p>
+          <ng-template #noInterests>
+            <p>Sem interesses selecionados</p>
+          </ng-template>
         </ion-label>
       </ion-item>
 
@@ -38,7 +49,7 @@
             <div *ngFor="let resenha of perfil.resenhas">
               <strong>{{ resenha.titulo_resenha }}</strong>
               <p>{{ resenha.resenha }}</p>
-              <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') }}</p>
+              <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
               <hr>
             </div>
           </div>
@@ -56,6 +67,13 @@
   <ion-item>
     <ion-button expand="full" color="medium" (click)="desfazerMatch()">
       Desfazer Match
+    </ion-button>
+  </ion-item>
+
+  <!-- Botão de editar perfil na parte inferior -->
+  <ion-item>
+    <ion-button expand="full" color="primary" (click)="editPerfil()">
+      Editar Perfil
     </ion-button>
   </ion-item>
 </ion-content>

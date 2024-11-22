@@ -6,8 +6,8 @@
 
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-label position="floating">Email</ion-label>
-    <ion-input type="text" [(ngModel)]="email"></ion-input> 
+    <ion-label position="floating">Usuario</ion-label>
+    <ion-input type="text" [(ngModel)]="username"></ion-input> 
   </ion-item>
 
   <ion-item>
@@ -18,8 +18,12 @@
   <ion-button expand="full" (click)="login()">Login</ion-button>
   
   <div class="forgot-password-link">
-    <ion-text>
-      <ion-router-link [routerLink]="['/esqueceu-senha']">Esqueceu a senha?</ion-router-link>
+    <ion-text>Esqueceu a senha? <ion-router-link [routerLink]="['/esqueceu-senha']">Redefinir senha.</ion-router-link>
+    </ion-text>
+  </div>
+
+  <div class="register-link">
+    <ion-text>Já possui cadastro?<ion-router-link [routerLink]="['/cadastro-usuario']">Cadastre-se</ion-router-link>
     </ion-text>
   </div>
 </ion-content>

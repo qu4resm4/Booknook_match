@@ -4,30 +4,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-grid class="cadastro-container">
-    <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Usuário</ion-label>
-          <ion-input type="text" [(ngModel)]="user" required></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col size="12">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="email" type="email"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Senha</ion-label>
-          <ion-input [(ngModel)]="password" type="password"></ion-input>
-        </ion-item>
-        <ion-button class="register-btn" expand="full" (click)="register()">Cadastrar</ion-button>
-      
-        <div class="login-link">
-          <ion-text>Já tem uma conta? <ion-router-link [routerLink]="['/login']">Volte para o Login</ion-router-link></ion-text>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Defina usuário</ion-label>
+    <ion-input type="text" [(ngModel)]="username"></ion-input> 
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">E-mail</ion-label>
+    <ion-input type="email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Senha</ion-label>
+    <ion-input type="password" [(ngModel)]="password"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="register()">Cadastrar</ion-button>
+
+  <div class="login-link">
+    <ion-text> Já possui um cadastro? <ion-router-link [routerLink]="['/login']">Voltar para login</ion-router-link>
+    </ion-text>
+  </div>
 </ion-content>
