@@ -27,21 +27,14 @@ export class CadastroUsuarioPage {
     await loading.present();
 
     try {
-      // Chama o método de registro e aguarda a conclusão
-      const registrationResult = await this.authService.register(this.username, this.email, this.password);
+      const success = await this.authService.register(this.username, this.email, this.password);
 
-      // Confirma se o registro foi bem-sucedido
-      if (registrationResult) {
+      if (success) {
         await loading.dismiss();
-        this.showToast('Cadastro realizado com sucesso');
-        
-        // Realiza login após o registro e redireciona para o tutorial
-        const loginResult = await this.authService.loginWithUsername(this.username, this.password);
-        if (loginResult) {
-          await this.router.navigate(['/tutorial']);
-        } else {
-          this.showToast('Erro ao realizar login após o cadastro.');
-        }
+        this.showToast('Cadastro realizado com sucesso.');
+        await this.router.navigate(['/tutorial']);
+      } else {
+        throw new Error('Falha no cadastro.');
       }
     } catch (error) {
       console.error('Erro no processo de cadastro:', error);

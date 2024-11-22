@@ -37,6 +37,7 @@ export class InteressesPage implements OnInit {
       this.filteredPreferences = [...this.preferences];
     });
   }
+  
 
   filterPreferences() {
     if (this.searchTerm.trim() === '') {
@@ -83,19 +84,19 @@ export class InteressesPage implements OnInit {
         this.presentToast('Usuário não autenticado.');
         return;
       }
-
+  
       const preferencesData = {
-        preferences: this.selectedPreferences,
+        interests: this.selectedPreferences,
         updatedAt: new Date(),
       };
-
-      // Salva as preferências no Firestore, no documento do usuário
-      await this.firestore.collection('interests').doc(userId).set(preferencesData, { merge: true });
+  
+      // Salva as preferências no Firestore, no documento do usuário na coleção "users"
+      await this.firestore.collection('users').doc(userId).set(preferencesData, { merge: true });
       this.presentToast('Preferências salvas com sucesso!');
-
+  
       // Define o estado para adicionar resenhas
       this.livrosService.setAdd('bio');
-
+  
       // Redireciona para a página "Pesquisar"
       this.router.navigate(['/pesquisar']);
     } catch (error) {
@@ -103,4 +104,5 @@ export class InteressesPage implements OnInit {
       this.presentToast('Ocorreu um erro ao salvar as preferências.');
     }
   }
+  
 }

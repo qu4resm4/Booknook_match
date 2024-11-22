@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FirestoreService } from 'src/app/services/auth/firestore.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-bio',
@@ -12,12 +13,15 @@ export class BioPage {
   livroId: string = '';
   tituloLivro: string = '';
   textoResenha: string = '';
-  isSaving: boolean = false; // Variável para controlar o estado de salvamento
+  isSaving: boolean = false;
+  userId: string | null = null; // ID do usuário autenticado
+  biografia: string = ''; // Biografia do usuário (se disponível)
 
   constructor(
     private firestoreService: FirestoreService,
     private navCtrl: NavController,
-    private route: ActivatedRoute // Para recuperar parâmetros da navegação
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   async ionViewWillEnter() {
@@ -25,7 +29,7 @@ export class BioPage {
     this.route.queryParams.subscribe(params => {
       if (params['livro']) {
         try {
-          const livro = JSON.parse(params['livro']); // Converte o JSON para objeto
+          const livro = JSON.parse(params['livro']);
           this.livroId = livro.id || '';
           this.tituloLivro = livro.title || '';
         } catch (error) {
@@ -33,11 +37,27 @@ export class BioPage {
         }
       }
     });
+
+    // Recupera o ID do usuário
+    this.userId = await this.authService.getUserId();
+
+    if (!this.userId) {
+      console.error('Usuário não autenticado!');
+      return;
+    }
+
+    // Recupera o perfil do usuário para pegar a biografia
+    try {
+      const perfil = await this.firestoreService.getPerfil(this.userId).toPromise();
+      this.biografia = perfil?.biografia || ''; // Se a biografia não existir, será uma string vazia
+    } catch (error) {
+      console.error('Erro ao recuperar o perfil do usuário:', error);
+    }
   }
 
+  // Função para enviar a resenha
   async enviarResenha() {
     if (!this.textoResenha.trim()) {
-      // Caso o usuário não tenha escrito nada
       console.error('A resenha está vazia!');
       return;
     }
@@ -46,22 +66,28 @@ export class BioPage {
       livroId: this.livroId,
       titulo: this.tituloLivro,
       resenha: this.textoResenha,
-      data: new Date(), // Salva a data/hora da criação
+      data: new Date(), // Data de criação da resenha
     };
 
     try {
-      this.isSaving = true; // Inicia o estado de salvamento
+      this.isSaving = true;
 
-      // Salva a resenha no Firestore
-      await this.firestoreService.addResenha(resenha);
+      // Verifica se o usuário está autenticado
+      if (!this.userId) {
+        console.error('Usuário não autenticado!');
+        return;
+      }
+
+      // Salva a resenha na subcoleção 'resenhas' dentro da coleção 'users'
+      await this.firestoreService.addResenhaUsuario(this.userId, resenha);
       console.log('Resenha salva com sucesso!');
-      
+
       // Redireciona para a página da estante
       this.navCtrl.navigateForward('tabs/estante');
     } catch (error) {
       console.error('Erro ao salvar a resenha:', error);
     } finally {
-      this.isSaving = false; // Finaliza o estado de salvamento
+      this.isSaving = false;
     }
   }
 }

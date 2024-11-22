@@ -5,11 +5,6 @@ import { Storage } from '@ionic/storage-angular';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
-interface UsernameDoc {
-  uid: string;
-  email: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -39,90 +34,96 @@ export class AuthService {
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       const uid = userCredential.user?.uid;
-  
+
       if (uid) {
-        // Salvar no documento 'usernames'
-        await this.firestore.collection('usernames').doc(username).set({ uid, email });
-  
-        // Salvar na coleção 'users'
+        // Salvar os dados na coleção 'users'
         await this.firestore.collection('users').doc(uid).set({
+          uid,
           username,
           email,
-          resenhas: [], // inicia com lista vazia de resenhas
-          interesses_usuario: [] // inicia sem interesses
+          resenhas: [],
+          interesses_usuario: []
         });
-  
-        // Salvar UID no local storage e Ionic Storage
+
+        // Salvar UID no armazenamento local
         localStorage.setItem('userUID', uid);
         await this.storage.set('uid', uid);
-  
+
         console.log('UID salvo no registro:', uid);
-        return true; // Retorna true se o registro foi bem-sucedido
+        return true;
       }
     } catch (error) {
       console.error('Erro no cadastro:', error);
     }
-    return false; // Retorna false em caso de falha
+    return false;
   }
-  
+
   async loginWithUsername(username: string, password: string): Promise<boolean> {
     try {
-      const usernameDoc = await this.firestore.collection('usernames').doc(username).get().toPromise();
-      let userData = usernameDoc?.data() as UsernameDoc | undefined;
+      // Busca o documento do usuário na coleção "users" com base no username
+      const userQuerySnapshot = await this.firestore
+        .collection('users', ref => ref.where('username', '==', username))
+        .get()
+        .toPromise();
   
-      if (!userData) {
-        console.warn('Documento de nome de usuário não encontrado para:', username);
-        const emailUser = await this.afAuth.signInWithEmailAndPassword(username, password);
-        const email = emailUser.user?.email;
-        const uid = emailUser.user?.uid;
-  
-        if (uid && email) {
-          await this.firestore.collection('usernames').doc(username).set({ uid, email });
-          userData = { uid, email };
-        } else {
-          throw new Error('Não foi possível criar o documento do nome de usuário');
-        }
+      if (!userQuerySnapshot || userQuerySnapshot.empty) {
+        throw new Error('Nome de usuário não encontrado.');
       }
   
-      const email = userData.email;
-      const user = await this.afAuth.signInWithEmailAndPassword(email, password);
+      // Assume que o username é único e pega o primeiro documento encontrado
+      const userDoc = userQuerySnapshot.docs[0];
+      const userData = userDoc.data() as { uid: string; email: string };
+  
+      if (!userData || !userData.email || !userData.uid) {
+        throw new Error('Dados do usuário inválidos.');
+      }
+  
+      // Realiza o login usando o email recuperado e a senha fornecida
+      const user = await this.afAuth.signInWithEmailAndPassword(userData.email, password);
       const token = await user.user?.getIdToken();
   
       if (token && userData.uid) {
+        // Salva o token e o UID no armazenamento local
         await this.storage.set('token', token);
         await this.storage.set('uid', userData.uid);
   
-        console.log('UID salvo no login:', userData.uid); // adiciona log
-        this.loggedIn.next(true);
-        console.log("estado se está logado: ", this.loggedIn)
+        this.loggedIn.next(true); // Atualiza o estado de autenticação
         return true;
       } else {
         return false;
       }
     } catch (error) {
-      console.error('Login falhou:', error);
+      const errorMessage = (error as Error).message || 'Erro desconhecido.';
+      console.error('Erro ao fazer login:', errorMessage);
       return false;
     }
+    
+  }
+
+  async getUserId(): Promise<string | null> {
+    const uid = await this.storage.get('uid'); // Certifique-se de usar a implementação correta
+    return uid || null;
   }
   
   
-  
+
   async logout() {
-    await this.afAuth.signOut();
-    await this.storage.remove('token');
-    await this.storage.remove('uid');
-    this.loggedIn.next(false);
+    try {
+      await this.afAuth.signOut();
+      await this.storage.remove('token');
+      await this.storage.remove('uid');
+      this.loggedIn.next(false);
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Erro ao realizar logout:', error);
+    }
   }
 
   async resetPassword(email: string) {
     return this.afAuth.sendPasswordResetEmail(email);
   }
 
-  async getUserId() {
+  async getCurrentUserId(): Promise<string | null> {
     return await this.storage.get('uid');
-  }
-
-  async getToken() {
-    return await this.storage.get('token');
   }
 }

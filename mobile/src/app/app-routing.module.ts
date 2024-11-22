@@ -85,7 +85,11 @@ const routes: Routes = [
     path: 'perfil-usuario',
     loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule),
     canActivate: [AuthGuard]
+  },  {
+    path: 'editar-perfil',
+    loadChildren: () => import('./chat/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
   },
+
 ];
 
 @NgModule({

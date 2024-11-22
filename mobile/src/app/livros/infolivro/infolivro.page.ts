@@ -4,7 +4,6 @@ import { NavController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
 import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
-
 @Component({
   selector: 'app-infolivro',
   templateUrl: './infolivro.page.html',
@@ -24,7 +23,6 @@ export class InfolivroPage implements OnInit {
   ) {}
 
   async adicionarEstante(id: string, title: string, thumb: string) {
-    //formato do json do livro
     const livro = {
       "id": id,
       "title": title,
@@ -38,12 +36,11 @@ export class InfolivroPage implements OnInit {
   async adicionarResenha() {
     this.navCtrl.navigateForward('bio', {
       queryParams: {
-        livro: JSON.stringify(this.livro) // Passa o objeto do livro como string JSON
+        livro: JSON.stringify(this.livro) // Passa o livro para a página de resenha
       }
     });
   }
   
-
   redirecionandoVoltar() {
     this.livrosService.setData('');
     this.navCtrl.navigateForward('tabs/estante');
@@ -54,23 +51,21 @@ export class InfolivroPage implements OnInit {
   }
 
   aoIniciar(){
-    //metodos para recuperar o id pelo serviço
     this.id = this.livrosService.getData();
     this.btnAdd = this.livrosService.getAdd();
 
-    //chamando serviço
     this.livrosService.getLivrosbyId(this.id).subscribe({
       next: (data: any) => {
         console.log(data);
         this.livro = data;
-    }, 
+      }, 
       error: (e) => {
         console.error('Erro ao buscar os dados do livro:', e);
-    }});
+      }
+    });
   }
   
   ngOnInit() {
     this.aoIniciar();
   }
-
 }

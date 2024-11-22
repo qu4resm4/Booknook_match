@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatPerilService } from '../../services/chat-perfil/chat-peril.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { FirestoreService } from 'src/app/services/auth/firestore.service';
+import { Perfil } from 'src/app/models/perfil.model';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -9,29 +11,48 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./perfil-usuario.page.scss'],
 })
 export class PerfilUsuarioPage implements OnInit {
-  perfil: any;
+  perfil!: Perfil;
+  interessesDisponiveis: string[] = ['Ficção', 'Romance', 'Aventura', 'Mistério', 'Fantasia', 'Sci-Fi']; // Exemplo de interesses disponíveis
 
   constructor(
     private p: ChatPerilService,
-    private authService: AuthService, // Injeção do serviço de autenticação
-    private router: Router // Injeção do roteador para redirecionamento
+    private authService: AuthService,
+    private firestoreService: FirestoreService, 
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.getPerfil();
   }
 
-  getPerfil() {
-    // Chamando API para obter dados do perfil
-    this.p.getPerfil().subscribe({
-      next: (data: any) => {
-        this.perfil = data;
-        console.log("Sucesso ao carregar JSON");
-        console.log(this.perfil);
-      },
-      error: (e) => {
-        console.error('Erro ao carregar dados', e);
-      }
+// Obtém o ID do usuário atual
+  // Verifique se os dados estão disponíveis antes de usá-los
+getPerfil() {
+  this.authService.getCurrentUserId().then(userId => {
+    if (userId) {
+      this.firestoreService.getPerfil(userId).subscribe({
+        next: (data: Perfil | undefined) => {
+          if (data) {
+            this.perfil = data; // Agora você tem os dados do perfil
+          } else {
+            console.error("Perfil não encontrado");
+          }
+        },
+        error: (e) => {
+          console.error("Erro ao carregar perfil", e);
+        }
+      });
+    }
+  });
+}
+
+
+  salvarPerfil() {
+    // Salvar as alterações no Firestore
+    this.firestoreService.updatePerfil(this.perfil).then(() => {
+      console.log('Perfil atualizado com sucesso!');
+    }).catch(error => {
+      console.error('Erro ao salvar perfil', error);
     });
   }
 
@@ -49,5 +70,10 @@ export class PerfilUsuarioPage implements OnInit {
 
   desfazerMatch() {
     // Lógica para desfazer o match
+  }
+
+  // Função para redirecionar para a página de edição do perfil
+  editPerfil() {
+    this.router.navigate(['/editar-perfil']); // Redireciona para a página de edição de perfil
   }
 }
