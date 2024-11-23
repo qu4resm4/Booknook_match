@@ -1,6 +1,8 @@
-<ion-content class="content-center">
+<ion-content>
   <ion-header>
-    <ion-toolbar color="primary"></ion-toolbar>
+    <ion-toolbar color="primary">
+      <ion-title>{{ tituloLivro }}</ion-title>
+    </ion-toolbar>
   </ion-header>
 
   <div class="description-container">
@@ -8,6 +10,15 @@
       <h2>Conte para o mundo o que torna este livro especial para você</h2>
     </ion-label>
 
+    <!-- Campo para título da resenha -->
+    <ion-item class="title-input">
+      <ion-input [(ngModel)]="tituloResenha" 
+      type="text" labelPlacement="floating">
+        <div slot="label">Título da Resenha</div>
+      </ion-input>
+    </ion-item>
+
+    <!-- Campo de texto para resenha -->
     <div class="custom-textarea-container">
       <textarea 
         id="customTextarea" 
@@ -17,10 +28,12 @@
       </textarea>
     </div>
 
+    <!-- Botão de envio -->
     <ion-button expand="block" (click)="enviarResenha()">Enviar</ion-button>
-  </div>
 
-  <div class="progress-indicator">
-    <ion-progress-bar *ngIf="isSaving" type="indeterminate"></ion-progress-bar>
+    <!-- Indicador de progresso -->
+    <div class="progress-indicator">
+      <ion-progress-bar *ngIf="isSaving" type="indeterminate"></ion-progress-bar>
+    </div>
   </div>
 </ion-content>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { Observable, switchMap } from 'rxjs';
 import { Perfil } from 'src/app/models/perfil.model';
-import { getFirestore, arrayUnion, doc, updateDoc } from 'firebase/firestore'; // Importação corrigida para Firebase v9+
+import { getFirestore, arrayUnion, doc, updateDoc, QuerySnapshot } from 'firebase/firestore'; // Importação corrigida para Firebase v9+
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -36,16 +36,10 @@ export class FirestoreService {
   }
 
   // Adiciona uma resenha para o usuário
-  addResenhaUsuario(userId: string, resenha: any): Promise<void> {
-    const userRef = this.firestore.collection('users').doc(userId).collection('resenhas');
-    return userRef.add(resenha)
-      .then(() => {
-        console.log('Resenha adicionada com sucesso!');
-      })
-      .catch((error) => {
-        console.error('Erro ao adicionar resenha: ', error);
-        throw new Error('Erro ao adicionar resenha');
-      });
+  async addResenhaUsuario(userId: string, resenha: any): Promise<void> {
+    await this.firestore.collection('users').doc(userId).collection('resenhas').add(resenha);
+    console.log("ID USUARIO addResenhaUsuario:", userId)
+    console.log("RESENHA RECEVIDA addResenhaUsuario:", resenha)
   }
 
   getPerfil(uid: string): Observable<Perfil | undefined> {
@@ -75,7 +69,7 @@ export class FirestoreService {
             return;
           }
           const currentUserLikes = (userDoc.data() as Perfil)?.likes || [];
-          console.log("Currente Likes do usuario aatual: ", currentUserLikes)
+          console.log("Current Likes do usuário atual: ", currentUserLikes);
   
           // Define a consulta na coleção 'users', excluindo o próprio usuário e filtrando curtidos
           const query = this.firestore.collection('users', (ref) => {
@@ -99,20 +93,33 @@ export class FirestoreService {
           this.lastDocument = snapshot.docs[snapshot.docs.length - 1];
   
           // Processa os documentos retornados
-          const documents: Perfil[] = snapshot.docs
-            .map((doc) => {
+          const documents: Perfil[] = await Promise.all(
+            snapshot.docs.map(async (doc) => {
               const data = doc.data() as Perfil; // Faz o casting para Perfil
               const id_usuario = doc.id;
   
               // Exclui os usuários já curtidos
               if (currentUserLikes.includes(id_usuario)) {
-                return null; // Retorna null para likes já existentes
+                return {} as Perfil; // Retorna null para likes já existentes
               }
-              return { id_usuario, ...data }; // Inclui o perfil no resultado
-            })
-            .filter((perfil) => perfil !== null) as Perfil[]; // Remove os nulos do array
   
-          observer.next(documents); // Envia os perfis válidos para o Observable
+              // Obtém as resenhas do sub-collection 'resenhas'
+              const resenhasSnapshot = await this.firestore.collection(`users/${id_usuario}/resenhas`).get().toPromise();
+
+              const resenhas =
+                resenhasSnapshot && !resenhasSnapshot.empty
+                  ? resenhasSnapshot.docs.map((resenhaDoc) => resenhaDoc.data()) as Perfil["resenhas"]
+                  : []; // Retorna array vazio caso não haja resenhas ou snapshot seja undefined
+  
+              return {
+                id_usuario,
+                ...data,
+                resenhas, // Adiciona as resenhas no objeto do Perfil
+              };
+            })
+          );
+  
+          observer.next(documents.filter((perfil) => perfil !== null) as Perfil[]); // Remove nulos e envia os perfis válidos
           observer.complete();
         } catch (error) {
           console.error("Erro ao buscar usuários:", error);
@@ -121,6 +128,7 @@ export class FirestoreService {
       })();
     });
   }
+  
   
   
   

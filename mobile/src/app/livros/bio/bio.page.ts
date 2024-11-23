@@ -13,9 +13,11 @@ export class BioPage {
   livroId: string = '';
   tituloLivro: string = '';
   textoResenha: string = '';
+  tituloResenha: string = '';
   isSaving: boolean = false;
   userId: string | null = null; // ID do usuário autenticado
   biografia: string = ''; // Biografia do usuário (se disponível)
+  categorias_livro: string[] = [];
 
   constructor(
     private firestoreService: FirestoreService,
@@ -30,8 +32,12 @@ export class BioPage {
       if (params['livro']) {
         try {
           const livro = JSON.parse(params['livro']);
+          console.log(livro)
           this.livroId = livro.id || '';
-          this.tituloLivro = livro.title || '';
+          this.tituloLivro = livro.volumeInfo.title || '';
+          this.categorias_livro = livro.volumeInfo.categories;
+          console.log("variavel depois de associar: ", this.tituloLivro);
+          console.log("recebido variavel: ", livro.title);
         } catch (error) {
           console.error('Erro ao processar dados do livro:', error);
         }
@@ -64,10 +70,13 @@ export class BioPage {
 
     const resenha = {
       livroId: this.livroId,
-      titulo: this.tituloLivro,
+      titulo_resenha: this.tituloResenha,
+      nome_livro: this.tituloLivro,
       resenha: this.textoResenha,
+      categorias_livro: this.categorias_livro,
       data: new Date(), // Data de criação da resenha
     };
+
 
     try {
       this.isSaving = true;
@@ -77,6 +86,8 @@ export class BioPage {
         console.error('Usuário não autenticado!');
         return;
       }
+
+      console.log("usuario logado?", this.userId)
 
       // Salva a resenha no Firestore
       await this.firestoreService.addResenhaUsuario(this.userId, resenha);

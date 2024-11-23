@@ -4,8 +4,8 @@ export interface Perfil {
   biografia?: string;
   interesses_usuario: string[];
   resenhas: {
-    id_livro: string;
-    titulo_resenha: string;
+    livroId: string;
+    titulo: string;
     nome_livro: string;
     resenha: string;
     categorias_livro: string[];

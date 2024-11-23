@@ -46,7 +46,7 @@
           <h2>Resenhas</h2>
           <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
             <div *ngFor="let resenha of perfil.resenhas">
-              <strong>{{ resenha.titulo_resenha }}</strong>
+              <!--<strong>{{ resenha.titulo_resenha }}</strong>-->
               <p>{{ resenha.resenha }}</p>
               <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
               <hr>
