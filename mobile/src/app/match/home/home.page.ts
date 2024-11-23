@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
   ) { }
 
   getPerfis(){
-    //chamando API
+    //chamando JSON fake
     this.PerfisService.getPerfis().subscribe({
       next: (data: any) => {
         //carregando os dados
