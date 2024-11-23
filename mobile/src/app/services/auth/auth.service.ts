@@ -123,7 +123,7 @@ export class AuthService {
     return this.afAuth.sendPasswordResetEmail(email);
   }
 
-  async getCurrentUserId(): Promise<string | null> {
+  async getCurrentUserId() {
     return await this.storage.get('uid');
   }
 }

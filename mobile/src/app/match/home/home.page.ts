@@ -40,11 +40,15 @@ export class HomePage implements OnInit {
 
   loadMore() {
     this.fire.getUsers(this.limit).subscribe((newUsers: Perfil[]) => {
-      // Adiciona os novos usuários à lista existente
-      this.perfis = [...this.perfis, ...newUsers];
-      console.log(this.perfis)
+      // Filtra os usuários para remover os objetos vazios
+      const filteredUsers = newUsers.filter(user => Object.keys(user).length > 0);
+  
+      // Adiciona os novos usuários (filtrados) à lista existente
+      this.perfis = [...this.perfis, ...filteredUsers];
+      console.log(this.perfis);
     });
   }
+  
 
   async redirecionandoFiltro() {
     await this.router.navigate(['/filtro']);
