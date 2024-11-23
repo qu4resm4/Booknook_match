@@ -78,7 +78,7 @@ export class BioPage {
         return;
       }
 
-      // Salva a resenha na subcoleção 'resenhas' dentro da coleção 'users'
+      // Salva a resenha no Firestore
       await this.firestoreService.addResenhaUsuario(this.userId, resenha);
       console.log('Resenha salva com sucesso!');
 

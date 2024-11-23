@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/compat/firestore';
+import { AngularFirestore, QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { Observable, switchMap } from 'rxjs';
 import { Perfil } from 'src/app/models/perfil.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getFirestore, arrayUnion, doc, updateDoc } from 'firebase/firestore'; // Importação corrigida para Firebase v9+
 
 @Injectable({
   providedIn: 'root',
@@ -15,43 +16,38 @@ export class FirestoreService {
     private auth: AngularFireAuth
   ) {}
 
-  // Método para adicionar uma resenha na subcoleção 'resenhas' do usuário
-  async addResenhaUsuario(userId: string, resenha: any): Promise<void> {
-    try {
-      // Salva a resenha na subcoleção 'resenhas' do usuário
-      await this.firestore.collection('users').doc(userId).collection('resenhas').add(resenha);
-      console.log('Resenha salva com sucesso!');
-    } catch (error) {
-      console.error('Erro ao salvar a resenha:', error);
-      throw new Error('Erro ao salvar a resenha');
-    }
-  }
-
-  // Método para atualizar o perfil do usuário
+  // Atualiza o perfil do usuário no Firestore
   updatePerfil(perfil: Perfil): Promise<void> {
     const userId = perfil.id_usuario;
     if (!userId) {
       throw new Error('ID de usuário não encontrado');
     }
 
-    // Garante que biografia seja sempre uma string
-    const biografia = perfil.biografia || ''; // Se for null ou undefined, usa uma string vazia
+    const userRef = this.firestore.collection('users').doc(userId);
 
-    return this.firestore
-      .collection('users')
-      .doc(userId)
-      .update({
-        biografia: biografia, // Atualiza o campo 'biografia' com uma string
-        interesses_usuario: perfil.interesses_usuario,
-        resenhas: perfil.resenhas,
+    return userRef.update({
+      biografia: perfil.biografia || '', // Garante que a biografia seja uma string
+      interesses_usuario: perfil.interesses_usuario,
+      resenhas: arrayUnion(...perfil.resenhas), // Correção para usar arrayUnion corretamente
+    }).catch((error) => {
+      console.error('Erro ao atualizar perfil: ', error);
+      throw new Error('Erro ao atualizar perfil');
+    });
+  }
+
+  // Adiciona uma resenha para o usuário
+  addResenhaUsuario(userId: string, resenha: any): Promise<void> {
+    const userRef = this.firestore.collection('users').doc(userId).collection('resenhas');
+    return userRef.add(resenha)
+      .then(() => {
+        console.log('Resenha adicionada com sucesso!');
       })
       .catch((error) => {
-        console.error('Erro ao atualizar perfil: ', error);
-        throw new Error('Erro ao atualizar perfil');
+        console.error('Erro ao adicionar resenha: ', error);
+        throw new Error('Erro ao adicionar resenha');
       });
   }
 
-  // Função que retorna um perfil específico do Firestore
   getPerfil(uid: string): Observable<Perfil | undefined> {
     return this.firestore.collection('users').doc<Perfil>(uid).valueChanges();
   }
