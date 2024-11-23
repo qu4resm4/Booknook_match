@@ -10,4 +10,6 @@ export interface Perfil {
     resenha: string;
     categorias_livro: string[];
   }[];
+  likes: string[];
+  matches: string[];
 }

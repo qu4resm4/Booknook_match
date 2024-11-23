@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { Gesture, GestureController } from '@ionic/angular';
+import { MatchsService } from 'src/app/services/matchs/matchs.service';
 
 @Component({
   selector: 'app-perfilmodal',
@@ -10,7 +11,10 @@ export class PerfilmodalComponent{
   @Input() perfil: any;
   @ViewChild('swipeCard', { read: ElementRef, static: true }) swipeCard!: ElementRef;
 
-  constructor(private gestureCtrl: GestureController) {}
+  constructor(
+    private gestureCtrl: GestureController,
+    private match: MatchsService
+  ) {}
 
   ngAfterViewInit() {
     this.createSwipeGesture();
@@ -45,10 +49,13 @@ export class PerfilmodalComponent{
     const card = this.swipeCard.nativeElement;
   
     if (ev.deltaX > 150) {
+      console.log("direita / LIKE")
       card.style.transition = '0.5s ease-out';
       card.style.transform = `translateX(1000px) rotate(${ev.deltaX / 20}deg)`;
       card.remove();
+      this.match.likeUser(this.perfil.id_usuario);
     } else if (ev.deltaX < -150) {
+      console.log("esquerda / DESLIKE")
       card.style.transition = '0.5s ease-out';
       card.style.transform = `translateX(-1000px) rotate(${ev.deltaX / 20}deg)`;
       card.remove();
