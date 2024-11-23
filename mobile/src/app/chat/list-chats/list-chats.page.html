@@ -11,7 +11,7 @@
 
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Inbox</ion-title>
+      <ion-title size="large">Conversas</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -20,7 +20,8 @@
     <ion-item *ngFor="let chat of getChatList()" [routerLink]="['/chat', chat.id]">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label>
-        <h2>{{ chat.users.join(', ') }}</h2>
+        <!-- Exibe a mensagem personalizada de match -->
+        <h2>{{ getMatchMessage(chat.users) }}</h2>
         <p>{{ chat.lastMessage?.text || 'Sem mensagens ainda' }}</p>
         <ion-note>{{ chat.lastMessage?.timestamp | date: 'short' }}</ion-note>
       </ion-label>
