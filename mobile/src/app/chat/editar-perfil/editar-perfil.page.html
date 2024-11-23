@@ -1,31 +1,42 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
     <ion-title>Editar Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="salvarAlteracoes()">
-    <ion-item>
-      <ion-label position="floating">Nome de Usuário</ion-label>
-      <ion-input [(ngModel)]="perfil.username" name="username" required></ion-input>
-    </ion-item>
+  <!-- Formulário para edição do perfil -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Editar Dados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="salvarPerfil()">
+        <ion-item>
+          <ion-label position="stacked">Nome de Usuário</ion-label>
+          <ion-input [(ngModel)]="perfil.username" name="username" required></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Biografia</ion-label>
-      <ion-input [(ngModel)]="perfil.biografia" name="biografia"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input [(ngModel)]="perfil.email" name="email" type="email" required></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Interesses</ion-label>
-      <ion-input [(ngModel)]="perfil.interesses_usuario" name="interesses_usuario"></ion-input>
-    </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Biografia</ion-label>
+          <ion-textarea [(ngModel)]="perfil.biografia" name="biografia" rows="4"></ion-textarea>
+        </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Resenhas</ion-label>
-      <ion-input [(ngModel)]="perfil.resenhas" name="resenhas"></ion-input>
-    </ion-item>
 
-    <ion-button type="submit" expand="full">Salvar Alterações</ion-button>
-  </form>
+        <!-- Botão para ir para a página de interesses -->
+        <ion-button expand="full" color="primary" (click)="irParaInteresses()">Escolher Interesses e Resenhas</ion-button>
+
+        <!-- Botão de salvar alterações -->
+        <ion-button expand="full" type="submit">Salvar Alterações</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

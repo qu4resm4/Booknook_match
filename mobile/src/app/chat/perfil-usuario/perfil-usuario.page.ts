@@ -4,6 +4,7 @@ import { ChatPerilService } from '../../services/chat-perfil/chat-peril.service'
 import { AuthService } from '../../services/auth/auth.service';
 import { FirestoreService } from 'src/app/services/auth/firestore.service';
 import { Perfil } from 'src/app/models/perfil.model';
+import { InterestsService } from 'src/app/services/auth/interests.service';  
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -12,43 +13,60 @@ import { Perfil } from 'src/app/models/perfil.model';
 })
 export class PerfilUsuarioPage implements OnInit {
   perfil!: Perfil;
-  interessesDisponiveis: string[] = ['Ficção', 'Romance', 'Aventura', 'Mistério', 'Fantasia', 'Sci-Fi']; // Exemplo de interesses disponíveis
+  interessesDisponiveis: string[] = ['Ficção', 'Romance', 'Aventura', 'Mistério', 'Fantasia', 'Sci-Fi'];
+  interessesUsuario: string[] = [];
 
   constructor(
     private p: ChatPerilService,
     private authService: AuthService,
     private firestoreService: FirestoreService, 
-    private router: Router
+    private router: Router,
+    private interestsService: InterestsService  
   ) {}
 
   ngOnInit() {
     this.getPerfil();
   }
 
-// Obtém o ID do usuário atual
-  // Verifique se os dados estão disponíveis antes de usá-los
-getPerfil() {
-  this.authService.getCurrentUserId().then(userId => {
-    if (userId) {
-      this.firestoreService.getPerfil(userId).subscribe({
-        next: (data: Perfil | undefined) => {
-          if (data) {
-            this.perfil = data; // Agora você tem os dados do perfil
-          } else {
-            console.error("Perfil não encontrado");
+  async getPerfil() {
+    try {
+      const userId = await this.authService.getCurrentUserId();
+      if (userId) {
+        this.firestoreService.getPerfil(userId).subscribe({
+          next: (data: Perfil | undefined) => {
+            if (data) {
+              this.perfil = data;
+              this.getInteressesUsuario(userId);
+            } else {
+              console.error("Perfil não encontrado");
+            }
+          },
+          error: (e) => {
+            console.error("Erro ao carregar perfil", e);
           }
-        },
-        error: (e) => {
-          console.error("Erro ao carregar perfil", e);
-        }
-      });
+        });
+      } else {
+        console.error("Usuário não autenticado");
+      }
+    } catch (e) {
+      console.error("Erro ao recuperar ID do usuário", e);
     }
-  });
-}
+  }
 
+  getInteressesUsuario(userId: string) {
+    this.interestsService.getUserInterests(userId).subscribe(
+      (data: any) => {
+        if (data && data.interests) {
+          this.interessesUsuario = data.interests;
+        }
+      },
+      error => {
+        console.error("Erro ao carregar interesses", error);
+      }
+    );
+  }
 
   salvarPerfil() {
-    // Salvar as alterações no Firestore
     this.firestoreService.updatePerfil(this.perfil).then(() => {
       console.log('Perfil atualizado com sucesso!');
     }).catch(error => {
@@ -56,24 +74,26 @@ getPerfil() {
     });
   }
 
-  logout() {
-    this.authService.logout().then(() => {
-      this.router.navigate(['/login']); // Redireciona para a página de login após o logout
-    }).catch(error => {
+  async logout() {
+    try {
+      await this.authService.logout();
+      this.router.navigate(['/login']);
+    } catch (error) {
       console.error("Erro ao realizar logout:", error);
-    });
+    }
   }
 
   denunciarUsuario() {
-    // Lógica para denunciar e bloquear usuário
+    console.log('Usuário denunciado');
+    // Lógica de denúncia
   }
 
   desfazerMatch() {
-    // Lógica para desfazer o match
+    console.log('Match desfeito');
+    // Lógica para desfazer match
   }
 
-  // Função para redirecionar para a página de edição do perfil
   editPerfil() {
-    this.router.navigate(['/editar-perfil']); // Redireciona para a página de edição de perfil
+    this.router.navigate(['/editar-perfil']);
   }
 }
