@@ -13,7 +13,7 @@
         <ion-card (click)="redirecionandoInfoLivro(livro.id)">
           <!-- Usa o evento "load" para disparar a função de carregamento -->
           <img 
-            [src]="livro.volumeInfo.imageLinks?.thumbnail" 
+            [src]="'assets/imgs/capa.jpg'" 
             (load)="onImageLoad($event)" 
             (error)="onImageError()"
             alt="{{livro.volumeInfo.title}}"
