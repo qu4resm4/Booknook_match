@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Inbox
-    </ion-title>
+    <ion-title>Inbox</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,16 +8,27 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">
-        Inbox
-      </ion-title>
+      <ion-title size="large">Conversas</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <ion-list>
-    <app-item-chat *ngFor="let message of getMessages()" [message]="message"></app-item-chat>
+
+  <ion-list *ngIf="getChatList().length > 0; else noChats">
+    <ion-item *ngFor="let chat of getChatList()" [routerLink]="['/chat', chat.id]">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ getMatchMessage(chat.users) }}</h2>
+        <p>{{ chat.lastMessage?.text || 'Sem mensagens ainda' }}</p>
+        <ion-note>{{ chat.lastMessage?.timestamp | date: 'short' }}</ion-note>
+      </ion-label>
+    </ion-item>
   </ion-list>
+
+  <ng-template #noChats>
+    <div class="ion-padding">
+      <h2>Nenhum chat iniciado ainda.</h2>
+    </div>
+  </ng-template>
 </ion-content>
