@@ -22,6 +22,11 @@ export class HomePage implements OnInit {
     private fire: FirestoreService
   ) { }
 
+  // Executado toda vez que a página for exibida
+  ionViewWillEnter() {
+    this.loadMore();
+  }
+
   getPerfis(){
     //chamando JSON fake
     this.PerfisService.getPerfis().subscribe({
@@ -59,7 +64,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadMore();
+    /*this.loadMore();*/
   /*this.getPerfis();*/
   }
 
