@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ perfil.username || 'Perfil' }}</ion-title>
+    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  <!-- Usando o operador opcional -->
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-text> Logout </ion-text>
@@ -16,14 +16,14 @@
 <ion-content>
   <ion-card *ngIf="perfil">
     <ion-card-header>
-      <ion-card-title>{{ perfil.username }}</ion-card-title>
-      <ion-card-subtitle>ID: {{ perfil.id_usuario || 'Não disponível' }}</ion-card-subtitle>
+      <ion-card-title>{{ perfil?.username }}</ion-card-title>  <!-- Usando o operador opcional -->
+      <ion-card-subtitle>ID: {{ perfil?.id_usuario || 'Não disponível' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
         <ion-label>
           <h2>Biografia</h2>
-          <p>{{ perfil.biografia || 'Sem biografia' }}</p>
+          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  <!-- Usando o operador opcional -->
         </ion-label>
       </ion-item>
 
@@ -45,7 +45,7 @@
         <ion-label>
           <h2>Resenhas</h2>
           <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
-            <div *ngFor="let resenha of perfil.resenhas">
+            <div *ngFor="let resenha of perfil?.resenhas">
               <!--<strong>{{ resenha.titulo_resenha }}</strong>-->
               <p>{{ resenha.resenha }}</p>
               <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
