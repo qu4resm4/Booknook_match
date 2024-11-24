@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { MessageService, Message } from '../../services/message/message.service';
 
 @Component({
@@ -10,20 +9,52 @@ import { MessageService, Message } from '../../services/message/message.service'
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
-  public message!: Message;
-  private data = inject(MessageService);
+  public chatId!: string; // ID do chat
+  public messages: Message[] = []; // Lista de mensagens
+  public newMessage: string = ''; // Mensagem a ser enviada
+
+  private messageService = inject(MessageService);
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
 
   constructor() {}
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.message = this.data.getMessageById(parseInt(id, 10));
+    // Obter ID do chat pela rota
+    this.chatId = this.activatedRoute.snapshot.paramMap.get('id') as string;
+
+    // Carregar mensagens para o chat
+    this.loadMessages();
+  }
+
+  async loadMessages() {
+    // Carrega mensagens do serviço
+    this.messages = await this.messageService.getMessagesByChatId(this.chatId);
+  }
+
+  async sendMessage() {
+    if (this.newMessage.trim() === '') return;
+
+    // Criar a mensagem
+    const message: Message = {
+      id: Date.now().toString(), // Gera um ID único para a mensagem
+      chatId: this.chatId,
+      content: this.newMessage,
+      sender: 'me', // 'me' ou o UID do remetente
+      timestamp: new Date().toISOString(),
+    };
+
+    // Enviar mensagem para o serviço
+    await this.messageService.sendMessage(message);
+
+    // Atualizar a lista de mensagens localmente
+    this.messages.push(message);
+
+    // Limpar o campo de mensagem
+    this.newMessage = '';
   }
 
   getBackButtonText() {
-    const isIos = this.platform.is('ios')
-    return isIos ? 'Inbox' : '';
+    return this.platform.is('ios') ? 'Inbox' : '';
   }
 }
