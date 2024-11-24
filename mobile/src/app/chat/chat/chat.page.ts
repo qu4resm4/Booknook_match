@@ -48,13 +48,12 @@ export class ChatPage implements OnInit {
   
     // Atribui o nome do remetente às mensagens (caso esteja disponível)
     for (const message of this.messages) {
-      if (message.sender !== this.currentUserId) {  // Verifica se não é a mensagem do usuário atual
+        console.log(message)
         const userRef = doc(firestore, `users/${message.sender}`);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           message.fromName = userSnap.data()['username'];  // Alterado para acessar 'username'
         }
-      }
     }
   }
 

@@ -9,14 +9,15 @@
 
 <ion-content [fullscreen]="true">
   <!-- Lista de mensagens -->
-  <ion-list>
-    <ion-item *ngFor="let message of messages" [ngClass]="{'sent': message.sender === currentUserId, 'received': message.sender !== currentUserId}">
-      <ion-label>
-        <h3 *ngIf="message.sender !== currentUserId">{{ message.fromName || 'Outro Usuário' }}</h3>
-        <p>{{ message.content }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div>
+    <div *ngFor="let message of messages" [ngClass]="{'sent': message.sender === currentUserId, 'received': message.sender !== currentUserId}">
+      <ion-chip *ngIf="message.sender">
+        <ion-label style="display: block; text-align: start; font-size: medium; font-weight: bold;">{{ message.fromName || '...' }}</ion-label>
+        <p style="display: block; margin: 5px 0;">{{ message.content }}</p>
+        <ion-label style="display: block; text-align: end; font-size: smaller;">{{ message.timestamp }}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
 </ion-content>
 
 <!-- Campo para enviar mensagens -->

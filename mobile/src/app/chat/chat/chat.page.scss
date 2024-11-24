@@ -2,17 +2,19 @@
 .sent {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-right: 10px;
 }
 
-.sent ion-label {
-  background-color: #0b3d5ac0;
-  color: rgb(248, 246, 246);
+.sent ion-chip {
+  background-color: #f1f0f0;
+  color: black;
   padding: 10px;
   border-radius: 15px;
   max-width: 70%; /* Limita a largura das mensagens */
   word-wrap: break-word;
-  text-align: right;
+  text-align: left;
   display: inline-block; /* Garante que o fundo acompanhe o tamanho do conteúdo */
 }
 
@@ -20,10 +22,12 @@
 .received {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 10px;
 }
 
-.received ion-label {
+.received ion-chip {
   background-color: #f1f0f0;
   color: black;
   padding: 10px;
