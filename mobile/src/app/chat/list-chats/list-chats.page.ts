@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth/auth.service';
 
 interface User {
   uid: string;
+
   username: string;
 }
 
@@ -80,6 +81,7 @@ export class ListChatsPage implements OnInit {
       if (otherUser) {
         return `Você formou um match com ${otherUser.username}!`;
       }
+
     }
     return 'Match com mais usuários';
   }
@@ -87,7 +89,9 @@ export class ListChatsPage implements OnInit {
   refresh(ev: any) {
     setTimeout(() => {
       (ev as RefresherCustomEvent).detail.complete();
+
     }, 1000);
+
   }
 
   getChatList() {

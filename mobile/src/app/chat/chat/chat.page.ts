@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Platform } from '@ionic/angular';
+
 import { MessageService, Message } from '../../services/message/message.service';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
@@ -11,24 +12,28 @@ import { initializeApp } from 'firebase/app';
 const app = initializeApp(environment.firebaseConfig);
 const firestore = getFirestore(app); // Obtém a instância do Firestore
 
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+
   public chatId!: string; // ID do chat
   public messages: Message[] = []; // Lista de mensagens
   public newMessage: string = ''; // Mensagem a ser enviada
   public currentUserId: string = ''; // Armazena o UID do usuário atual
 
   private messageService = inject(MessageService);
+
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
 
   constructor() {}
 
   ngOnInit() {
+
     // Obter ID do chat pela rota
     this.chatId = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
@@ -81,5 +86,6 @@ export class ChatPage implements OnInit {
 
   getBackButtonText() {
     return this.platform.is('ios') ? 'Inbox' : '';
+
   }
 }

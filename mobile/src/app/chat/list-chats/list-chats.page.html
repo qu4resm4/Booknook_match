@@ -15,16 +15,19 @@
     </ion-toolbar>
   </ion-header>
 
+
   <ion-list *ngIf="chats.length > 0; else noChats">
     <ion-item *ngFor="let chat of chats; let i = index" [routerLink]="['/chat', chat.id]">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label>
         <!-- Exibe a mensagem de match já resolvida -->
         <h2>{{ matchMessages[i] }}</h2> 
+
         <ion-note>{{ chat.lastMessage?.timestamp | date: 'short' }}</ion-note>
       </ion-label>
     </ion-item>
   </ion-list>
+
 
   <ng-template #noChats>
     <div class="ion-padding">

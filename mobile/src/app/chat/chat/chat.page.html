@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
   <!-- Lista de mensagens -->
   <div>
     <div *ngFor="let message of messages" [ngClass]="{'sent': message.sender === currentUserId, 'received': message.sender !== currentUserId}">
@@ -17,8 +18,8 @@
         <ion-label style="display: block; text-align: end; font-size: smaller;">{{ message.timestamp }}</ion-label>
       </ion-chip>
     </div>
+
   </div>
-</ion-content>
 
 <!-- Campo para enviar mensagens -->
 <ion-footer>
@@ -32,3 +33,4 @@
     </ion-item>
   </ion-toolbar>
 </ion-footer>
+

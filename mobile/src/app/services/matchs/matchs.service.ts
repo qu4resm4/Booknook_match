@@ -65,9 +65,11 @@ export class MatchsService {
     } catch (error) {
       console.error('Erro ao processar o like:', error);
     }
+
   }
 
   private generateChatId(userId1: string, userId2: string): string {
     return [userId1, userId2].sort().join('_'); // Gera um ID único baseado nos usuários
   }
+
 }
