@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Firestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
+// Definindo a interface Message
 export interface Message {
   id: string;
   chatId: string;
-  content: string; // Conteúdo da mensagem
-  sender: string; // 'me' ou UID do remetente
-  timestamp: string; // Data/hora da mensagem
-  read?: boolean; // Indica se a mensagem foi lida
-  fromName?: string; // Nome do remetente
-  date?: string; // Data legível da mensagem
-  subject?: string; // Assunto da mensagem (se aplicável)
+  content: string;
+  sender: string;
+  timestamp: string;
+  read?: boolean; // Propriedade para indicar se a mensagem foi lida
+  fromName?: string; // Propriedade para o nome do remetente
+  date?: string; // Propriedade para a data da mensagem
+  subject?: string; // Propriedade para o assunto da mensagem
 }
 
 
@@ -17,15 +20,40 @@ export interface Message {
   providedIn: 'root',
 })
 export class MessageService {
-  private messages: Message[] = []; // Simulação de banco de dados
+  private firestore: Firestore;
+
+  constructor() {
+    // Inicializa o Firestore
+    this.firestore = getFirestore();
+  }
 
   async getMessagesByChatId(chatId: string): Promise<Message[]> {
-    // Retorna mensagens associadas ao ID do chat
-    return this.messages.filter((msg) => msg.chatId === chatId);
+    const chatRef = doc(this.firestore, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatRef);
+
+    if (chatSnap.exists()) {
+      const chatData = chatSnap.data();
+      // Acesso à propriedade 'messages' usando notação de colchetes
+      return chatData?.['messages'] || [];
+    }
+    return [];
   }
 
   async sendMessage(message: Message): Promise<void> {
-    // Salva a mensagem na lista
-    this.messages.push(message);
+    const chatRef = doc(this.firestore, `chats/${message.chatId}`);
+    const chatSnap = await getDoc(chatRef);
+
+    if (chatSnap.exists()) {
+      await updateDoc(chatRef, {
+        messages: arrayUnion(message),
+      });
+    } else {
+      await setDoc(chatRef, {
+        createdAt: new Date().toISOString(),
+        id: message.chatId,
+        users: [],
+        messages: [message],
+      });
+    }
   }
 }
