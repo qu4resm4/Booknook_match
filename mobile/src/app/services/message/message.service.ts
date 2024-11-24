@@ -1,83 +1,60 @@
 import { Injectable } from '@angular/core';
+import { Firestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
+// Definindo a interface Message
 export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
+  id: string;
+  chatId: string;
+  content: string;
+  sender: string;
+  timestamp: string;
+  read?: boolean; // Propriedade para indicar se a mensagem foi lida
+  fromName?: string; // Propriedade para o nome do remetente
+  date?: string; // Propriedade para a data da mensagem
+  subject?: string; // Propriedade para o assunto da mensagem
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: true
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    }
-  ];
+  private firestore: Firestore;
 
-  constructor() { }
-
-  public getMessages(): Message[] {
-    return this.messages;
+  constructor() {
+    // Inicializa o Firestore
+    this.firestore = getFirestore();
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  async getMessagesByChatId(chatId: string): Promise<Message[]> {
+    const chatRef = doc(this.firestore, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatRef);
+
+    if (chatSnap.exists()) {
+      const chatData = chatSnap.data();
+      // Acesso à propriedade 'messages' usando notação de colchetes
+      return chatData?.['messages'] || [];
+    }
+    return [];
+  }
+
+  async sendMessage(message: Message): Promise<void> {
+    const chatRef = doc(this.firestore, `chats/${message.chatId}`);
+    const chatSnap = await getDoc(chatRef);
+
+    if (chatSnap.exists()) {
+      // Atualiza a conversa com a nova mensagem
+      await updateDoc(chatRef, {
+        messages: arrayUnion(message),
+      });
+    } else {
+      // Se o chat não existir, cria um novo
+      await setDoc(chatRef, {
+        createdAt: new Date().toISOString(),
+        id: message.chatId,
+        users: [message.sender], // Adiciona o remetente ao campo users
+        messages: [message],
+      });
+    }
   }
 }

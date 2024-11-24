@@ -15,20 +15,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- Lista de chats -->
-  <ion-list *ngIf="getChatList().length > 0; else noChats">
-    <ion-item *ngFor="let chat of getChatList()" [routerLink]="['/chat', chat.id]">
+
+  <ion-list *ngIf="chats.length > 0; else noChats">
+    <ion-item *ngFor="let chat of chats; let i = index" [routerLink]="['/chat', chat.id]">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label>
-        <!-- Exibe a mensagem personalizada de match -->
-        <h2>{{ getMatchMessage(chat.users) }}</h2>
-        <p>{{ chat.lastMessage?.text || 'Sem mensagens ainda' }}</p>
+        <!-- Exibe a mensagem de match já resolvida -->
+        <h2>{{ matchMessages[i] }}</h2> 
+
         <ion-note>{{ chat.lastMessage?.timestamp | date: 'short' }}</ion-note>
       </ion-label>
     </ion-item>
   </ion-list>
 
-  <!-- Mensagem para caso não existam chats -->
+
   <ng-template #noChats>
     <div class="ion-padding">
       <h2>Nenhum chat iniciado ainda.</h2>
