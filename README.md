@@ -15,6 +15,12 @@
 
 ---
 
+## Apresentação
+[![Thumbnail do vídeo](https://img.youtube.com/vi/7ulthPxceJQ/0.jpg)](https://www.youtube.com/watch?v=7ulthPxceJQ)
+- [Assista ao vídeo no YouTube](https://www.youtube.com/watch?v=7ulthPxceJQ)
+  
+---
+
 ## Tecnologias utilizadas
 - **Ionic**: Framework para desenvolvimento híbrido, garantindo responsividade e suporte a dispositivos móveis.
 - **Angular**: Framework para construção de interfaces dinâmicas e gestão do estado da aplicação.
