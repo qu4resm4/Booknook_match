@@ -15,7 +15,6 @@ export interface Message {
   subject?: string; // Propriedade para o assunto da mensagem
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -44,14 +43,16 @@ export class MessageService {
     const chatSnap = await getDoc(chatRef);
 
     if (chatSnap.exists()) {
+      // Atualiza a conversa com a nova mensagem
       await updateDoc(chatRef, {
         messages: arrayUnion(message),
       });
     } else {
+      // Se o chat não existir, cria um novo
       await setDoc(chatRef, {
         createdAt: new Date().toISOString(),
         id: message.chatId,
-        users: [],
+        users: [message.sender], // Adiciona o remetente ao campo users
         messages: [message],
       });
     }

@@ -1,50 +1,51 @@
+/* chat.page.scss */
+
+/* Estilos para mensagens enviadas */
+.sent {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.sent ion-label {
+  background-color: #dcf8c6; /* Cor verde clara do WhatsApp */
+  color: black;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Estilos para mensagens recebidas */
+.received {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.received ion-label {
+  background-color: #f1f0f0; /* Cor de fundo das mensagens recebidas */
+  color: black;
+  padding: 10px;
+  border-radius: 15px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
 ion-item {
-    --inner-padding-end: 0;
-    --background: transparent;
-  }
-  
-  ion-label {
-    margin-top: 12px;
-    margin-bottom: 12px;
-  }
-  
-  ion-item h2 {
-    font-weight: 600;
-    
-    /**
-     * With larger font scales
-     * the date/time should wrap to the next
-     * line. However, there should be
-     * space between the name and the date/time
-     * if they can appear on the same line.
-     */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  ion-item .date {
-    align-items: center;
-    display: flex;
-  }
-  
-  ion-item ion-icon {
-    font-size: 42px;
-    margin-right: 8px;
-  }
-  
-  ion-item ion-note {
-    font-size: 0.9375rem;
-    margin-right: 12px;
-    font-weight: normal;
-  }
-  
-  h1 {
-    margin: 0;
-    font-weight: bold;
-    font-size: 1.4rem;
-  }
-  
-  p {
-    line-height: 1.4;
-  }
+  display: flex;
+  flex-direction: column;
+}
+
+ion-label h3 {
+  margin: 0;
+  font-size: 12px;
+  color: gray;
+}
+
+ion-label p {
+  margin: 0;
+  font-size: 14px;
+}

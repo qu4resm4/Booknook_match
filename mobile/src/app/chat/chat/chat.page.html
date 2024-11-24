@@ -10,9 +10,9 @@
 <ion-content [fullscreen]="true">
   <!-- Lista de mensagens -->
   <ion-list>
-    <ion-item *ngFor="let message of messages">
+    <ion-item *ngFor="let message of messages" [ngClass]="{'sent': message.sender === 'me', 'received': message.sender !== 'me'}">
       <ion-label>
-        <h3>{{ message.sender === 'me' ? 'Você' : 'Outro Usuário' }}</h3>
+        <h3 *ngIf="message.sender !== 'me'">{{ message.fromName || 'Outro Usuário' }}</h3>
         <p>{{ message.content }}</p>
       </ion-label>
     </ion-item>
