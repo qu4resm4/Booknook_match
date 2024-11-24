@@ -20,6 +20,7 @@ export class ChatPage implements OnInit {
   public chatId!: string; // ID do chat
   public messages: Message[] = []; // Lista de mensagens
   public newMessage: string = ''; // Mensagem a ser enviada
+  public currentUserId: string = ''; // Armazena o UID do usuário atual
 
   private messageService = inject(MessageService);
   private activatedRoute = inject(ActivatedRoute);
@@ -31,6 +32,12 @@ export class ChatPage implements OnInit {
     // Obter ID do chat pela rota
     this.chatId = this.activatedRoute.snapshot.paramMap.get('id') as string;
 
+    // Obter o ID do usuário atual
+    const user = getAuth().currentUser;
+    if (user) {
+      this.currentUserId = user.uid;
+    }
+
     // Carregar mensagens para o chat
     this.loadMessages();
   }
@@ -40,9 +47,8 @@ export class ChatPage implements OnInit {
     this.messages = await this.messageService.getMessagesByChatId(this.chatId);
   
     // Atribui o nome do remetente às mensagens (caso esteja disponível)
-    const userId = getAuth().currentUser?.uid;
     for (const message of this.messages) {
-      if (message.sender !== userId) {  // Verifica se não é a mensagem do usuário atual
+      if (message.sender !== this.currentUserId) {  // Verifica se não é a mensagem do usuário atual
         const userRef = doc(firestore, `users/${message.sender}`);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
@@ -51,24 +57,16 @@ export class ChatPage implements OnInit {
       }
     }
   }
-  
 
   async sendMessage() {
     if (this.newMessage.trim() === '') return;
-
-    // Obter o UID do usuário atual
-    const userId = getAuth().currentUser?.uid;
-    if (!userId) {
-      console.error('Usuário não autenticado');
-      return;
-    }
 
     // Criar a mensagem
     const message: Message = {
       id: Date.now().toString(), // Gera um ID único para a mensagem
       chatId: this.chatId,
       content: this.newMessage,
-      sender: userId, // Usar o UID do usuário logado como remetente
+      sender: this.currentUserId, // Usar o UID do usuário logado como remetente
       timestamp: new Date().toISOString(),
     };
 

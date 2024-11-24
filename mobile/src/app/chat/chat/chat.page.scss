@@ -1,42 +1,51 @@
-/* chat.page.scss */
-
 /* Estilos para mensagens enviadas */
 .sent {
   display: flex;
   justify-content: flex-end;
-  text-align: right;
   margin-bottom: 10px;
 }
 
 .sent ion-label {
-  background-color: #dcf8c6; /* Cor verde clara do WhatsApp */
-  color: black;
+  background-color: #0b3d5ac0;
+  color: rgb(248, 246, 246);
   padding: 10px;
   border-radius: 15px;
-  max-width: 70%;
+  max-width: 70%; /* Limita a largura das mensagens */
   word-wrap: break-word;
+  text-align: right;
+  display: inline-block; /* Garante que o fundo acompanhe o tamanho do conteúdo */
 }
 
 /* Estilos para mensagens recebidas */
 .received {
   display: flex;
   justify-content: flex-start;
-  text-align: left;
   margin-bottom: 10px;
 }
 
 .received ion-label {
-  background-color: #f1f0f0; /* Cor de fundo das mensagens recebidas */
+  background-color: #f1f0f0;
   color: black;
   padding: 10px;
   border-radius: 15px;
-  max-width: 70%;
+  max-width: 70%; /* Limita a largura das mensagens */
   word-wrap: break-word;
+  text-align: left;
+  display: inline-block; /* Garante que o fundo acompanhe o tamanho do conteúdo */
 }
 
 ion-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Alterado de column para row */
+  width: 100%;
+  padding: 0; /* Remove o padding padrão */
+}
+
+ion-label {
+  display: block;
+  width: auto;
+  max-width: 100%; /* Limita a largura do label */
+  word-wrap: break-word;
 }
 
 ion-label h3 {
