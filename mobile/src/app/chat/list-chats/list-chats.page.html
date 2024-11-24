@@ -20,7 +20,6 @@
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label>
         <h2>{{ getMatchMessage(chat.users) }}</h2>
-        <p>{{ chat.lastMessage?.text || 'Sem mensagens ainda' }}</p>
         <ion-note>{{ chat.lastMessage?.timestamp | date: 'short' }}</ion-note>
       </ion-label>
     </ion-item>
