@@ -3,6 +3,7 @@ import { FirestoreService } from 'src/app/services/auth/firestore.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
 @Component({
   selector: 'app-bio',
@@ -23,7 +24,8 @@ export class BioPage {
     private firestoreService: FirestoreService,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private storage: StorageBooksService
   ) {}
 
   async ionViewWillEnter() {
@@ -73,7 +75,7 @@ export class BioPage {
       titulo_resenha: this.tituloResenha,
       nome_livro: this.tituloLivro,
       resenha: this.textoResenha,
-      categorias_livro: this.categorias_livro,
+      categorias_livro: this.categorias_livro  || '',
       data: new Date(), // Data de criação da resenha
     };
 
@@ -93,6 +95,18 @@ export class BioPage {
       await this.firestoreService.addResenhaUsuario(this.userId, resenha);
       console.log('Resenha salva com sucesso!');
 
+      // objeto do livro 
+      const livro = {
+        "id": this.livroId,
+        "title": this.tituloLivro
+      };
+
+      // exclui da storage TODOS
+      await this.storage.excluirDaEstante(livro.id, "-TODOS");
+
+      // inclui na storage RESENHADOS
+      await this.storage.adicionarNaEstante(livro, '-RESENHADOS');
+      
       // Redireciona para a página da estante
       this.navCtrl.navigateForward('tabs/estante');
     } catch (error) {

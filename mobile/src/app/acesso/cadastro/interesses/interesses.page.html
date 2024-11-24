@@ -28,7 +28,7 @@
   <ion-button expand="full" (click)="savePreferences()">Salvar Preferências</ion-button>
 
   <h4>Preferências</h4>
-  <div class="preference-list">
+  <div class="preference-list" *ngIf="filteredPreferences.length > 0">
     <!-- Iterar sobre categorias e suas preferências -->
     <div *ngFor="let category of filteredPreferences">
       <h5>{{ category.categoria }}</h5>

@@ -59,6 +59,9 @@ export class InteressesPage implements OnInit {
     const exists = this.selectedPreferences.find((pref) => pref.id === preference.id);
     if (!exists) {
       this.selectedPreferences.push(preference);
+      this.filteredPreferences.filter(
+        (pref) => pref.id !== preference.id
+      );
     }
   }
 
@@ -66,6 +69,7 @@ export class InteressesPage implements OnInit {
     this.selectedPreferences = this.selectedPreferences.filter(
       (pref) => pref.id !== preference.id
     );
+    this.filteredPreferences.push(preference);
   }
 
   async presentToast(message: string) {

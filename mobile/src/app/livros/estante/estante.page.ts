@@ -56,7 +56,9 @@ export class EstantePage implements OnInit {
   }
 
   async excluirLivro(livro: any, estante: string) {
-    await this.storage.excluirDaEstante(livro, estante);
+    if(estante != "-RESENHADOS") {
+      await this.storage.excluirDaEstante(livro, estante);
+    }
     this.carregarLivros(this.colecaoSelecionada);
   }
 }
