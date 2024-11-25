@@ -77,7 +77,7 @@ export class ListChatsPage implements OnInit {
   // Função para gerar a mensagem personalizada de match
   async getMatchMessage(users: User[]): Promise<string> {
     if (users.length === 2 && this.userUid) {
-      const otherUser = users.find(user => user.uid !== this.userUid);  // Agora você compara com o UID corretamente resolvido
+      const otherUser = users.find(user => user.uid !== this.userUid);  
       if (otherUser) {
         return `Você formou um match com ${otherUser.username}!`;
       }
