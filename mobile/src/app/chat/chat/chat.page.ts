@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Platform, NavController } from '@ionic/angular';
 
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Platform, NavController, IonContent } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MessageService, Message } from '../../services/message/message.service';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
@@ -12,13 +13,19 @@ import { initializeApp } from 'firebase/app';
 const app = initializeApp(environment.firebaseConfig);
 const firestore = getFirestore(app); // Obtém a instância do Firestore
 
+export interface Chat {
+  messages: [];
+}
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
+
 export class ChatPage implements OnInit {
+  @ViewChild(IonContent, { static: false })
+  content!: IonContent;
 
   public chatId!: string; // ID do chat
   public messages: Message[] = []; // Lista de mensagens
@@ -35,7 +42,8 @@ export class ChatPage implements OnInit {
   private platform = inject(Platform);
 
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private fire: AngularFirestore
   ) {}
 
   ngOnInit() {
@@ -64,9 +72,22 @@ export class ChatPage implements OnInit {
   }
 
   async loadMessages() {
-    // Carrega mensagens do serviço
-    this.messages = await this.messageService.getMessagesByChatId(this.chatId);
+    this.fire.collection('chats').doc(this.chatId)
+      .snapshotChanges()
+      .subscribe((changes) => {
+        // Verifique se a 'changes' contém um único 'change'
+        const data = changes.payload.data() as Chat;
+  
+        console.log("VERIFIANDO SE ALGO ESTÁ SENDO ERCEBIDO", data);
+  
+        if (data) {
+          this.messages = data?.messages;
+        }
+      });
   }
+  
+
+
 
   async sendMessage() {
     if (this.newMessage.trim() === '') return;
