@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RefresherCustomEvent } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../../services/auth/auth.service';
@@ -14,17 +14,17 @@ interface User {
   templateUrl: './list-chats.page.html',
   styleUrls: ['./list-chats.page.scss'],
 })
-export class ListChatsPage implements OnInit {
+export class ListChatsPage {
   private firestore = inject(AngularFirestore);
   private authService = inject(AuthService);
   public chats: any[] = [];
   public matchMessages: string[] = []; // Adicionando a variável para armazenar mensagens de match
   private userCache: { [uid: string]: User } = {}; // Cache para armazenar os usernames
-  private userUid: string | null = null;
+  public userUid: string | null = null;
 
   constructor() {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     // Inicializa o UID do usuário
     this.authService.getCurrentUserId().then(uid => {
       this.userUid = uid;
@@ -34,28 +34,51 @@ export class ListChatsPage implements OnInit {
     });
   }
 
-  // Função para carregar os chats
-  loadChats() {
-    // Usamos o `snapshotChanges()` para não ter problemas com assinaturas
-    this.firestore
-      .collection('chats', (ref) => ref.where('users', 'array-contains', this.userUid))
-      .snapshotChanges()
-      .subscribe(async (chats: any[]) => {
-        // Mapeia e busca os dados dos usuários
-        this.chats = await Promise.all(
-          chats.map(async (chat) => {
-            const users = await this.getUserDetails(chat.payload.doc.data().users); // Busca os usernames
-            const matchMessage = await this.getMatchMessage(users); // Gerar a mensagem de match
-            this.matchMessages.push(matchMessage); // Armazenar a mensagem de match
-            return {
-              id: chat.payload.doc.id,
-              users, // Lista de usernames ao invés de UIDs
-              lastMessage: chat.payload.doc.data().messages?.slice(-1)[0] || null,
-            };
-          })
-        );
-      });
-  }
+// Função para carregar os chats
+loadChats() {
+  // Usamos o `snapshotChanges()` para não ter problemas com assinaturas
+  this.firestore
+    .collection('chats', (ref) => ref.where('users', 'array-contains', this.userUid))
+    .snapshotChanges()
+    .subscribe(async (chats: any[]) => {
+      // Mapeia e busca os dados dos usuários
+      this.chats = await Promise.all(
+        chats.map(async (chat) => {
+          const chatData = chat.payload.doc.data();
+          const users = await this.getUserDetails(chatData.users); // Busca os usernames
+          console.log("users chat: ", users)
+          // Obtém a última mensagem
+          const lastMessage = chatData.messages?.slice(-1)[0] || null;
+          console.log(chat.payload.doc.data().messages?.slice(-1)[0])
+
+          // Gera a mensagem de match somente se não houver mensagens
+          if (!lastMessage) {
+            const matchMessage = await this.getMatchMessage(users);
+            this.matchMessages.push(matchMessage); // Armazena a mensagem de match
+          } else {
+            let nomeNaMensagem = '';
+            for (const user of users) {
+              if (user.uid == lastMessage.sender) {
+                nomeNaMensagem = user.username;
+                if (user.uid == this.userUid) {
+                  nomeNaMensagem = "Você";
+                }
+              }
+            }
+            const msg = `${nomeNaMensagem}: ${lastMessage.content}`
+            this.matchMessages.push(msg);
+          }
+
+          return {
+            id: chat.payload.doc.id,
+            users, // Lista de usernames ao invés de UIDs
+            lastMessage, // Última mensagem ou null
+          };
+        })
+      );
+      console.log("TO VENDO", this.chats)
+    });
+}
 
   // Função para buscar os usernames dos usuários
   async getUserDetails(userUids: string[]): Promise<User[]> {

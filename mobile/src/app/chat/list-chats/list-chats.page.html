@@ -18,8 +18,17 @@
 
   <ion-list *ngIf="chats.length > 0; else noChats">
     <ion-item *ngFor="let chat of chats; let i = index" [routerLink]="['/chat', chat.id]">
-      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label>
+        <div *ngFor="let user of chat.users">
+          <div *ngIf="user.uid != userUid">
+            <h1>
+              {{ user.username }}
+            </h1>
+          </div>
+        </div>
+
+        
+
         <!-- Exibe a mensagem de match já resolvida -->
         <h2>{{ matchMessages[i] }}</h2> 
 
