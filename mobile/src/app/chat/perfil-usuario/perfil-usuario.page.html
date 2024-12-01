@@ -32,9 +32,9 @@
       <ion-item>
         <ion-label>
           <h2>Interesses</h2>
-          <p *ngIf="perfil?.interests && perfil?.interests.length > 0; else noInterests">
-            <span *ngFor="let interesse of perfil?.interests; let i = index">
-              {{ interesse }}<span *ngIf="i < perfil?.interests.length - 1">, </span>
+          <p *ngIf="perfil?.interesses_usuario && perfil?.interesses_usuario.length > 0; else noInterests">
+            <span *ngFor="let interesse of perfil?.interesses_usuario; let i = index">
+              {{ interesse }}<span *ngIf="i < perfil?.interesses_usuario.length - 1">, </span>
             </span>
           </p>
           <ng-template #noInterests>
