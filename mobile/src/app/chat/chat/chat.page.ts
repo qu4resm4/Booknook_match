@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 
 import { MessageService, Message } from '../../services/message/message.service';
 import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { environment } from 'src/environments/environment'; 
 import { initializeApp } from 'firebase/app';
 
@@ -25,6 +25,9 @@ export class ChatPage implements OnInit {
   public newMessage: string = ''; // Mensagem a ser enviada
   public currentUserId: string = ''; // Armazena o UID do usuário atual
 
+  public nameCurrentUser: string = '';
+  public nameOtherUser: string = '';
+
   private messageService = inject(MessageService);
 
   private activatedRoute = inject(ActivatedRoute);
@@ -43,6 +46,15 @@ export class ChatPage implements OnInit {
       this.currentUserId = user.uid;
     }
 
+    this.messageService.getUserName(this.currentUserId).then((username) => {
+      this.nameCurrentUser = username || '';
+    });
+    var id_other = this.chatId.replace(this.currentUserId, '');
+    id_other = id_other.replace('_', '')
+    this.messageService.getUserName(id_other).then((username) => {
+      this.nameOtherUser =  username || '';
+    });;
+
     // Carregar mensagens para o chat
     this.loadMessages();
   }
@@ -50,16 +62,6 @@ export class ChatPage implements OnInit {
   async loadMessages() {
     // Carrega mensagens do serviço
     this.messages = await this.messageService.getMessagesByChatId(this.chatId);
-  
-    // Atribui o nome do remetente às mensagens (caso esteja disponível)
-    for (const message of this.messages) {
-        console.log(message)
-        const userRef = doc(firestore, `users/${message.sender}`);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          message.fromName = userSnap.data()['username'];  // Alterado para acessar 'username'
-        }
-    }
   }
 
   async sendMessage() {

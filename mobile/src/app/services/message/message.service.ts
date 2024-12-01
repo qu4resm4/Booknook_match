@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Firestore, doc, setDoc, getDoc, updateDoc, arrayUnion, getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { Perfil } from 'src/app/models/perfil.model';
 
 // Definindo a interface Message
 export interface Message {
@@ -21,10 +23,30 @@ export interface Message {
 export class MessageService {
   private firestore: Firestore;
 
-  constructor() {
+  constructor(
+    private fire: AngularFirestore,
+  ) {
     // Inicializa o Firestore
     this.firestore = getFirestore();
   }
+
+  getUserName(id: string) {
+    console.log("id do usuario: ", id)
+    return this.fire.collection('users').doc(id).get().toPromise()
+    .then(docSnapshot => {
+      if (docSnapshot && docSnapshot.exists) {
+        const userData = docSnapshot.data();
+        return (userData as Perfil)?.username; // Retorna o 'username' do documento
+      } else {
+        console.log('Usuário não encontrado');
+        return null; // Caso o usuário não exista
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao buscar o username:', error);
+      throw error;
+    });
+  };
 
   async getMessagesByChatId(chatId: string): Promise<Message[]> {
     const chatRef = doc(this.firestore, `chats/${chatId}`);
