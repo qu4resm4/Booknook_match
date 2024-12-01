@@ -1,10 +1,18 @@
-<ion-searchbar 
-  show-cancel-button="focus" 
-  [(ngModel)]="query" 
-  (ionChange)="getLivros()" 
-  placeholder="Pesquisar livros" 
-  class="custom">
-</ion-searchbar>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-searchbar
+      show-clear-button="focus"
+      [(ngModel)]="query" 
+      (ionChange)="getLivros()" 
+      placeholder="Pesquisar livros" 
+      class="custom">
+    </ion-searchbar>
+  </ion-toolbar>
+  
+</ion-header>
 
 <ion-content>
   <ion-grid *ngIf="livros">

@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren, AfterViewInit, OnInit } from '@angular/core';
-import { PerfisService } from '../../services/perfis/perfis.service';
+import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FirestoreService } from 'src/app/services/auth/firestore.service'; 
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private router: Router,
-    private PerfisService: PerfisService,
+    private navCtrl: NavController,
     private authService: AuthService,
     private fire: FirestoreService
   ) { }
@@ -90,12 +90,17 @@ export class HomePage implements OnInit {
   }
 
   async redirecionandoPerfil() {
-    await this.router.navigate(['/perfil-usuario']);
+    await this.navCtrl.navigateForward('perfil-usuario', {
+      queryParams: {
+        uid: this.userId
+       }
+    });
   }
 
   ngOnInit() {
-    /*this.loadMore();*/
-  /*this.getPerfis();*/
+    this.authService.getCurrentUserId().then((uid) => {
+      this.userId = uid
+    });
   }
 
 }
