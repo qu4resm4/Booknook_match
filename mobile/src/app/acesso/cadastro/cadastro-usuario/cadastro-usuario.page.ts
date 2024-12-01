@@ -32,6 +32,7 @@ export class CadastroUsuarioPage {
       if (success) {
         await loading.dismiss();
         this.showToast('Cadastro realizado com sucesso.');
+        this.authService.loginWithUsername(this.username, this.password)
         await this.router.navigate(['/tutorial']);
       } else {
         throw new Error('Falha no cadastro.');

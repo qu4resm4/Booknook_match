@@ -1,10 +1,30 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Tutorial</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Tutorial</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <p>Bem-vindo ao BookNook! Aqui, você pode explorar e escolher livros do seu interesse e selecionar os gêneros que mais gosta.</p>
-  <ion-button expand="full" (click)="goToInterests()">Vamos começar!</ion-button>
+<ion-content class="ion-padding" color="light">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Bem-vindo ao BookNook!</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="intro-text">
+        Aqui, você se conecta com outros leitores para compartilhar ideias e descobrir novas histórias.
+      </p>
+      <p class="intro-text">
+        Para começar, crie seu perfil adicionando suas informações, selecione seus gêneros literários favoritos e interesses de leitura. 
+        Em seguida, escolha um livro de sua preferência e escreva uma resenha para completar o cadastro.
+      </p>
+      <p class="intro-text">
+        Explore estantes, resenhas e perfis de outros leitores. Interaja curtindo ou passando perfis e desbloqueie o chat quando encontrar 
+        alguém que compartilhe seus interesses literários!
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="ion-text-center">
+    <ion-button expand="block" color="secondary" shape="round" (click)="goToInterests()">Vamos começar!</ion-button>
+  </div>
 </ion-content>
