@@ -71,6 +71,11 @@ export class ChatPage implements OnInit {
     this.loadMessages();
   }
 
+  ngAfterViewChecked() {
+    // A cada mudança na visualização, rola o conteúdo até o fundo
+    this.content.scrollToBottom(); // O número 300 é o tempo de transição em ms
+  }
+
   async loadMessages() {
     this.fire.collection('chats').doc(this.chatId)
       .snapshotChanges()

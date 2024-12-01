@@ -61,12 +61,22 @@ export class MessageService {
   }
 
   async sendMessage(message: Message): Promise<void> {
-    const chatRef = this.fire.collection(`chats/${message.chatId}`);
-    
-    await chatRef.doc().set({
-      ...message,
-      timestamp: new Date().toISOString(), // Certifique-se de adicionar o timestamp
-    }, { merge: true });
-  }
+    const chatRef = doc(this.firestore, `chats/${message.chatId}`);
+    const chatSnap = await getDoc(chatRef);
 
+    if (chatSnap.exists()) {
+      // Atualiza a conversa com a nova mensagem
+      await updateDoc(chatRef, {
+        messages: arrayUnion(message),
+      });
+    } else {
+      // Se o chat não existir, cria um novo
+      await setDoc(chatRef, {
+        createdAt: new Date().toISOString(),
+        id: message.chatId,
+        users: [message.sender], // Adiciona o remetente ao campo users
+        messages: [message],
+      });
+    }
+  }
 }
