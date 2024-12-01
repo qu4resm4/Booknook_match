@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ChatPerilService } from '../../services/chat-perfil/chat-peril.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { FirestoreService } from 'src/app/services/auth/firestore.service';
 import { Perfil } from 'src/app/models/perfil.model';
-import { InterestsService } from 'src/app/services/auth/interests.service';  
+import { InterestsService } from 'src/app/services/auth/interests.service';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -21,7 +21,8 @@ export class PerfilUsuarioPage implements OnInit {
     private authService: AuthService,
     private firestoreService: FirestoreService, 
     private router: Router,
-    private interestsService: InterestsService  
+    private interestsService: InterestsService,
+    private params: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -30,7 +31,17 @@ export class PerfilUsuarioPage implements OnInit {
 
   async getPerfil() {
     try {
-      const userId = await this.authService.getCurrentUserId();
+      /*const userId = await this.authService.getCurrentUserId();*/
+      let userId = '';
+      this.params.queryParams.subscribe(params => {
+        if (params['uid']) {
+          try {
+            userId = params['uid'];
+          } catch (error) {
+            console.error( error);
+          }
+        }
+      });
       if (userId) {
         this.firestoreService.getPerfil(userId).subscribe({
           next: (data: Perfil | undefined) => {

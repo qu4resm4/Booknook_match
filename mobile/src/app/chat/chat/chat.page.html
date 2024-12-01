@@ -3,7 +3,8 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat</ion-title>
+    <ion-title (click)="redirecionarPerfilUsuario()" >{{ nameOtherUser }}</ion-title>  
+    <ion-icon (click)="redirecionarPerfilUsuario()" slot="end" class="ion-margin" size="large" name="person-circle-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +14,7 @@
   <div>
     <div *ngFor="let message of messages" [ngClass]="{'sent': message.sender === currentUserId, 'received': message.sender !== currentUserId}">
       <ion-chip *ngIf="message.sender">
-        <ion-label style="display: block; text-align: start; font-size: medium; font-weight: bold;">{{ message.sender == currentUserId ? this.nameCurrentUser : this.nameOtherUser || '...' }}</ion-label>
+        <ion-label style="display: block; text-align: start; font-size: medium; font-weight: bold;">{{ message.sender == currentUserId ? nameCurrentUser : nameOtherUser || '...' }}</ion-label>
         <p style="display: block; margin: 5px 0;">{{ message.content }}</p>
         <ion-label style="display: block; text-align: end; font-size: smaller;">{{ message.timestamp }}</ion-label>
       </ion-chip>

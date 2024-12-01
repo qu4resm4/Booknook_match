@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 
 import { MessageService, Message } from '../../services/message/message.service';
 import { getAuth } from 'firebase/auth';
@@ -24,6 +24,7 @@ export class ChatPage implements OnInit {
   public messages: Message[] = []; // Lista de mensagens
   public newMessage: string = ''; // Mensagem a ser enviada
   public currentUserId: string = ''; // Armazena o UID do usuário atual
+  public otherUserId: string = "";
 
   public nameCurrentUser: string = '';
   public nameOtherUser: string = '';
@@ -33,7 +34,9 @@ export class ChatPage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private platform = inject(Platform);
 
-  constructor() {}
+  constructor(
+    private navCtrl: NavController
+  ) {}
 
   ngOnInit() {
 
@@ -51,6 +54,7 @@ export class ChatPage implements OnInit {
     });
     var id_other = this.chatId.replace(this.currentUserId, '');
     id_other = id_other.replace('_', '')
+    this.otherUserId = id_other;
     this.messageService.getUserName(id_other).then((username) => {
       this.nameOtherUser =  username || '';
     });;
@@ -89,5 +93,13 @@ export class ChatPage implements OnInit {
   getBackButtonText() {
     return this.platform.is('ios') ? 'Inbox' : '';
 
+  }
+
+  redirecionarPerfilUsuario() {
+    this.navCtrl.navigateForward('perfil-usuario', {
+      queryParams: {
+        uid: this.otherUserId // Passa o livro para a página de resenha
+      }
+    });
   }
 }
