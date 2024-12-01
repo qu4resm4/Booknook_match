@@ -5,25 +5,28 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label position="floating">Defina usuário</ion-label>
-    <ion-input type="text" [(ngModel)]="username"></ion-input> 
-  </ion-item>
+  <div class="cadastro-container">
+    <ion-item>
+      <ion-label position="floating">Defina usuário</ion-label>
+      <ion-input type="text" [(ngModel)]="username"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">E-mail</ion-label>
-    <ion-input type="email" [(ngModel)]="email"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input type="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Senha</ion-label>
-    <ion-input type="password" [(ngModel)]="password"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
 
-  <ion-button expand="full" (click)="register()">Cadastrar</ion-button>
+    <ion-button expand="full" (click)="register()">Cadastrar</ion-button>
 
-  <div class="login-link">
-    <ion-text> Já possui um cadastro? <ion-router-link [routerLink]="['/login']">Voltar para login</ion-router-link>
-    </ion-text>
+    <div class="login-link">
+      <ion-text> Já possui um cadastro? 
+        <ion-router-link [routerLink]="['/login']">Voltar para login</ion-router-link>
+      </ion-text>
+    </div>
   </div>
 </ion-content>

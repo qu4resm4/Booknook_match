@@ -84,11 +84,6 @@ export class HomePage implements OnInit {
     this.loadMore();
   }
   
-
-  async redirecionandoFiltro() {
-    await this.router.navigate(['/filtro']);
-  }
-
   async redirecionandoPerfil() {
     await this.navCtrl.navigateForward('perfil-usuario', {
       queryParams: {

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  <!-- Usando o operador opcional -->
+    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-text> Logout </ion-text>
@@ -16,23 +16,25 @@
 <ion-content>
   <ion-card *ngIf="perfil">
     <ion-card-header>
-      <ion-card-title>{{ perfil?.username }}</ion-card-title>  <!-- Usando o operador opcional -->
+      <ion-card-title>{{ perfil?.username }}</ion-card-title>  
       <ion-card-subtitle>ID: {{ perfil?.id_usuario || 'Não disponível' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
+      <!-- Biografia -->
       <ion-item>
         <ion-label>
           <h2>Biografia</h2>
-          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  <!-- Usando o operador opcional -->
+          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  
         </ion-label>
       </ion-item>
 
+      <!-- Interesses -->
       <ion-item>
         <ion-label>
           <h2>Interesses</h2>
-          <p *ngIf="interessesUsuario.length; else noInterests">
-            <span *ngFor="let interesse of interessesUsuario; let i = index">
-              {{ interesse }}<span *ngIf="i < interessesUsuario.length - 1">, </span>
+          <p *ngIf="perfil?.interests && perfil?.interests.length > 0; else noInterests">
+            <span *ngFor="let interesse of perfil?.interests; let i = index">
+              {{ interesse }}<span *ngIf="i < perfil?.interests.length - 1">, </span>
             </span>
           </p>
           <ng-template #noInterests>
@@ -41,12 +43,12 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <!-- Resenhas -->
+      <ion-item *ngIf="perfil?.resenhas && perfil?.resenhas.length > 0; else noResenhas">
         <ion-label>
           <h2>Resenhas</h2>
           <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
             <div *ngFor="let resenha of perfil?.resenhas">
-              <!--<strong>{{ resenha.titulo_resenha }}</strong>-->
               <p>{{ resenha.resenha }}</p>
               <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
               <hr>
@@ -54,22 +56,27 @@
           </div>
         </ion-label>
       </ion-item>
+      <ng-template #noResenhas>
+        <p>Sem resenhas cadastradas.</p>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 
+  <!-- Botões de Ações -->
   <ion-item>
-    <ion-button expand="full" color="danger" (click)="denunciarUsuario()">
+    <ion-button expand="full" color="danger">
       Denunciar e Bloquear Usuário
     </ion-button>
   </ion-item>
   <ion-item>
-    <ion-button expand="full" color="medium" (click)="desfazerMatch()">
+    <ion-button expand="full" color="medium">
       Desfazer Match
     </ion-button>
   </ion-item>
 
+  <!-- Botão para Editar Perfil -->
   <ion-item>
-    <ion-button expand="full" color="primary" (click)="editPerfil()">
+    <ion-button expand="full" color="primary" (click)="editarPerfil()">
       Editar Perfil
     </ion-button>
   </ion-item>
