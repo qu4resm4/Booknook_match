@@ -18,9 +18,19 @@ const routes: Routes = [
       {
         path: 'chat',
         loadChildren: () => import('../chat/list-chats/list-chats.module').then(m => m.ListChatsPageModule)
+      },
+      {
+        path: '',
+        redirectTo: 'match', 
+        pathMatch: 'full'
       }
     ]
   },
+  {
+    path: '',
+    redirectTo: '/tabs',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

@@ -5,9 +5,7 @@ import { AuthGuard } from './services/auth/auth.guard';
 const routes: Routes = [
   
   {
-    path: '',/*
-    redirectTo: '/login',
-    pathMatch: 'full',*/
+    path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   { 
@@ -80,7 +78,7 @@ const routes: Routes = [
     path: 'chat/:id',
     loadChildren: () => import('./chat/chat/chat.module').then( m => m.ChatPageModule),
     canActivate: [AuthGuard]
-  },
+  },/**/
   {
     path: 'perfil-usuario',
     loadChildren: () => import('./chat/perfil-usuario/perfil-usuario.module').then( m => m.PerfilUsuarioPageModule),

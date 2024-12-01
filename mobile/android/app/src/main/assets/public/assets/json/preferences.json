@@ -1,0 +1,189 @@
+[
+  {
+    "id": 1,
+    "tipo": "Autores Favoritos",
+    "preferencias": [
+      { "id": 101, "preferencia": "Jane Austen" },
+      { "id": 102, "preferencia": "J.K. Rowling" },
+      { "id": 103, "preferencia": "George R.R. Martin" },
+      { "id": 104, "preferencia": "Agatha Christie" },
+      { "id": 105, "preferencia": "J.R.R. Tolkien" },
+      { "id": 106, "preferencia": "Stephen King" },
+      { "id": 107, "preferencia": "Gabriel García Márquez" },
+      { "id": 108, "preferencia": "Haruki Murakami" },
+      { "id": 109, "preferencia": "Chimamanda Ngozi Adichie" },
+      { "id": 110, "preferencia": "Neil Gaiman" }
+    ]
+  },
+  {
+    "id": 2,
+    "tipo": "",
+    "preferencias": [
+      { "id": 201, "preferencia": "Romance" },
+      { "id": 202, "preferencia": "Ficção Científica" },
+      { "id": 203, "preferencia": "Fantasia" },
+      { "id": 204, "preferencia": "Biografia" },
+      { "id": 205, "preferencia": "Thriller" },
+      { "id": 206, "preferencia": "Autoajuda" },
+      { "id": 207, "preferencia": "Poesia" },
+      { "id": 208, "preferencia": "História" },
+      { "id": 209, "preferencia": "Aventura" },
+      { "id": 210, "preferencia": "Distopia" }
+    ]
+  },
+  {
+    "id": 3,
+    "tipo": "Ano de Publicação",
+    "preferencias": [
+      { "id": 301, "preferencia": "Década de 1920" },
+      { "id": 302, "preferencia": "Década de 1950" },
+      { "id": 303, "preferencia": "Década de 1980" },
+      { "id": 304, "preferencia": "Década de 2000" },
+      { "id": 305, "preferencia": "2010" },
+      { "id": 306, "preferencia": "2015" },
+      { "id": 307, "preferencia": "2020" }
+    ]
+  },
+  {
+    "id": 4,
+    "tipo": "Tipo de Leitura",
+    "preferencias": [
+      { "id": 401, "preferencia": "Curta" },
+      { "id": 402, "preferencia": "Longa" },
+      { "id": 403, "preferencia": "Saga" },
+      { "id": 404, "preferencia": "Contos" },
+      { "id": 405, "preferencia": "Novelas" }
+    ]
+  },
+  {
+    "id": 5,
+    "tipo": "Formato de Leitura",
+    "preferencias": [
+      { "id": 501, "preferencia": "Impresso" },
+      { "id": 502, "preferencia": "E-book" },
+      { "id": 503, "preferencia": "Audiolivro" }
+    ]
+  },
+  {
+    "id": 6,
+    "tipo": "Temáticas Preferidas",
+    "preferencias": [
+      { "id": 601, "preferencia": "Temática Social" },
+      { "id": 602, "preferencia": "Distopia" },
+      { "id": 603, "preferencia": "Aventura Épica" },
+      { "id": 604, "preferencia": "Mistério" },
+      { "id": 605, "preferencia": "Romance Histórico" },
+      { "id": 606, "preferencia": "Ficção Espacial" }
+    ]
+  },
+  {
+    "id": 7,
+    "tipo": "Estilo de Escrita",
+    "preferencias": [
+      { "id": 701, "preferencia": "Leve" },
+      { "id": 702, "preferencia": "Descritivo" },
+      { "id": 703, "preferencia": "Primeira Pessoa" },
+      { "id": 704, "preferencia": "Terceira Pessoa" },
+      { "id": 705, "preferencia": "Narrativa Experimental" }
+    ]
+  },
+  {
+    "id": 8,
+    "tipo": "Público Alvo",
+    "preferencias": [
+      { "id": 801, "preferencia": "Infantil" },
+      { "id": 802, "preferencia": "Jovem Adulto" },
+      { "id": 803, "preferencia": "Adulto" }
+    ]
+  },
+  {
+    "id": 9,
+    "tipo": "Período Histórico Preferido",
+    "preferencias": [
+      { "id": 901, "preferencia": "Medieval" },
+      { "id": 902, "preferencia": "Moderno" },
+      { "id": 903, "preferencia": "Futuro Distópico" },
+      { "id": 904, "preferencia": "Era Vitoriana" }
+    ]
+  },
+  {
+    "id": 10,
+    "tipo": "Ritmo de Leitura",
+    "preferencias": [
+      { "id": 1001, "preferencia": "Rápido" },
+      { "id": 1002, "preferencia": "Lento" },
+      { "id": 1003, "preferencia": "Reflexivo" },
+      { "id": 1004, "preferencia": "Dinâmico" }
+    ]
+  },
+  {
+    "id": 11,
+    "tipo": "Livros Premiados",
+    "preferencias": [
+      { "id": 1101, "preferencia": "Nobel de Literatura" },
+      { "id": 1102, "preferencia": "Booker Prize" },
+      { "id": 1103, "preferencia": "Hugo Award" },
+      { "id": 1104, "preferencia": "Pulitzer Prize" }
+    ]
+  },
+  {
+    "id": 12,
+    "tipo": "Nacionalidade dos Autores",
+    "preferencias": [
+      { "id": 1201, "preferencia": "Brasileiros" },
+      { "id": 1202, "preferencia": "Africanos" },
+      { "id": 1203, "preferencia": "Americanos" },
+      { "id": 1204, "preferencia": "Asiáticos" },
+      { "id": 1205, "preferencia": "Europeus" }
+    ]
+  },
+  {
+    "id": 13,
+    "tipo": "Adaptações Cinematográficas",
+    "preferencias": [
+      { "id": 1301, "preferencia": "Filme" },
+      { "id": 1302, "preferencia": "Série" },
+      { "id": 1303, "preferencia": "Não Adaptado" }
+    ]
+  },
+  {
+    "id": 14,
+    "tipo": "Interesse em Tópicos Específicos",
+    "preferencias": [
+      { "id": 1401, "preferencia": "Feminismo" },
+      { "id": 1402, "preferencia": "LGBTQ+" },
+      { "id": 1403, "preferencia": "Questões Raciais" },
+      { "id": 1404, "preferencia": "Sustentabilidade" },
+      { "id": 1405, "preferencia": "Filosofia" },
+      { "id": 1406, "preferencia": "História Mundial" }
+    ]
+  },
+  {
+    "id": 15,
+    "tipo": "Mood da Leitura",
+    "preferencias": [
+      { "id": 1501, "preferencia": "Inspiradora" },
+      { "id": 1502, "preferencia": "Dramática" },
+      { "id": 1503, "preferencia": "Emocionante" },
+      { "id": 1504, "preferencia": "Sombria" },
+      { "id": 1505, "preferencia": "Leve" }
+    ]
+  },
+  {
+    "id": 16,
+    "tipo": "Frequência de Leitura",
+    "preferencias": [
+      { "id": 1601, "preferencia": "Ocasional" },
+      { "id": 1602, "preferencia": "Frequente" },
+      { "id": 1603, "preferencia": "Diária" }
+    ]
+  },
+  {
+    "id": 17,
+    "tipo": "Novos Lançamentos ou Clássicos",
+        "preferencias": [
+          { "id": 1701, "preferencia": "Novos Lançamentos" },
+          { "id": 1702, "preferencia": "Clássicos Literários" }
+        ]
+      }
+    ]

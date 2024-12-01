@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Gesture, GestureController } from '@ionic/angular';
 import { MatchsService } from 'src/app/services/matchs/matchs.service';
 
@@ -9,12 +9,17 @@ import { MatchsService } from 'src/app/services/matchs/matchs.service';
 })
 export class PerfilmodalComponent{
   @Input() perfil: any;
+  @Output() perfilModalChange = new EventEmitter<boolean>();  // Emite um valor quando o modal muda
   @ViewChild('swipeCard', { read: ElementRef, static: true }) swipeCard!: ElementRef;
 
   constructor(
     private gestureCtrl: GestureController,
     private match: MatchsService
   ) {}
+  ngOnInit() {
+    // Suponha que você emita o evento quando o componente for exibido
+    this.perfilModalChange.emit(true);  // O perfil modal foi carregado
+  }
 
   ngAfterViewInit() {
     this.createSwipeGesture();
@@ -53,12 +58,14 @@ export class PerfilmodalComponent{
       card.style.transition = '0.5s ease-out';
       card.style.transform = `translateX(1000px) rotate(${ev.deltaX / 20}deg)`;
       card.remove();
+      this.perfilModalChange.emit(false);
       this.match.likeUser(this.perfil.id_usuario);
     } else if (ev.deltaX < -150) {
       console.log("esquerda / DESLIKE")
       card.style.transition = '0.5s ease-out';
       card.style.transform = `translateX(-1000px) rotate(${ev.deltaX / 20}deg)`;
       card.remove();
+      this.perfilModalChange.emit(false);
     } else {
       // Voltar ao centro
       card.style.transition = '0.3s ease-out';
@@ -72,4 +79,5 @@ export class PerfilmodalComponent{
     card.style.transition = '';
     card.style.transform = '';
     card.classList.remove('like-animation', 'dislike-animation');
-  }}
+  }
+}

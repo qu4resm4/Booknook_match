@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { LivrosService } from '../../services/livros/livros.service';
 import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
@@ -18,7 +17,6 @@ export class InfolivroPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private livrosService: LivrosService,
-    private loadingController: LoadingController,
     private storage: StorageBooksService
   ) {}
 
@@ -30,7 +28,9 @@ export class InfolivroPage implements OnInit {
     };
     console.log(livro);
     await this.storage.adicionarNaEstante(livro, '-TODOS');
-    this.navCtrl.navigateForward('tabs/estante');
+    this.navCtrl.navigateForward('tabs/estante', { queryParams: {
+      add: true
+    }});
   }
   
   async adicionarResenha() {

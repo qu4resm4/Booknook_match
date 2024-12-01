@@ -6,6 +6,6 @@
     </ion-toolbar>
   </ion-header>
   <div class="modal-center">
-    <app-perfilmodal *ngFor="let p of perfis" [perfil]="p" [style.position]="'absolute'"></app-perfilmodal>
+    <app-perfilmodal *ngFor="let p of perfis" [perfil]="p" [style.position]="'absolute'" (perfilModalChange)="onPerfilModalChange($event)"></app-perfilmodal>
   </div>
 </ion-content>

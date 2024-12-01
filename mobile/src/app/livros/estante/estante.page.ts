@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { LivrosService } from '../../services/livros/livros.service';
 import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
@@ -16,7 +17,8 @@ export class EstantePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private livrosService: LivrosService,
-    private storage: StorageBooksService
+    private storage: StorageBooksService,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -25,7 +27,12 @@ export class EstantePage implements OnInit {
   }
 
   // Executado toda vez que a página for exibida
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    this.route.queryParams.subscribe(params => {
+      if (params['add']) {
+        this.carregarLivros(this.colecaoSelecionada);
+      }
+    });
     this.carregarLivros(this.colecaoSelecionada);
   }
 

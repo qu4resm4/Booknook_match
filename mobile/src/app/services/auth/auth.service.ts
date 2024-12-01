@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  private loggedIn = new BehaviorSubject<boolean>(true);
 
   constructor(
     private router: Router,
@@ -21,12 +21,15 @@ export class AuthService {
     this.checkLoginStatus();
   }
 
-  private async checkLoginStatus() {
+  async checkLoginStatus() {
     const token = await this.storage.get('token');
-    this.loggedIn.next(!!token);
+    if (token == null) {
+      this.loggedIn.next(false);
+    }
   }
 
   isLoggedIn() {
+    console.log("valor do loggedIn no serviço: ", this.loggedIn.asObservable())
     return this.loggedIn.asObservable();
   }
 
