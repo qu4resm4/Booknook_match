@@ -4,26 +4,38 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-item>
-    <ion-label position="floating">Usuario</ion-label>
-    <ion-input type="text" [(ngModel)]="username"></ion-input> 
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Senha</ion-label>
-    <ion-input type="password" [(ngModel)]="password"></ion-input>
-  </ion-item>
-
-  <ion-button expand="full" (click)="login()">Login</ion-button>
-  
-  <div class="forgot-password-link">
-    <ion-text>Esqueceu a senha? <ion-router-link [routerLink]="['/esqueceu-senha']">Redefinir senha.</ion-router-link>
-    </ion-text>
+<ion-content class="ion-padding" scroll-y="false">
+  <div class="image-container">
+    <!-- Adicione a imagem acima dos inputs aqui -->
+    <div class="image-container">
+      <img 
+        [src]="'assets/icons/icon-128.webp'" 
+        (load)="onImageLoad($event)" 
+        (error)="onImageError()" 
+        alt="Imagem de login" 
+      />
+    </div>    
   </div>
 
-  <div class="register-link">
-    <ion-text>Já possui cadastro?<ion-router-link [routerLink]="['/cadastro-usuario']">Cadastre-se</ion-router-link>
-    </ion-text>
+  <div class="login-container">
+    <ion-item>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input type="text" [(ngModel)]="username"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="login()">Login</ion-button>
+
+    <div class="forgot-password-link">
+      <ion-text>Esqueceu a senha? <ion-router-link [routerLink]="['/esqueceu-senha']">Redefinir senha</ion-router-link></ion-text>
+    </div>
+
+    <div class="register-link">
+      <ion-text>Já possui cadastro? <ion-router-link [routerLink]="['/cadastro-usuario']">Cadastre-se</ion-router-link></ion-text>
+    </div>
   </div>
 </ion-content>

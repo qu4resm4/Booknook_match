@@ -48,4 +48,14 @@ export class LoginPage {
     });
     toast.present();
   }
+
+  onImageLoad(event: Event): void {
+    console.log('Imagem carregada com sucesso!', event);
+    // Aqui você pode adicionar outras ações, como aplicar estilos ou fazer log.
+  }
+
+  onImageError(): void {
+    console.log('Erro ao carregar a imagem!');
+    // Aqui você pode definir uma imagem padrão de fallback ou outra ação.
+  }
 }

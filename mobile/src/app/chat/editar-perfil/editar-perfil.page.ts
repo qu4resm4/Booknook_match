@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service'; 
 import { AngularFirestore } from '@angular/fire/compat/firestore'; 
-import { AlertController } from '@ionic/angular'; 
+import { AlertController, NavController } from '@ionic/angular'; 
 
 @Component({
   selector: 'app-editar-perfil',
@@ -15,7 +15,7 @@ export class EditarPerfilPage implements OnInit {
     username: '',
     email: '',
     biografia: '',
-    resenhas: '',
+    resenhas: [],   // Mantém um array de resenhas
     interests: []   // Alterado para ser um array de interesses
   };
 
@@ -23,7 +23,7 @@ export class EditarPerfilPage implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private alertController: AlertController,
-    private router: Router
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -34,14 +34,12 @@ export class EditarPerfilPage implements OnInit {
     this.uid = await this.authService.getCurrentUserId(); // Obtém o UID atual do usuário
   
     if (this.uid) {
-      // Verifique se userDoc é undefined antes de tentar acessar os dados
       try {
         const userDoc = await this.firestore.collection('users').doc(this.uid).get().toPromise();
-        
-        if (userDoc && userDoc.exists) { // Verifica se userDoc não é undefined e existe
+        if (userDoc && userDoc.exists) {
           const data = userDoc.data();
           if (data) {
-            this.perfil = data; // Agora 'data' é garantidamente um objeto
+            this.perfil = data; // Carrega os dados do perfil
           } else {
             console.error('O documento não contém dados!');
           }
@@ -54,40 +52,36 @@ export class EditarPerfilPage implements OnInit {
     }
   }
   
-  // Método para salvar as alterações do perfil
   async salvarPerfil() {
     if (!this.uid) {
       console.error('UID não está definido. Não é possível salvar as alterações.');
       return;
     }
-
+  
     try {
-      // Atualiza os dados no Firestore
       await this.firestore.collection('users').doc(this.uid).update({
         username: this.perfil.username,
         email: this.perfil.email,
-        biografia: this.perfil.biografia, // Salva a biografia
-        resenhas: this.perfil.resenhas,   // Salva as resenhas
-        updatedAt: new Date() // Atualiza a data de modificação
+        biografia: this.perfil.biografia, // Atualiza apenas os campos relevantes
+        updatedAt: new Date()
       });
-
+  
       const alert = await this.alertController.create({
         header: 'Sucesso',
         message: 'Alterações salvas com sucesso!',
         buttons: ['OK']
       });
       await alert.present();
-
+  
       // Após o alerta, redireciona para a página de perfil
-      await alert.onDidDismiss(); // Aguarda o alerta ser fechado antes de redirecionar
-      this.router.navigateByUrl('/perfil-usuario'); // Redireciona para "perfil-usuario"
+      await alert.onDidDismiss();
+      this.navCtrl.navigateForward('perfil-usuario', {
+        queryParams: {
+          uid: this.uid // Passa o livro para a página de resenha
+        }
+      });
     } catch (error) {
       console.error('Erro ao salvar alterações:', error);
     }
-  }
-
-  // Redireciona o usuário para a página de interesses
-  irParaInteresses() {
-    this.router.navigateByUrl('/interesses'); // Redireciona para a página de interesses
-  }
+  }  
 }

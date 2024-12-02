@@ -3,8 +3,8 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  <!-- Usando o operador opcional -->
-    <ion-buttons slot="end">
+    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  
+    <ion-buttons *ngIf="userViewId == userCurrentId" slot="end">
       <ion-button (click)="logout()">
         <ion-text> Logout </ion-text>
         <ion-icon name="log-out-outline"></ion-icon>
@@ -15,24 +15,32 @@
 
 <ion-content>
   <ion-card *ngIf="perfil">
-    <ion-card-header>
-      <ion-card-title>{{ perfil?.username }}</ion-card-title>  <!-- Usando o operador opcional -->
-      <ion-card-subtitle>ID: {{ perfil?.id_usuario || 'Não disponível' }}</ion-card-subtitle>
-    </ion-card-header>
     <ion-card-content>
+        <!-- Botão para Editar Perfil -->
+         <ion-toolbar *ngIf="userViewId == userCurrentId">
+              <ion-buttons slot="end">
+                <ion-button class="ion-margin" color="primary" (click)="editarPerfil()">
+                    Editar Perfil
+                    <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+         </ion-toolbar>
+
+      <!-- Biografia -->
       <ion-item>
         <ion-label>
           <h2>Biografia</h2>
-          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  <!-- Usando o operador opcional -->
+          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  
         </ion-label>
       </ion-item>
 
+      <!-- Interesses -->
       <ion-item>
         <ion-label>
           <h2>Interesses</h2>
-          <p *ngIf="interessesUsuario.length; else noInterests">
-            <span *ngFor="let interesse of interessesUsuario; let i = index">
-              {{ interesse }}<span *ngIf="i < interessesUsuario.length - 1">, </span>
+          <p *ngIf="perfil?.interesses_usuario && perfil?.interesses_usuario.length > 0; else noInterests">
+            <span *ngFor="let interesse of perfil?.interesses_usuario; let i = index">
+              {{ interesse.preferencia }}<span *ngIf="i < perfil?.interesses_usuario.length - 1">, </span>
             </span>
           </p>
           <ng-template #noInterests>
@@ -41,36 +49,45 @@
         </ion-label>
       </ion-item>
 
-      <ion-item>
+      <!-- Resenhas -->
+      <ion-item *ngIf="perfil?.resenhas && perfil?.resenhas.length > 0; else noResenhas">
         <ion-label>
           <h2>Resenhas</h2>
-          <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
+          <div class="reviews-container">
             <div *ngFor="let resenha of perfil?.resenhas">
-              <!--<strong>{{ resenha.titulo_resenha }}</strong>-->
-              <p>{{ resenha.resenha }}</p>
-              <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
+              
+              <h2>{{ resenha.nome_livro || 'Sem nome' }}</h2>
+              <p class="ion-margin"><strong>Resenha:</strong> {{ resenha.titulo_resenha || 'Sem título' }}</p>
+              <p class="ion-margin"> {{ resenha.resenha || 'Sem conteúdo' }}</p>
+
+              <!-- Verificação de categorias_livro -->
+              <p><strong>Categorias:</strong> 
+                <ng-container *ngIf="resenha.isCategoriasArray">
+                  {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}
+                </ng-container>
+                <ng-container *ngIf="!resenha.isCategoriasArray">
+                  <span>Dados de categorias inválidos</span>
+                </ng-container>
+              </p>
               <hr>
             </div>
           </div>
         </ion-label>
       </ion-item>
+      <ng-template #noResenhas>
+        <p>Sem resenhas cadastradas.</p>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 
-  <ion-item>
-    <ion-button expand="full" color="danger" (click)="denunciarUsuario()">
+  <!-- Botões de Ações -->
+
+    <ion-button class="ion-margin" *ngIf="userViewId != userCurrentId" expand="full" color="danger">
       Denunciar e Bloquear Usuário
     </ion-button>
-  </ion-item>
-  <ion-item>
-    <ion-button expand="full" color="medium" (click)="desfazerMatch()">
+
+
+    <ion-button class="ion-margin" *ngIf="userViewId != userCurrentId" expand="full" color="medium">
       Desfazer Match
     </ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-button expand="full" color="primary" (click)="editPerfil()">
-      Editar Perfil
-    </ion-button>
-  </ion-item>
 </ion-content>

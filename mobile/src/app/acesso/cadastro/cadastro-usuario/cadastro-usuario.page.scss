@@ -1,21 +1,35 @@
 .cadastro-container {
-    padding: 20px;
-    ion-item {
-      margin-bottom: 15px;
-    }
-    ion-button {
-      --background: #007bff;
-      --color: white;
-      margin-top: 20px;
-      padding: 10px;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 10px 20px; /* Ajuste para o conteúdo não ficar tão colado nas bordas */
+
+  ion-item {
+    margin-bottom: 10px; 
+  }
+
+  ion-button {
+    --background: #007bff;
+    --color: white;
+    --border-radius: 50px !important; /* Bordas arredondadas */
+    margin-top: 20px;
+    padding: 10px;
   }
 
   .login-link {
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
-    padding: 55px;
   }
-  
-  
-  
+
+  .login-link ion-text {
+    display: block;
+    margin-top: 8px;
+  }
+}
+
+ion-router-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}

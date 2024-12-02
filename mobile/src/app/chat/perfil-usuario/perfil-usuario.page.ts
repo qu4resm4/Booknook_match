@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ChatPerilService } from '../../services/chat-perfil/chat-peril.service';
-import { AuthService } from '../../services/auth/auth.service';
-import { FirestoreService } from 'src/app/services/auth/firestore.service';
-import { Perfil } from 'src/app/models/perfil.model';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ChatPerilService } from 'src/app/services/chat-perfil/chat-peril.service';
 import { InterestsService } from 'src/app/services/auth/interests.service';
+import { Perfil } from 'src/app/models/perfil.model';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -12,42 +12,58 @@ import { InterestsService } from 'src/app/services/auth/interests.service';
   styleUrls: ['./perfil-usuario.page.scss'],
 })
 export class PerfilUsuarioPage implements OnInit {
-  perfil!: Perfil;
-  interessesDisponiveis: string[] = ['Ficção', 'Romance', 'Aventura', 'Mistério', 'Fantasia', 'Sci-Fi'];
-  interessesUsuario: string[] = [];
+  perfil: Perfil | any = { 
+    username: '',
+    email: '',
+    biografia: '',
+    interesses_usuario: [], 
+    resenhas: [] 
+  };
+  userViewId: string = '';
+  userCurrentId: string = '';
+  isOwnProfile: boolean = false; // Variável para diferenciar o perfil
 
   constructor(
-    private p: ChatPerilService,
     private authService: AuthService,
-    private firestoreService: FirestoreService, 
+    private firestore: AngularFirestore,
     private router: Router,
     private interestsService: InterestsService,
     private params: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getPerfil();
+    this.getCurrentUser();
+    this.loadUserProfile();
+  }
+  async getCurrentUser() {
+    this.userCurrentId = await this.authService.getCurrentUserId();
   }
 
-  async getPerfil() {
+  async loadUserProfile() {
     try {
-      /*const userId = await this.authService.getCurrentUserId();*/
-      let userId = '';
       this.params.queryParams.subscribe(params => {
         if (params['uid']) {
-          try {
-            userId = params['uid'];
-          } catch (error) {
-            console.error( error);
-          }
+          this.userViewId = params['uid'];
         }
       });
-      if (userId) {
-        this.firestoreService.getPerfil(userId).subscribe({
-          next: (data: Perfil | undefined) => {
-            if (data) {
-              this.perfil = data;
-              this.getInteressesUsuario(userId);
+
+      if (this.userViewId) {
+        // Carregar o perfil do usuário
+        this.firestore.collection('users').doc(this.userViewId).get().subscribe({
+          next: (data: any) => {
+            if (data.exists) {
+              this.perfil = data.data();
+              console.log('Perfil carregado:', this.perfil);
+              // Carregar as resenhas associadas ao usuário
+              this.firestore.collection('users').doc(this.userViewId).collection('resenhas').get().subscribe(resenhasDoc => {
+                resenhasDoc.forEach((doc) => {
+                  const resenha = doc.data();
+                  resenha['categorias_livro'] = Array.isArray(resenha['categorias_livro']) ? resenha['categorias_livro'] : [resenha['categorias_livro'] || ''];
+                  this.perfil.resenhas.push(resenha);
+                });
+              });
+              // Carregar os interesses do usuário
+              this.getInteressesUsuario(this.userViewId);
             } else {
               console.error("Perfil não encontrado");
             }
@@ -67,22 +83,15 @@ export class PerfilUsuarioPage implements OnInit {
   getInteressesUsuario(userId: string) {
     this.interestsService.getUserInterests(userId).subscribe(
       (data: any) => {
-        if (data && data.interests) {
-          this.interessesUsuario = data.interests;
+        if (data?.interests) {
+          this.perfil.interesses_usuario = data.interests;
+          console.log('Interesses do usuário:', this.perfil.interesses_usuario);
         }
       },
       error => {
-        console.error("Erro ao carregar interesses", error);
+        console.error('Erro ao carregar interesses', error);
       }
     );
-  }
-
-  salvarPerfil() {
-    this.firestoreService.updatePerfil(this.perfil).then(() => {
-      console.log('Perfil atualizado com sucesso!');
-    }).catch(error => {
-      console.error('Erro ao salvar perfil', error);
-    });
   }
 
   async logout() {
@@ -90,7 +99,7 @@ export class PerfilUsuarioPage implements OnInit {
       await this.authService.logout();
       this.router.navigate(['/login']);
     } catch (error) {
-      console.error("Erro ao realizar logout:", error);
+      console.error('Erro ao realizar logout:', error);
     }
   }
 
@@ -104,7 +113,7 @@ export class PerfilUsuarioPage implements OnInit {
     // Lógica para desfazer match
   }
 
-  editPerfil() {
+  editarPerfil() {
     this.router.navigate(['/editar-perfil']);
   }
 }
