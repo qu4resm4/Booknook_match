@@ -34,52 +34,42 @@ export class ListChatsPage {
     });
   }
 
-// Função para carregar os chats
-loadChats() {
-  // Usamos o `snapshotChanges()` para não ter problemas com assinaturas
-  this.firestore
-    .collection('chats', (ref) => ref.where('users', 'array-contains', this.userUid))
-    .snapshotChanges()
-    .subscribe(async (chats: any[]) => {
-      // Mapeia e busca os dados dos usuários
-      this.chats = await Promise.all(
-        chats.map(async (chat) => {
-          const chatData = chat.payload.doc.data();
-          const users = await this.getUserDetails(chatData.users); // Busca os usernames
-          console.log("users chat: ", users)
-          // Obtém a última mensagem
-          const lastMessage = chatData.messages?.slice(-1)[0] || null;
-          console.log(chat.payload.doc.data().messages?.slice(-1)[0])
-
-          // Gera a mensagem de match somente se não houver mensagens
-          if (!lastMessage) {
-            const matchMessage = await this.getMatchMessage(users);
-            this.matchMessages.push(matchMessage); // Armazena a mensagem de match
-          } else {
-            let nomeNaMensagem = '';
-            for (const user of users) {
-              if (user.uid == lastMessage.sender) {
-                nomeNaMensagem = user.username;
-                if (user.uid == this.userUid) {
-                  nomeNaMensagem = "Você";
-                }
-              }
+  loadChats() {
+    this.firestore
+      .collection('chats', (ref) => ref.where('users', 'array-contains', this.userUid))
+      .snapshotChanges()
+      .subscribe(async (chats: any[]) => {
+        this.matchMessages = []; // Limpa mensagens de match para evitar duplicatas
+  
+        this.chats = await Promise.all(
+          chats.map(async (chat) => {
+            const chatData = chat.payload.doc.data();
+            const users = await this.getUserDetails(chatData.users);
+  
+            // Obtém a última mensagem
+            const lastMessage = chatData.messages?.slice(-1)[0] || null;
+  
+            if (!lastMessage) {
+              // Adiciona mensagem de match apenas se não houver mensagens
+              const matchMessage = await this.getMatchMessage(users);
+              this.matchMessages.push(matchMessage);
+            } else {
+              // Adiciona prévia da última mensagem ao preview
+              const senderName = users.find(user => user.uid === lastMessage.sender)?.username || 'Desconhecido';
+              const messagePreview = lastMessage.sender === this.userUid ? `Você: ${lastMessage.content}` : `${senderName}: ${lastMessage.content}`;
+              this.matchMessages.push(messagePreview);
             }
-            const msg = `${nomeNaMensagem}: ${lastMessage.content}`
-            this.matchMessages.push(msg);
-          }
-
-          return {
-            id: chat.payload.doc.id,
-            users, // Lista de usernames ao invés de UIDs
-            lastMessage, // Última mensagem ou null
-          };
-        })
-      );
-      console.log("TO VENDO", this.chats)
-    });
-}
-
+  
+            return {
+              id: chat.payload.doc.id,
+              users, // Lista de usernames
+              lastMessage, // Última mensagem
+            };
+          })
+        );
+      });
+  }
+  
   // Função para buscar os usernames dos usuários
   async getUserDetails(userUids: string[]): Promise<User[]> {
     const userDetails: User[] = [];
