@@ -19,40 +19,43 @@ export class PerfilUsuarioPage implements OnInit {
     interesses_usuario: [], 
     resenhas: [] 
   };
-  uid: string | null = null;
+  userViewId: string = '';
+  userCurrentId: string = '';
   isOwnProfile: boolean = false; // Variável para diferenciar o perfil
 
   constructor(
     private authService: AuthService,
     private firestore: AngularFirestore,
     private router: Router,
-    private chatPerilService: ChatPerilService,
     private interestsService: InterestsService,
     private params: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.getCurrentUser();
     this.loadUserProfile();
+  }
+  async getCurrentUser() {
+    this.userCurrentId = await this.authService.getCurrentUserId();
   }
 
   async loadUserProfile() {
     try {
-      let userId = '';
       this.params.queryParams.subscribe(params => {
         if (params['uid']) {
-          userId = params['uid'];
+          this.userViewId = params['uid'];
         }
       });
 
-      if (userId) {
+      if (this.userViewId) {
         // Carregar o perfil do usuário
-        this.firestore.collection('users').doc(userId).get().subscribe({
+        this.firestore.collection('users').doc(this.userViewId).get().subscribe({
           next: (data: any) => {
             if (data.exists) {
               this.perfil = data.data();
               console.log('Perfil carregado:', this.perfil);
               // Carregar as resenhas associadas ao usuário
-              this.firestore.collection('users').doc(userId).collection('resenhas').get().subscribe(resenhasDoc => {
+              this.firestore.collection('users').doc(this.userViewId).collection('resenhas').get().subscribe(resenhasDoc => {
                 resenhasDoc.forEach((doc) => {
                   const resenha = doc.data();
                   resenha['categorias_livro'] = Array.isArray(resenha['categorias_livro']) ? resenha['categorias_livro'] : [resenha['categorias_livro'] || ''];
@@ -60,7 +63,7 @@ export class PerfilUsuarioPage implements OnInit {
                 });
               });
               // Carregar os interesses do usuário
-              this.getInteressesUsuario(userId);
+              this.getInteressesUsuario(this.userViewId);
             } else {
               console.error("Perfil não encontrado");
             }
@@ -89,18 +92,6 @@ export class PerfilUsuarioPage implements OnInit {
         console.error('Erro ao carregar interesses', error);
       }
     );
-  }
-
-  salvarPerfil() {
-    if (this.uid) {
-      this.firestore.collection('users').doc(this.uid).update(this.perfil).then(() => {
-        console.log('Perfil atualizado com sucesso!');
-      }).catch(error => {
-        console.error('Erro ao salvar perfil', error);
-      });
-    } else {
-      console.error('UID do usuário não encontrado');
-    }
   }
 
   async logout() {
