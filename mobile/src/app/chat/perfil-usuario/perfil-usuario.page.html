@@ -34,7 +34,7 @@
           <h2>Interesses</h2>
           <p *ngIf="perfil?.interesses_usuario && perfil?.interesses_usuario.length > 0; else noInterests">
             <span *ngFor="let interesse of perfil?.interesses_usuario; let i = index">
-              {{ interesse }}<span *ngIf="i < perfil?.interesses_usuario.length - 1">, </span>
+              {{ interesse.preferencia }}<span *ngIf="i < perfil?.interesses_usuario.length - 1">, </span>
             </span>
           </p>
           <ng-template #noInterests>
@@ -49,8 +49,22 @@
           <h2>Resenhas</h2>
           <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
             <div *ngFor="let resenha of perfil?.resenhas">
-              <p>{{ resenha.resenha }}</p>
-              <p><strong>Categorias:</strong> {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}</p>
+              
+              <p><strong>Título:</strong> {{ resenha.titulo_resenha || 'Sem título' }}</p>
+              
+              <p><strong>Nome:</strong> {{ resenha.nome_livro || 'Sem nome' }}</p>
+              
+              <p><strong>Resenha:</strong> {{ resenha.resenha || 'Sem conteúdo' }}</p>
+
+              <!-- Verificação de categorias_livro -->
+              <p><strong>Categorias:</strong> 
+                <ng-container *ngIf="resenha.isCategoriasArray">
+                  {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}
+                </ng-container>
+                <ng-container *ngIf="!resenha.isCategoriasArray">
+                  <span>Dados de categorias inválidos</span>
+                </ng-container>
+              </p>
               <hr>
             </div>
           </div>
