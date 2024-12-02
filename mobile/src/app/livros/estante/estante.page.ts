@@ -26,6 +26,14 @@ export class EstantePage implements OnInit {
     this.init()
   }
 
+  getImagem(link: string): string {
+    if(link == 'sem') {
+      return 'assets/imgs/capa.jpg'
+    }
+    let link_seguro = link.replace("http", "https")
+    return link_seguro;
+  }
+
   // Executado toda vez que a página for exibida
   async ionViewWillEnter() {
     this.route.queryParams.subscribe(params => {
