@@ -12,16 +12,15 @@ import { Perfil } from 'src/app/models/perfil.model';
   styleUrls: ['./perfil-usuario.page.scss'],
 })
 export class PerfilUsuarioPage implements OnInit {
-  perfil: Perfil | any = { // Dados do perfil
+  perfil: Perfil | any = { 
     username: '',
     email: '',
     biografia: '',
-    interests: [], // Array para armazenar os interesses
-    resenhas: []  // Array para armazenar as resenhas
+    interesses_usuario: [], 
+    resenhas: [] 
   };
-  interessesDisponiveis: string[] = ['Ficção', 'Romance', 'Aventura', 'Mistério', 'Fantasia', 'Sci-Fi'];
-  interessesUsuario: string[] = [];
   uid: string | null = null;
+  isOwnProfile: boolean = false; // Variável para diferenciar o perfil
 
   constructor(
     private authService: AuthService,
@@ -37,58 +36,53 @@ export class PerfilUsuarioPage implements OnInit {
   }
 
   async loadUserProfile() {
-    this.uid = await this.authService.getCurrentUserId(); // Obtém o UID atual do usuário
-  
-    if (this.uid) {
-      try {
-        const userDoc = await this.firestore.collection('users').doc(this.uid).get().toPromise();
-  
-        if (userDoc && userDoc.exists) {
-          const data = userDoc.data();
-          if (data) {
-            this.perfil = data; // Agora 'data' é garantidamente um objeto
-            console.log('Perfil carregado:', this.perfil);
-  
-            // Carregar as resenhas associadas ao usuário
-            const resenhasDoc = await this.firestore.collection('users').doc(this.uid).collection('resenhas').get().toPromise();
-  
-            if (resenhasDoc && !resenhasDoc.empty) {
-              resenhasDoc.forEach((doc) => {
-                const resenha = doc.data();
-  
-                // Verificar e garantir que categorias_livro seja um array
-                if (!Array.isArray(resenha['categorias_livro'])) {
-                  resenha['categorias_livro'] = resenha['categorias_livro'] ? [resenha['categorias_livro']] : [];
-                }
-  
-                this.perfil.resenhas.push(resenha); // Adiciona as resenhas
-              });
-            } else {
-              console.log('Não há resenhas para este usuário.');
-            }
-  
-            // Carregar os interesses do usuário
-            this.getInteressesUsuario(this.uid);
-          } else {
-            console.error('O documento não contém dados!');
-          }
-        } else {
-          console.error('Usuário não encontrado ou o documento não existe!');
+    try {
+      let userId = '';
+      this.params.queryParams.subscribe(params => {
+        if (params['uid']) {
+          userId = params['uid'];
         }
-      } catch (error) {
-        console.error('Erro ao carregar dados do usuário:', error);
+      });
+
+      if (userId) {
+        // Carregar o perfil do usuário
+        this.firestore.collection('users').doc(userId).get().subscribe({
+          next: (data: any) => {
+            if (data.exists) {
+              this.perfil = data.data();
+              console.log('Perfil carregado:', this.perfil);
+              // Carregar as resenhas associadas ao usuário
+              this.firestore.collection('users').doc(userId).collection('resenhas').get().subscribe(resenhasDoc => {
+                resenhasDoc.forEach((doc) => {
+                  const resenha = doc.data();
+                  resenha['categorias_livro'] = Array.isArray(resenha['categorias_livro']) ? resenha['categorias_livro'] : [resenha['categorias_livro'] || ''];
+                  this.perfil.resenhas.push(resenha);
+                });
+              });
+              // Carregar os interesses do usuário
+              this.getInteressesUsuario(userId);
+            } else {
+              console.error("Perfil não encontrado");
+            }
+          },
+          error: (e) => {
+            console.error("Erro ao carregar perfil", e);
+          }
+        });
+      } else {
+        console.error("Usuário não autenticado");
       }
+    } catch (e) {
+      console.error("Erro ao recuperar ID do usuário", e);
     }
   }
-  
-  
 
   getInteressesUsuario(userId: string) {
     this.interestsService.getUserInterests(userId).subscribe(
       (data: any) => {
-        if (data && data.interests) {
-          this.interessesUsuario = data.interests;
-          console.log('Interesses do usuário:', this.interessesUsuario);
+        if (data?.interests) {
+          this.perfil.interesses_usuario = data.interests;
+          console.log('Interesses do usuário:', this.perfil.interesses_usuario);
         }
       },
       error => {
@@ -98,7 +92,7 @@ export class PerfilUsuarioPage implements OnInit {
   }
 
   salvarPerfil() {
-    if (this.uid) { // Verifica se o UID está disponível
+    if (this.uid) {
       this.firestore.collection('users').doc(this.uid).update(this.perfil).then(() => {
         console.log('Perfil atualizado com sucesso!');
       }).catch(error => {

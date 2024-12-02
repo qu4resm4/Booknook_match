@@ -3,10 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  
+    <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
-        <ion-text> Logout </ion-text>
+        <ion-text>Logout</ion-text>
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -16,7 +16,7 @@
 <ion-content>
   <ion-card *ngIf="perfil">
     <ion-card-header>
-      <ion-card-title>{{ perfil?.username }}</ion-card-title>  
+      <ion-card-title>{{ perfil?.username }}</ion-card-title>
       <ion-card-subtitle>ID: {{ perfil?.id_usuario || 'Não disponível' }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
@@ -24,7 +24,7 @@
       <ion-item>
         <ion-label>
           <h2>Biografia</h2>
-          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>  
+          <p>{{ perfil?.biografia || 'Sem biografia' }}</p>
         </ion-label>
       </ion-item>
 
@@ -49,15 +49,10 @@
           <h2>Resenhas</h2>
           <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
             <div *ngFor="let resenha of perfil?.resenhas">
-              
               <p><strong>Título:</strong> {{ resenha.titulo_resenha || 'Sem título' }}</p>
-              
               <p><strong>Nome:</strong> {{ resenha.nome_livro || 'Sem nome' }}</p>
-              
               <p><strong>Resenha:</strong> {{ resenha.resenha || 'Sem conteúdo' }}</p>
-
-              <!-- Verificação de categorias_livro -->
-              <p><strong>Categorias:</strong> 
+              <p><strong>Categorias:</strong>
                 <ng-container *ngIf="resenha.isCategoriasArray">
                   {{ resenha.categorias_livro.join(', ') || 'Sem categorias' }}
                 </ng-container>
@@ -78,12 +73,12 @@
 
   <!-- Botões de Ações -->
   <ion-item>
-    <ion-button expand="full" color="danger">
+    <ion-button expand="full" color="danger" (click)="denunciarUsuario()">
       Denunciar e Bloquear Usuário
     </ion-button>
   </ion-item>
   <ion-item>
-    <ion-button expand="full" color="medium">
+    <ion-button expand="full" color="medium" (click)="desfazerMatch()">
       Desfazer Match
     </ion-button>
   </ion-item>
