@@ -1,3 +1,4 @@
+// Atualizado bio.page.ts
 import { Component } from '@angular/core';
 import { FirestoreService } from 'src/app/services/auth/firestore.service';
 import { NavController } from '@ionic/angular';
@@ -16,8 +17,8 @@ export class BioPage {
   textoResenha: string = '';
   tituloResenha: string = '';
   isSaving: boolean = false;
-  userId: string | null = null; // ID do usuário autenticado
-  biografia: string = ''; // Biografia do usuário (se disponível)
+  userId: string | null = null;
+  biografia: string = '';
   categorias_livro: string[] = [];
 
   constructor(
@@ -34,12 +35,9 @@ export class BioPage {
       if (params['livro']) {
         try {
           const livro = JSON.parse(params['livro']);
-          console.log(livro)
           this.livroId = livro.id || '';
           this.tituloLivro = livro.volumeInfo.title || '';
-          this.categorias_livro = livro.volumeInfo.categories;
-          console.log("variavel depois de associar: ", this.tituloLivro);
-          console.log("recebido variavel: ", livro.title);
+          this.categorias_livro = livro.volumeInfo.categories || [];
         } catch (error) {
           console.error('Erro ao processar dados do livro:', error);
         }
@@ -54,16 +52,42 @@ export class BioPage {
       return;
     }
 
-    // Recupera o perfil do usuário para pegar a biografia
     try {
       const perfil = await this.firestoreService.getPerfil(this.userId).toPromise();
-      this.biografia = perfil?.biografia || ''; // Se a biografia não existir, será uma string vazia
+      if (perfil) {
+        this.biografia = perfil.biografia || '';
+        const resenhaExistente = perfil.resenhas?.find(resenha => resenha.livroId === this.livroId);
+        if (resenhaExistente) {
+          this.mostrarOpcoesDeResenha(resenhaExistente);
+        }
+      }
     } catch (error) {
       console.error('Erro ao recuperar o perfil do usuário:', error);
     }
   }
 
-  // Função para enviar a resenha
+  async mostrarOpcoesDeResenha(resenhaExistente: any) {
+    const alert = document.createElement('ion-alert');
+    alert.header = 'Resenha existente';
+    alert.message = 'Você já criou uma resenha para este livro. Deseja editar ou cancelar?';
+    alert.buttons = [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+      },
+      {
+        text: 'Editar',
+        handler: () => {
+          this.tituloResenha = resenhaExistente.titulo_resenha;
+          this.textoResenha = resenhaExistente.resenha;
+        },
+      },
+    ];
+
+    document.body.appendChild(alert);
+    await alert.present();
+  }
+
   async enviarResenha() {
     if (!this.textoResenha.trim()) {
       console.error('A resenha está vazia!');
@@ -75,39 +99,24 @@ export class BioPage {
       titulo_resenha: this.tituloResenha,
       nome_livro: this.tituloLivro,
       resenha: this.textoResenha,
-      categorias_livro: this.categorias_livro  || '',
-      data: new Date(), // Data de criação da resenha
+      categorias_livro: this.categorias_livro || [],
+      data: new Date(),
     };
-
 
     try {
       this.isSaving = true;
 
-      // Verifica se o usuário está autenticado
       if (!this.userId) {
         console.error('Usuário não autenticado!');
         return;
       }
 
-      console.log("usuario logado?", this.userId)
+      await this.firestoreService.updateOrAddResenha(this.userId, resenha);
 
-      // Salva a resenha no Firestore
-      await this.firestoreService.addResenhaUsuario(this.userId, resenha);
-      console.log('Resenha salva com sucesso!');
-
-      // objeto do livro 
-      const livro = {
-        "id": this.livroId,
-        "title": this.tituloLivro
-      };
-
-      // exclui da storage TODOS
-      await this.storage.excluirDaEstante(livro.id, "-TODOS");
-
-      // inclui na storage RESENHADOS
+      const livro = { id: this.livroId, title: this.tituloLivro };
+      await this.storage.excluirDaEstante(livro.id, '-TODOS');
       await this.storage.adicionarNaEstante(livro, '-RESENHADOS');
-      
-      // Redireciona para a página da estante
+
       this.navCtrl.navigateForward('tabs/estante');
     } catch (error) {
       console.error('Erro ao salvar a resenha:', error);

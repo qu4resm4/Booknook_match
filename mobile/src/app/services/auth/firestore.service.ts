@@ -37,16 +37,53 @@ export class FirestoreService {
     );
   }
 
-  // Método para adicionar uma resenha ao perfil do usuário
-  addResenhaUsuario(uid: string, resenha: any): Promise<void> {
-    const userRef = this.firestore.collection('users').doc(uid);
-    return userRef.update({
-      resenhas: arrayUnion(resenha) // Adiciona a resenha ao array de resenhas
-    }).catch((error) => {
-      console.error('Erro ao adicionar resenha: ', error);
-      throw new Error('Erro ao adicionar resenha');
-    });
+  // Método para adicionar ou atualizar uma resenha do usuário
+  async updateOrAddResenha(userId: string, novaResenha: any): Promise<void> {
+    try {
+      // Referência ao documento do usuário
+      const userRef = this.firestore.collection('users').doc(userId);
+  
+      // Obtém o documento do usuário
+      const userDoc = await userRef.get().toPromise();
+  
+      if (!userDoc || !userDoc.exists) {
+        console.error('Documento do usuário não encontrado!');
+        throw new Error('Documento do usuário não encontrado.');
+      }
+  
+      // Garante o tipo correto para os dados do usuário
+      const userData = userDoc.data() as { resenhas: any[] } | undefined;
+  
+      if (!userData) {
+        console.error('Dados do usuário estão indefinidos!');
+        throw new Error('Dados do usuário estão indefinidos!');
+      }
+  
+      // Obtém ou inicializa o array de resenhas
+      const resenhas = userData.resenhas || [];
+  
+      // Verifica se já existe uma resenha para o livro
+      const resenhaExistenteIndex = resenhas.findIndex(
+        (resenha) => resenha.livroId === novaResenha.livroId
+      );
+  
+      if (resenhaExistenteIndex > -1) {
+        // Atualiza a resenha existente
+        resenhas[resenhaExistenteIndex] = novaResenha;
+      } else {
+        // Adiciona uma nova resenha
+        resenhas.push(novaResenha);
+      }
+  
+      // Atualiza o documento do usuário com o array de resenhas atualizado
+      await userRef.update({ resenhas });
+      console.log('Resenha atualizada/adicionada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao atualizar ou adicionar a resenha:', error);
+      throw error;
+    }
   }
+  
 
   // Atualiza o perfil do usuário no Firestore
   updatePerfil(perfil: Perfil): Promise<void> {
