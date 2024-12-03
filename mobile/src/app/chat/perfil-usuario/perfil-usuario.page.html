@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ perfil?.username || 'Perfil' }}</ion-title>  
-    <ion-buttons slot="end">
+    <ion-buttons *ngIf="userViewId == userCurrentId" slot="end">
       <ion-button (click)="logout()">
         <ion-text> Logout </ion-text>
         <ion-icon name="log-out-outline"></ion-icon>
@@ -15,11 +15,17 @@
 
 <ion-content>
   <ion-card *ngIf="perfil">
-    <ion-card-header>
-      <ion-card-title>{{ perfil?.username }}</ion-card-title>  
-      <ion-card-subtitle>ID: {{ perfil?.id_usuario || 'Não disponível' }}</ion-card-subtitle>
-    </ion-card-header>
     <ion-card-content>
+        <!-- Botão para Editar Perfil -->
+         <ion-toolbar *ngIf="userViewId == userCurrentId">
+              <ion-buttons slot="end">
+                <ion-button class="ion-margin" color="primary" (click)="editarPerfil()">
+                    Editar Perfil
+                    <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+         </ion-toolbar>
+
       <!-- Biografia -->
       <ion-item>
         <ion-label>
@@ -47,14 +53,12 @@
       <ion-item *ngIf="perfil?.resenhas && perfil?.resenhas.length > 0; else noResenhas">
         <ion-label>
           <h2>Resenhas</h2>
-          <div class="reviews-container" style="max-height: 200px; overflow-y: auto;">
+          <div class="reviews-container">
             <div *ngFor="let resenha of perfil?.resenhas">
               
-              <p><strong>Título:</strong> {{ resenha.titulo_resenha || 'Sem título' }}</p>
-              
-              <p><strong>Nome:</strong> {{ resenha.nome_livro || 'Sem nome' }}</p>
-              
-              <p><strong>Resenha:</strong> {{ resenha.resenha || 'Sem conteúdo' }}</p>
+              <h2>{{ resenha.nome_livro || 'Sem nome' }}</h2>
+              <p class="ion-margin"><strong>Resenha:</strong> {{ resenha.titulo_resenha || 'Sem título' }}</p>
+              <p class="ion-margin"> {{ resenha.resenha || 'Sem conteúdo' }}</p>
 
               <!-- Verificação de categorias_livro -->
               <p><strong>Categorias:</strong> 
@@ -77,21 +81,13 @@
   </ion-card>
 
   <!-- Botões de Ações -->
-  <ion-item>
-    <ion-button expand="full" color="danger">
+
+    <ion-button class="ion-margin" *ngIf="userViewId != userCurrentId" expand="full" color="danger">
       Denunciar e Bloquear Usuário
     </ion-button>
-  </ion-item>
-  <ion-item>
-    <ion-button expand="full" color="medium">
+
+
+    <ion-button class="ion-margin" *ngIf="userViewId != userCurrentId" expand="full" color="medium">
       Desfazer Match
     </ion-button>
-  </ion-item>
-
-  <!-- Botão para Editar Perfil -->
-  <ion-item>
-    <ion-button expand="full" color="primary" (click)="editarPerfil()">
-      Editar Perfil
-    </ion-button>
-  </ion-item>
 </ion-content>

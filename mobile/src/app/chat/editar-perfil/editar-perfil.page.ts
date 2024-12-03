@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service'; 
 import { AngularFirestore } from '@angular/fire/compat/firestore'; 
-import { AlertController } from '@ionic/angular'; 
+import { AlertController, NavController } from '@ionic/angular'; 
 
 @Component({
   selector: 'app-editar-perfil',
@@ -23,7 +23,7 @@ export class EditarPerfilPage implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private alertController: AlertController,
-    private router: Router
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -75,7 +75,11 @@ export class EditarPerfilPage implements OnInit {
   
       // Após o alerta, redireciona para a página de perfil
       await alert.onDidDismiss();
-      this.router.navigateByUrl('/perfil-usuario');
+      this.navCtrl.navigateForward('perfil-usuario', {
+        queryParams: {
+          uid: this.uid // Passa o livro para a página de resenha
+        }
+      });
     } catch (error) {
       console.error('Erro ao salvar alterações:', error);
     }
