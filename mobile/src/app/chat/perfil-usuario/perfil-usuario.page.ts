@@ -11,7 +11,7 @@ import { Perfil } from 'src/app/models/perfil.model';
   templateUrl: './perfil-usuario.page.html',
   styleUrls: ['./perfil-usuario.page.scss'],
 })
-export class PerfilUsuarioPage implements OnInit {
+export class PerfilUsuarioPage{
   perfil: Perfil | any = { 
     username: '',
     email: '',
@@ -31,7 +31,7 @@ export class PerfilUsuarioPage implements OnInit {
     private params: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.getCurrentUser();
     this.loadUserProfile();
   }
