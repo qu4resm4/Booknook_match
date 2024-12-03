@@ -74,6 +74,10 @@ export class BioPage {
       {
         text: 'Cancelar',
         role: 'cancel',
+        handler: () => {
+          console.log('Usuário optou por cancelar.');
+          this.navCtrl.pop(); // Voltar para a página anterior
+        },
       },
       {
         text: 'Editar',
