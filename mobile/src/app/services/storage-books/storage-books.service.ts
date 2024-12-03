@@ -26,11 +26,15 @@ export class StorageBooksService {
     if (!this._storage) {
       this._storage = await this.storage.create();
     }
-    this.userID = await this.auth.getUserId();
+    this.setUserID();
     console.log('Init: ',this.userID);
     if (this.userID) {
       await this.setStorage(this.userID); 
     }
+  }
+
+  async setUserID() {
+    this.userID = await this.auth.getUserId();
   }
 
   async setStorage(user: string) {

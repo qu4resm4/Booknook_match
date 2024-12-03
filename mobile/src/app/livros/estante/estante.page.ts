@@ -9,7 +9,7 @@ import { StorageBooksService } from 'src/app/services/storage-books/storage-book
   templateUrl: './estante.page.html',
   styleUrls: ['./estante.page.scss'],
 })
-export class EstantePage implements OnInit {
+export class EstantePage {
   colecaoSelecionada: string = '-TODOS';
   livros: any[] = []; // Array com todos os livros do usuário
   livrosFiltrados: any[] = [];
@@ -20,10 +20,6 @@ export class EstantePage implements OnInit {
     private storage: StorageBooksService,
     private route: ActivatedRoute
   ) {
-  }
-
-  ngOnInit() {
-    this.init()
   }
 
   getImagem(link: string): string {
@@ -41,7 +37,7 @@ export class EstantePage implements OnInit {
         this.carregarLivros(this.colecaoSelecionada);
       }
     });
-    this.carregarLivros(this.colecaoSelecionada);
+    this.init()
   }
 
   async init() {

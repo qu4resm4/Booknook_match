@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { StorageBooksService } from 'src/app/services/storage-books/storage-books.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginPage {
 
   constructor(
     private authService: AuthService,
+    private storage: StorageBooksService,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private router: Router
@@ -30,6 +32,7 @@ export class LoginPage {
       await loading.dismiss();
 
       if (success) {
+        this.storage.setUserID();
         this.showToast('Login bem-sucedido');
         this.router.navigate(['tabs/match']);
       } else {
@@ -47,15 +50,5 @@ export class LoginPage {
       duration: 2000,
     });
     toast.present();
-  }
-
-  onImageLoad(event: Event): void {
-    console.log('Imagem carregada com sucesso!', event);
-    // Aqui você pode adicionar outras ações, como aplicar estilos ou fazer log.
-  }
-
-  onImageError(): void {
-    console.log('Erro ao carregar a imagem!');
-    // Aqui você pode definir uma imagem padrão de fallback ou outra ação.
   }
 }
