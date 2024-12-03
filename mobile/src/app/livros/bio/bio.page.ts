@@ -121,7 +121,9 @@ export class BioPage {
       await this.storage.excluirDaEstante(livro.id, '-TODOS');
       await this.storage.adicionarNaEstante(livro, '-RESENHADOS');
 
-      this.navCtrl.navigateForward('tabs/estante');
+      this.navCtrl.navigateForward('tabs/estante', { queryParams: {
+        add: true
+      }});
     } catch (error) {
       console.error('Erro ao salvar a resenha:', error);
     } finally {
