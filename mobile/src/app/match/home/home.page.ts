@@ -11,7 +11,7 @@ import { PerfilmodalComponent } from "../perfilmodal/perfilmodal.component";
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
   userId: string= ''
   perfis: any[] = [];
   limit = 5; // Define o número de itens por página
@@ -19,7 +19,6 @@ export class HomePage implements OnInit {
   modalCount: number = 0;  // Contador de modais exibidos
 
   constructor(
-    private router: Router,
     private navCtrl: NavController,
     private authService: AuthService,
     private fire: FirestoreService
@@ -59,7 +58,10 @@ export class HomePage implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
+  ionViewWillEnter() {
+    this.authService.getCurrentUserId().then((uid) => {
+      this.userId = uid
+    });
     this.executeAction();
   }
 
@@ -80,7 +82,6 @@ export class HomePage implements OnInit {
   }
 
   executeAction() {
-    console.log('Nenhum PerfilModal está sendo exibido.');
     this.loadMore();
   }
   
@@ -89,12 +90,6 @@ export class HomePage implements OnInit {
       queryParams: {
         uid: this.userId
        }
-    });
-  }
-
-  ngOnInit() {
-    this.authService.getCurrentUserId().then((uid) => {
-      this.userId = uid
     });
   }
 
