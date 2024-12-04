@@ -43,7 +43,7 @@
           </div>
       
           <!-- Imagem do livro -->
-          <ion-img [src]="'assets/imgs/capa.jpg'" (click)="redirecionandoInfoLivro(livro.id)"></ion-img>
+          <ion-img src="{{getImagem(livro.thumbnail || 'sem')}}" (click)="redirecionandoInfoLivro(livro.id)"></ion-img>
         </ion-card>
       
         <!-- Título do livro abaixo da imagem -->

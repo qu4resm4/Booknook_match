@@ -6,7 +6,7 @@
 <ion-content *ngIf="livro">
   <div class="book-details-container">
     <!-- Imagem do livro -->
-    <ion-img [src]="'assets/imgs/capa.jpg'" alt="{{ livro.volumeInfo.title }}"></ion-img>
+    <ion-img src="{{getImagem(livro.volumeInfo.imageLinks?.thumbnail || 'sem')}}" alt="{{ livro.volumeInfo.title }}"></ion-img>
     
     <!-- Título e subtítulo -->
     <h1 class="book-title">{{ livro.volumeInfo.title }}</h1>

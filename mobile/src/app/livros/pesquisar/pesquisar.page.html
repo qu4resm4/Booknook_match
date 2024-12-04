@@ -20,12 +20,10 @@
       <ion-col size="6" *ngFor="let livro of livros">
         <ion-card (click)="redirecionandoInfoLivro(livro.id)">
           <!-- Usa o evento "load" para disparar a função de carregamento -->
-          <img 
-            [src]="'assets/imgs/capa.jpg'" 
-            (load)="onImageLoad($event)" 
-            (error)="onImageError()"
-            alt="{{livro.volumeInfo.title}}"
-          />
+          <ion-img
+          src="{{getImagem(livro.volumeInfo.imageLinks?.thumbnail || 'sem')}}"
+          alt="{{livro.volumeInfo.title}}"
+        ></ion-img>
         </ion-card>
         <ion-label class="title">
           {{ livro.volumeInfo.title }}

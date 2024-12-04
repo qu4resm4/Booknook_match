@@ -20,6 +20,14 @@ export class InfolivroPage implements OnInit {
     private storage: StorageBooksService
   ) {}
 
+  getImagem(link: string): string {
+    if(link == 'sem') {
+      return 'assets/imgs/capa.jpg'
+    }
+    let link_seguro = link.replace("http", "https")
+    return link_seguro;
+  }
+
   async adicionarEstante(id: string, title: string, thumb: string) {
     const livro = {
       "id": id,
