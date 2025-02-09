@@ -13,6 +13,9 @@
   - Exibição de interesses, biografia e resenhas, mantendo o anonimato do livro até ocorrer um match.
 - **Chats**: Liberados após a ocorrência de um match, permitindo interação direta entre os usuários.
 
+### Escaneie o QRcode para testar o aplicativo no seu Android
+![](./compilado_download.png)
+
 ---
 
 ## Tecnologias utilizadas
